@@ -5,12 +5,7 @@
  */
 
 export default {
-    getWechatSign: 'http://res.wisedu.com:9090/checkSign',
-    weeklist: WEBPACK_CONFIG_HOST + '/sys/mykbxt/api/getMyTimeTableList.do',
-    daylist: WEBPACK_CONFIG_HOST + '/sys/mykbxt/api/queryDayAndFutureCourses.do',
-    week: WEBPACK_CONFIG_HOST + '/sys/mykbxt/api/getSchoolCalendar.do',
-    memberList: WEBPACK_CONFIG_HOST + '/sys/mykbxt/api/queryCourseMembers.do',
-    geterr: WEBPACK_CONFIG_HOST + '/sys/mykbxt/api/queryErrorMessages.do',
-    err: WEBPACK_CONFIG_HOST + '/sys/mykbxt/api/feedBackInfo.do',
-    userInfo: WEBPACK_CONFIG_HOST + '/sys/itservicecommon/api/queryAppAndUserDatas.do'
+    queryOverallPanel: WEBPACK_CONFIG_HOST + 'panel/queryOverallPanel.do', // 获取综合面板数据
+   
+ 
 }

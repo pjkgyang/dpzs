@@ -1,7 +1,7 @@
 <template>
     <div class="app pannel7">
         <div>
-            <head-bar :title="'工程综合概况'" :time="'2018/08/08 00:00:00'"></head-bar>
+            <head-bar :title="'工程综合概况'" :time="date"></head-bar>
         </div>
         <div class="app__content">
             <div class="secure height100" flex>
@@ -14,22 +14,22 @@
                                     <h3 col="1" flex rowcenter colcenter style="background-image: linear-gradient(-180deg, rgba(0, 134, 227,0.6) 0%, rgba(0,113,221,0.5) 21%, rgba(0,89,214,0.4) 46%, rgba(0,70,209,0.00) 97%);">全年计划</h3>
                                     <div col="1" flex spacearound colcenter>
                                         <div class="text">全年目标</div>
-                                        <div class="num">1034000</div>
+                                        <div class="num">{{zhgkData.dnysmb}}</div>
                                     </div> 
                                     <div col="1" flex spacearound colcenter>
                                         <div class="text">已完成</div>
-                                        <div class="num">200000</div>
+                                        <div class="num">{{zhgkData.dnyswcl}}</div>
                                     </div>
                                 </div>
                                 <div class="statics" flex-column col="1">
                                     <h3 col="1" flex rowcenter colcenter style="background-image: linear-gradient(-180deg, rgb(227, 144, 0,0.5) 0%, rgba(221,206,0,0.3) 20%, rgba(214,213,0,0.1) 48%, rgba(209,202,0,0.00) 100%);">本月计划</h3>
                                     <div col="1" flex spacearound colcenter>
                                         <div class="text">本月计划</div>
-                                        <div class="num">1000000</div>
+                                        <div class="num">{{zhgkData.byysjh}}</div>
                                     </div>
                                     <div col="1" flex spacearound colcenter>
                                         <div class="text">已完成</div>
-                                        <div class="num">13000</div>
+                                        <div class="num">{{zhgkData.byyswcl}}</div>
                                     </div>
                                 </div>
                             </Card>
@@ -40,22 +40,22 @@
                                     <h3 col="1" flex rowcenter colcenter style="background-image: linear-gradient(-180deg, rgba(227, 0, 0,0.5) 0%, rgba(255,42,42,0.4) 22%, rgba(240,33,33,0.2) 48%, rgba(209,0,0,0.00) 100%);">全年计划</h3>
                                     <div col="1" flex spacearound colcenter>
                                         <div class="text">全年目标</div>
-                                        <div class="num">1034000</div>
+                                        <div class="num">{{zhgkData.dnwgmb}}</div>
                                     </div>
                                     <div col="1" flex spacearound colcenter>
                                         <div class="text">已完成</div>
-                                        <div class="num">200000</div>
+                                        <div class="num">{{zhgkData.dnwgwcl}}</div>
                                     </div>
                                 </div>
                                 <div class="statics" flex-column col="1">
                                     <h3 col="1" flex rowcenter colcenter style="background-image: linear-gradient(-180deg, rgb(227, 144, 0,0.5) 0%, rgba(221,206,0,0.3) 20%, rgba(214,213,0,0.1) 48%, rgba(209,202,0,0.00) 100%);">本月计划</h3>
                                     <div col="1" flex spacearound colcenter>
                                         <div class="text">本月计划</div>
-                                        <div class="num">1000000</div>
+                                        <div class="num">{{zhgkData.bywgjh}}</div>
                                     </div>
                                     <div col="1" flex spacearound colcenter>
                                         <div class="text">已完成</div>
-                                        <div class="num">13000</div>
+                                        <div class="num">{{zhgkData.bywgwcl}}</div>
                                     </div>
                                 </div>
                             </Card>
@@ -68,11 +68,11 @@
                             <div col="5" flex style="position:relative;">
                                 <div col="1">
                                     <div class="circle circle1" flex-column center>
-                                        <span class="num">564</span>
+                                        <span class="num">{{zhgkData.khs}}</span>
                                         <span>客户数</span>
                                     </div>
                                     <div class="circle circle2" flex-column center>
-                                        <span class="num">864</span>
+                                        <span class="num">{{zhgkData.xms}}</span>
                                         <span>总项目数</span>
                                     </div>
                                 </div>
@@ -80,23 +80,23 @@
                             </div>
                             <div col="1" flex spacearound>
                                 <div class="totalStatics-item" flex-column center>
-                                    <div class="num num3 fontsize60">2</div>
+                                    <div class="num num3 fontsize60">{{zhgkData.zjs}}</div>
                                     <h3>在建</h3>
                                 </div>
                                 <div class="totalStatics-item" flex-column center>
-                                    <div class="num num3 fontsize60">23</div>
+                                    <div class="num num3 fontsize60">{{zhgkData.shs}}</div>
                                     <h3>售后</h3>
                                 </div>
                                 <div class="totalStatics-item" flex-column center>
-                                    <div class="num num3 fontsize60">40</div>
+                                    <div class="num num3 fontsize60">{{zhgkData.gbs}}</div>
                                     <h3>过保</h3>
                                 </div>
                                 <div class="totalStatics-item" flex-column center>
-                                    <div class="num num3 fontsize60">2</div>
+                                    <div class="num num3 fontsize60">{{zhgkData.zts}}</div>
                                     <h3>在谈</h3>
                                 </div>
                                 <div class="totalStatics-item" flex-column center>
-                                    <div class="num num3 fontsize60">2</div>
+                                    <div class="num num3 fontsize60">{{zhgkData.zzs}}</div>
                                     <h3>终止</h3>
                                 </div>
                             </div>
@@ -106,17 +106,17 @@
                         <Card col="3" title="人员统计">
                             <div flex spacearound>
                                 <div class="totalStatics-item" flex-column center>
-                                    <div class="num fontsize60">114</div>
+                                    <div class="num fontsize60">{{zhgkData.ryzs}}</div>
                                     <h3>人员总数</h3>
                                 </div>
                             </div>
                             <div flex spacearound>
                                 <div class="totalStatics-item" flex-column center>
-                                    <div class="num num2 fontsize60">114</div>
+                                    <div class="num num2 fontsize60">{{zhgkData.sxrs}}</div>
                                     <h3>实习</h3>
                                 </div>
                                 <div class="totalStatics-item" flex-column center>
-                                    <div class="num num1 fontsize60">24</div>
+                                    <div class="num num1 fontsize60">{{zhgkData.zsrs}}</div>
                                     <h3>正式</h3>
                                 </div>
                             </div>
@@ -124,25 +124,27 @@
                         <Card col="3" title="分包统计">
                             <div flex spacearound>
                                 <div class="totalStatics-item" flex-column center>
-                                    <div class="num fontsize60">114</div>
+                                    <div class="num fontsize60">{{zhgkData.fbwgl}}</div>
                                     <h3>完工量</h3>
                                 </div>
                                 <div class="totalStatics-item" flex-column center>
-                                    <div class="num fontsize60">90%</div>
+                                    <div class="num fontsize60">
+                                        {{((Number(zhgkData.fbwgl)/(Number(zhgkData.fbrl)+Number(zhgkData.fbek)+Number(zhgkData.fbkb)))*100).toFixed(0)+'%'}}
+                                    </div>
                                     <h3>效率</h3>
                                 </div>
                             </div>
                             <div flex spacearound>
                                 <div class="totalStatics-item" flex-column center>
-                                    <div class="num num1 fontsize60">114</div>
+                                    <div class="num num1 fontsize60">{{zhgkData.fbrl}}</div>
                                     <h3>人力</h3>
                                 </div>
                                 <div class="totalStatics-item" flex-column center>
-                                    <div class="num num2 fontsize60">24</div>
+                                    <div class="num num2 fontsize60">{{zhgkData.fbek}}</div>
                                     <h3>二开</h3>
                                 </div>
                                 <div class="totalStatics-item" flex-column center>
-                                    <div class="num num3 fontsize60">24</div>
+                                    <div class="num num3 fontsize60">{{zhgkData.fbkb}}</div>
                                     <h3>可变</h3>
                                 </div>
                             </div>
@@ -154,62 +156,64 @@
                     <div class="" flex-column col="6">
                         <Card class="projects" col="1" title="问题统计" :gradient='["rgba(214,0,0,0.5)","rgba(214,0,0,0.1)"]'>
                             <div style="flex-wrap: wrap;" flex spacebetween>
-                                <div flex colcenter spacearound class="projects-box">
-                                    <span class="text">未回复</span>
-                                    <span class="num">14</span>
+                                <div flex-column rowcenter colcenter  class="projects-box">
+                                    <span class="num">{{zhgkData.cqwxys}}</span>
+                                    <span class="text">超期未响应</span>
                                 </div>
-                                <div flex colcenter spacearound class="projects-box">
-                                    <span class="text">逾期未响应</span>
-                                    <span class="num">10</span>
+                                <div flex-column rowcenter colcenter  class="projects-box">
+                                    <span class="num">{{zhgkData.cqwjjs}}</span>
+                                    <span class="text">超期未解决</span>
                                 </div>
-                                <div flex colcenter spacearound class="projects-box">
-                                    <span class="text">逾期未完成</span>
-                                    <span class="num">10</span>
+                                <div flex-column rowcenter colcenter   class="projects-box">
+                                    <span class="num">{{zhgkData.cqyjjs}}</span>
+                                    <span class="text">超期已解决</span>
                                 </div>
-                                <div flex colcenter spacearound class="projects-box">
+                                <div flex-column rowcenter colcenter  class="projects-box">
+                                    <span class="num">{{zhgkData.tss}}</span>
                                     <span class="text">投诉</span>
-                                    <span class="num">10</span>
                                 </div>
-                                <div flex colcenter spacearound class="projects-box">
+                                <div flex-column rowcenter colcenter  class="projects-box">
+                                    <span class="num">{{!zhgkData.bmys?0:zhgkData.bmys}}</span>
                                     <span class="text">不满意</span>
-                                    <span class="num">10</span>
                                 </div>
                             </div>
                         </Card>
                         <Card class="projects" col="1" title="使用率" flex style="position:relative;" :gradient='["rgba(221,206,0,0.5)","rgba(209,202,0,0.1)"]'>
                             <div style="flex-wrap: wrap;" flex spacebetween>
-                                <div flex colcenter spacearound class="projects-box">
+                                <!-- <div flex-column rowcenter colcenter  class="projects-box">
+                                    <span class="num"></span>
                                     <span class="text">应用总量</span>
-                                    <span class="num">20</span>
-                                </div>
-                                <div flex colcenter spacearound class="projects-box">
+                                </div> -->
+                                <div flex-column rowcenter colcenter  class="projects-box">
+                                    <span class="num">{{zhgkData.fwzs}}</span>
                                     <span class="text">访问总量</span>
-                                    <span class="num">10</span>
                                 </div>
-                                <div flex colcenter spacearound class="projects-box">
+                                <div flex-column rowcenter colcenter class="projects-box">
+                                    <span class="num">{{zhgkData.yhzs}}</span>
                                     <span class="text">用户总量</span>
-                                    <span class="num">10</span>
                                 </div>
-                                <div flex colcenter spacearound class="projects-box">
+                                <div flex-column rowcenter colcenter  class="projects-box">
+                                    <span class="num">{{zhgkData.byfwzs}}</span>
                                     <span class="text">本月访问量</span>
-                                    <span class="num">10</span>
                                 </div>
-                                <div flex colcenter spacearound class="projects-box">
-                                    <span class="text">本来用户量</span>
-                                    <span class="num">10</span>
+                                <div flex-column rowcenter colcenter  class="projects-box">
+                                    <span class="num">{{zhgkData.byyhzs}}</span>
+                                    <span class="text">本月用户量</span>
                                 </div>
                             </div>
                         </Card>
                     </div>
                     <div class="" col="3" flex>
-                        <Card col="3" title="项目动态">
-                            <table class="table" v-if="ranks.length > 0">
-                                <tr v-for="(e,index) in ranks" :key="index">
-                                    <td>{{e.companyName}}</td>
-                                    <td>{{e.signTime}}</td>
-                                    <td style="color:#F2A51B">已验收</td>
-                                </tr>
-                            </table>
+                        <Card col="3" title="项目动态" >
+                            <div style="height:300px;overflow:hidden"  v-if="ysData.length > 0"> 
+                                <table class="table"  :class="{anim:animate==true}">
+                                    <tr v-for="(item,index) in ysData" :key="index" >
+                                        <td :title="item.xmmc">{{item.xmmc}}</td>
+                                        <td>{{item.yssj}}</td>
+                                        <td style="color:#F2A51B">{{item.xmzt}}</td>
+                                    </tr>
+                                </table>
+                            </div>
                             <no-data col="1" v-else />
                         </Card>
                     </div>
@@ -219,6 +223,7 @@
     </div>
 </template>
 <script type="text/javascript">
+import { getMyDate } from '../../utils.js'
 import headBar from '../../components/header.vue'
 import numCardGroup from '../../components/numCardGroup.vue'
 import progressBarGroup from '../../components/progressBarGroup.vue'
@@ -251,57 +256,28 @@ export default {
                 name: "正常",
                 value: 50
             }],
-            ranks: [{
-                "signTime": "2018-04-13",
-                "companyName": "1合肥职业技术学院",
-                "position": "主任/处长/部长",
-                "department": "信息（网络）中心",
-                "userName": "10",
-                current: "校长",
-                overdate: 20
-            }, {
-                "signTime": "2018-04-13",
-                "companyName": "2合肥职业技术学院",
-                "position": "主任/处长/部长",
-                "department": "信息（网络）中心",
-                "userName": "9",
-                current: "校长",
-                overdate: 20
-            }, {
-                "signTime": "2018-04-13",
-                "companyName": "3浙江机电职业手术室",
-                "department": "",
-                "userName": "8",
-                current: "校长",
-                overdate: 20
-            }, {
-                "signTime": "2018-04-13",
-                "companyName": "4浙江机电职业技术学院",
-                "position": "老师",
-                "department": "学工处",
-                "userName": "7",
-                current: "校长",
-                overdate: 20
-            }, {
-                "signTime": "2018-04-13",
-                "companyName": "4浙江机电职业技术学院",
-                "position": "老师",
-                "department": "学工处",
-                "userName": "7",
-                current: "校长",
-                overdate: 20
-            }],
+            ysData: [],
             pie1Value: [
                 { value: 35, name: '人力' },
                 { value: 310, name: '二开' },
                 { value: 230, name: '可变' }
             ],
+            date:'',
+            zhgkData:{},
+            animate:false,
+            objArr:[{
+                name:'黑龙江',
+                value:'111'
+            }]
         }
     },
     created() {
         this.$nextTick(() => {
             this.initMap();
         });
+        this.date = getMyDate(new Date())
+        this.queryOverallPanel('福建区域工程');
+        setInterval(this.scroll,850);
     },
     mounted() {},
     watch: {
@@ -312,9 +288,34 @@ export default {
         }
     },
     methods: {
-        //卡片右上角按钮
-        chooseBtn() {
-            alert('')
+          scroll(){
+                this.animate=true;    
+                setTimeout(()=>{     
+                        this.ysData.push(this.ysData[0]); 
+                        this.ysData.shift();              
+                        this.animate = false; 
+             },800)
+         },
+        queryOverallPanel(qymc){
+            this.$get(this.API.queryOverallPanel,{
+                curPage:1,
+                pageSize:9999,
+                qymc:qymc
+            }).then(res=>{
+                if(res.data.state == 'success'){
+                    this.zhgkData = res.data.data
+                    this.ysData = res.data.data.ysData
+                }
+            })
+        },
+        filterObj(val){
+            let num = ''
+            this.objArr.forEach(ele=>{
+                if(ele.name == val){
+                    num =  ele.value
+                };
+            })
+            return num;
         },
         initMap() {
             var _this = this
@@ -324,16 +325,24 @@ export default {
             // 皮肤添加同一般使用方式
             this.chart.showLoading()
             this.chart.setOption({
-
                 geo: {
                     map: 'china',
                 },
+                    // dataRange: {
+                    //     orient: 'horizontal',
+                    //     min: 0,
+                    //     max: 100,
+                    //     text:['高','低'],           // 文本，默认为数值文本
+                    //     splitNumber:0,
+                    //     color: ['#eee', '#949fb1', '#f3ce85']
+                    // },
                 series: [{
                     type: 'map',
                     mapType: 'china', // 自定义扩展图表类型
                     itemStyle: {
                         normal: { //未选中状态
                             areaColor: '#a2bbc5', //背景颜色
+                            label:{show:false}
                         },
                     },
                     data: _this.currentProvince
@@ -341,7 +350,10 @@ export default {
             });
             this.chart.hideLoading();
             this.chart.on('click', function(params) {
-                console.log(params)
+                // console.log(params);
+                 console.log(_this.filterObj(params.name));
+
+
                 //联动区域
                 let tempArr = JSON.parse(JSON.stringify(provinceArr))
                 if(params.name=='黑龙江'||params.name=='吉林'||params.name=='辽宁'){
@@ -449,9 +461,15 @@ export default {
         }
         .text {
             font-size: 14px;
+            display: inline-block;
+            width: 50%;
+            text-align: center;
         }
         .num {
             font-size: 30px;
+            width: 50%;
+            text-align: center;
+
         }
         .bottom-split {
             border-bottom: 1px solid rgba(255, 255, 255, 0.1)
@@ -459,19 +477,17 @@ export default {
     }
     .projects {
         .projects-box {
-            width: 130px;
+            width: 50%;
             height: 50px;
-            float: left;
         }
         .text {
             display: inline-block;
-            width: 80px;
+          
             font-size: 16px;
         }
         .num {
             display: inline-block;
-            width: 20px;
-            font-size: 30px;
+            font-size: 26px;
         }
     }
     .circle {
@@ -508,7 +524,10 @@ export default {
     table {
         table-layout: fixed;
         width: 100%;
-        height: 100%;
+        height:100%;
+        tr{
+            height:32px;
+        }
         th {
             text-align: center;
             color: #999;
@@ -516,6 +535,9 @@ export default {
         td {
             text-align: center;
             @include truncate(70%);
+        }
+        td:nth-child(1){
+            width: 60%;
         }
         .title {
             border-left: 5px solid #F9B74C;

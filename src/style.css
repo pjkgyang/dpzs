@@ -11,3 +11,19 @@
     }
    
 }
+.demo-spin-icon-load{
+    animation: ani-demo-spin 1s linear infinite;
+}
+.ivu-spin-text{
+    color: #fff;
+    font-size: 20px;
+}
+.ivu-spin-text .ivu-icon{
+    font-size: 42px !important;
+}
+.ivu-spin-fix{
+    background: rgba(0, 0, 0, 0.5) !important;
+}
+.ivu-message-notice-content span{
+    color: #000 !important;
+}

@@ -9,7 +9,13 @@ import api from './api'
 import axios from 'axios'
 import 'bh-mint-ui2/lib/style.css'
 import 'echarts/map/js/china.js'
-
+import iView from 'iview';
+import 'iview/dist/styles/iview.css';
+Vue.use(iView);
+Vue.prototype.$Spin = iView.Spin
+Vue.prototype.API = api;
+Vue.prototype.$get = utils.Get;
+import './http.js'
 
 if (window.smile) {
   window.Vue = Vue

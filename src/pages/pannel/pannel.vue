@@ -213,15 +213,15 @@ export default {
         }
     },
     created() {
-        this.scrollShow()
+        this.scrollShow();
     },
     mounted() {},
     methods: {
         //控制表格滚动
         scrollShow() {
             var that = this;
-            var page = 1;
-            var size = 5;
+            // var page = 1;
+            // var size = 5;
 
             if (!this.signInfoList) {
                 return;
@@ -230,9 +230,7 @@ export default {
                 this.waitDealEvent = this.signInfoList.reverse()
                 return;
             }
-
             var count = this.signInfoList.length;
-
             clearInterval(this.intervalIndex);
             var i = 0;
             this.intervalIndex = setInterval(function() {
@@ -240,13 +238,11 @@ export default {
                 i = 0;
             }
             var attactTemp = [];
-
             for (let m = i; m < count && m < i + 3; m++) {
                 let o = that.signInfoList[m];
 
                 attactTemp.push(o);
             }
-
             attactTemp.forEach(function(e) {
                 that.waitDealEvent.unshift(e);
             });

@@ -49,6 +49,7 @@ export const Post = (url, data = null, config = {}) => {
  * @param {Object} data - 请求参数
  * @param {*} config - 运行环境是今日校园时，此参数为header参数；运行环境不是今日校园时，此参数为请求配置，详见axios文档 [https://github.com/mzabriskie/axios]；
  */
+
 export const Get = (url, data = null, config = {}) => {
 //   使用今日校园壳子的ajax，在特定的版本再开启，如公有云跨域版本
 //   if (/wisedu/.test(UA)) {
@@ -72,4 +73,22 @@ export const Get = (url, data = null, config = {}) => {
       ...config
     })
 //   }
+}
+
+// 格式化日期
+export function getMyDate(str) {
+  var oDate = new Date(str),
+      oYear = oDate.getFullYear(),
+      oMonth = oDate.getMonth() + 1,
+      oDay = oDate.getDate(),
+      oHour = oDate.getHours(),
+      oMin = oDate.getMinutes(),
+      oSen = oDate.getSeconds(),
+      oMonth = oMonth < 10 ? ('0' + oMonth) : oMonth
+  oDay = oDay < 10 ? ('0' + oDay) : oDay
+  oMin = oMin < 10 ? ('0' + oMin) : oMin
+  oHour = oHour < 10 ? ('0' + oHour) : oHour
+  oSen = oSen < 10 ? ('0' + oSen) : oSen
+  let oTime = oYear + '/' + oMonth + '/' + oDay;
+  return oTime;
 }

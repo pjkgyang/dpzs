@@ -48,6 +48,9 @@
          }]
      }
    },
+   mounted(){
+     
+   },
    methods:{
        handleCheck(param){
         let routeData = this.$router.resolve({
