@@ -1,0 +1,111 @@
+@import '../static/css/sass/resources/tools.scss';
+$fontSizeSmall: 14px;
+
+
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+@font-face {
+  font-family: DINCondensed;
+  font-weight: normal;
+  font-style: normal;
+  src: url('../static/fonts/DINCond-Bold.otf') format("opentype");
+  // src: url('~@assets/fonts/DIN_Condensed_Bold.eot'); /* IE9 Compat Modes */
+  // src: url('../static/fonts/DIN_Condensed_Bold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8*/
+  //      url('../static/fonts/DIN_Condensed_Bold.woff') format('woff'), /* Pretty Modern Browsers */
+  //      url('../static/fonts/DIN_Condensed_Bold.ttf')  format('truetype'), /* Safari, Android, iOS */
+  //      url('../static/fonts/DIN_Condensed_Bold.svg#svgFontName') format('svg'); /* Legacy iOS */
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+}
+body {
+  font-size: $fontSizeSmall;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', sans-serif;
+  color: #fff;
+  background: url(../static/images/bg.png);
+  background-size: 120% 120%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+img {
+  vertical-align: middle;
+  max-width: 100%;
+}
+.num {
+  font-family: DINCondensed;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+}
+.fontsize60{
+	font-size:60px;
+}
+.fontsize14{
+  font-size:14px;
+}
+.fontsize16{
+  font-size:16px;
+}
+.fontsize18{
+  font-size:18px;
+}
+.gradienttext {
+  @include gradient;
+}
+.rowcenter, [rowcenter] {
+  justify-content: center;
+}
+.colcenter, [colcenter] {
+  align-items: center;
+}
+.center, [center] {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.spacebetween, [spacebetween] {
+  justify-content: space-between;
+}
+.wrap,[wrap]{
+    flex-wrap: wrap;
+}
+.spacearound, [spacearound] {
+  justify-content: space-around;
+}
+.textcenter, [textcenter] {
+  text-align: center;
+}
+.height100 {
+  height: 100%;
+}
+[flex] {
+  display: flex;
+}
+[flex-column] {
+  display: flex;
+  flex-direction: column;
+}
+[align-start]{
+  align-content:flex-start;
+}
+.app__content {
+  flex: 1;
+  padding: 0 1em 1em;
+}
+@for $i from 1 to 10 {
+  [col='#{$i}'] {
+    flex: $i 0 0 !important;
+  }
+}

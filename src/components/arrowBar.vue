@@ -1,0 +1,79 @@
+<template>
+    <div class="arrowBar" flex-column>
+        <div flex>
+            <div class="bar-contanier" flex colcenter>
+                <div class="bar-outter" flex>
+                    <div class="bar-inner" :style="{width:scale,background:color}"><span class="num">{{done}}</span></div>
+                    <div class="num" rowcenter flex :style="{width:'60%'}">{{total}}</div>
+                </div>
+            </div>
+            <div class="triangel-box" flex colcenter>
+                <div class="triangel"></div>
+            </div>
+        </div>
+        <div rowcenter flex>
+            基线目标
+        </div>
+    </div>
+</template>
+<script type="text/javascript">
+export default {
+    data() {
+        return {}
+    },
+    props: {
+        done: {
+            type: Number,
+            default: 40
+        },
+        total: {
+            type: Number,
+            default: 100
+        },
+        color:{
+          type:String,
+          default:'#3AC868'
+        }
+    },
+    computed: {
+        scale() {
+            if (this.total == 0) { return 0 }
+            return Math.floor(this.done / this.total * 100)  +'%'
+        }
+    },
+    mounted() {},
+    methods: {},
+    components: {},
+}
+</script>
+<style lang="scss" scope>
+.arrowBar {
+    width: 100%;
+    padding-left:20px;
+    .bar-contanier {
+        flex: 1 0 0;
+        font-size: 19px;
+        .bar-outter {
+            width: 100%;
+            height: 22px;
+            background: rgba(234,234,234,0.28);
+        }
+        .bar-inner {
+            height: 100%;
+            text-align: center;
+        }
+    }
+    .triangel-box {
+        width: 60px;
+        flex: 60px 0 0;
+        .triangel {
+            width: 0px;
+            height: 0px;
+            border-top: 20px solid rgba(0, 0, 0, 0);
+            border-right: 20px solid rgba(0, 0, 0, 0);
+            border-left: 40px solid rgba(234,234,234,0.28);
+            border-bottom: 20px solid rgba(0, 0, 0, 0);
+        }
+    }
+}
+</style>

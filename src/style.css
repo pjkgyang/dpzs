@@ -1,0 +1,13 @@
+@media screen and (max-width: 970px) {
+    .dp-menu ul li{
+        width: 45% !important;
+        height: 280px !important;
+    }
+   
+}
+@media screen and (max-width: 470px) {
+    .dp-menu ul li{
+        width: 90% !important;
+    }
+   
+}
