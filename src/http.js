@@ -1,6 +1,6 @@
 
 import axios from 'axios'
-import iView from 'iview';
+// import iView from 'iview';
 
 function startLoading() {
     iView.Spin.show({
@@ -42,15 +42,15 @@ export function tryHideFullScreenLoading() {
 axios.defaults.timeout = 30000
 
 axios.interceptors.request.use(config => {
-    showFullScreenLoading();
+    // showFullScreenLoading();
     return config;
 }, error => {
-    iView.$Message.error({
-        content:'请求超时 ~',
-        duration: 10,
-        closable: true
-    });
-    tryHideFullScreenLoading();
+    // iView.$Message.error({
+    //     content:'请求超时 ~',
+    //     duration: 10,
+    //     closable: true
+    // });
+    // tryHideFullScreenLoading();
     return Promise.reject(error)
 })
 
@@ -58,16 +58,16 @@ axios.interceptors.request.use(config => {
 // http响应拦截器
 axios.interceptors.response.use(
     response => {
-        tryHideFullScreenLoading();
+        // tryHideFullScreenLoading();
         return response;
     },
     error => {
-        iView.Message.error({
-            content:'请求超时 ~',
-            duration: 10,
-            closable: true
-        });
-        tryHideFullScreenLoading();
+        // iView.Message.error({
+        //     content:'请求超时 ~',
+        //     duration: 10,
+        //     closable: true
+        // });
+        // tryHideFullScreenLoading();
         return Promise.reject(error);
     })
 export default axios

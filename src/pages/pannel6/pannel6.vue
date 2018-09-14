@@ -1,7 +1,7 @@
 <template>
     <div class="pannel6">
         <div>
-            <head-bar :title="'工程成本分析'" :time="'2018/08/08 00:00:00'"></head-bar>
+            <head-bar :title="'工程成本分析'" :time="nowDate"></head-bar>
         </div>
         <div class="app__content">
             <div class="secure height100" flex>
@@ -9,29 +9,31 @@
                 <aside class="" flex-column col="2">
                     <div col="2" flex-column :row='false'>
                         <div class="top" flex col="6">
-                            <Card class="" col="4" title="成本统计" flex :gradient='["#0086E3","rgba(0,70,209,0.33)"]'>
+                            <Card class="" col="4" title="综合统计" flex :gradient='["#0086E3","rgba(0,70,209,0.33)"]'>
                                 <div col="1" flex-column spacearound>
                                     <div flex spacearound>
                                         <div class="totalStatics-item" flex-column center>
-                                            <div class="num fontsize60">114</div>
+                                            <div class="num fontsize60">{{pannelData.zbwgl}}</div>
                                             <h3>完工量</h3>
                                         </div>
                                         <div class="totalStatics-item" flex-column center>
-                                            <div class="num fontsize60">90%</div>
+                                            <div class="num fontsize60">
+                                                {{(Number(pannelData.zbwgl)/(Number(pannelData.zbrlfy)+Number(pannelData.zbekfy)+Number(pannelData.zbkbfy))*100).toFixed(0)+"%"}}
+                                            </div>
                                             <h3>效率</h3>
                                         </div>
                                     </div>
                                     <div flex spacearound>
                                         <div class="totalStatics-item" flex-column center>
-                                            <div class="num num1 fontsize60">114</div>
+                                            <div class="num num1 fontsize60">{{pannelData.zbrlfy}}</div>
                                             <h3>人力</h3>
                                         </div>
                                         <div class="totalStatics-item" flex-column center>
-                                            <div class="num num2 fontsize60">24</div>
+                                            <div class="num num2 fontsize60">{{pannelData.zbekfy}}</div>
                                             <h3>二开</h3>
                                         </div>
                                         <div class="totalStatics-item" flex-column center>
-                                            <div class="num num3 fontsize60">24</div>
+                                            <div class="num num3 fontsize60">{{pannelData.zbkbfy}}</div>
                                             <h3>可变</h3>
                                         </div>
                                     </div>
@@ -42,19 +44,25 @@
                         </div>
                         <div class="" col="3" flex>
                             <Card col="3" title="结算排名">
-                                <table class="table" v-if="ranks.length > 0">
-                                    <thead>
-                                        <th width="90">区域</th>
-                                        <th width="90">姓名</th>
-                                        <th width="120">入职时间</th>
-                                        <th width="90">金额</th>
+                                <table class="theadTable">
+                                    <thead flex spacearound>
+                                        <th width="30">排名</th>
+                                        <th width="110">区域</th>
+                                        <th width="80">姓名</th>
+                                        <th width="90">入职时间</th>
+                                        <th width="90">金额(元)</th>
                                     </thead>
-                                    <tr v-for="(e,index) in ranks" :key="index">
-                                        <td>{{e.area}}</td>
-                                        <td>{{e.name}}</td>
-                                        <td>{{e.time}}</td>
-                                        <td>{{e.money}}</td>
-                                    </tr>
+                                </table>
+                                <table  v-if="jsData.length > 0"  class="table" @mouseover="handleClearTimer" @mouseout="handleStartTimer">
+                                    <tbody :class="{animcb:animate==true}">
+                                      <tr v-for="(item,index) in jsData" :key="index" flex spacearound >
+                                        <td width="30">{{item.mc}}</td>
+                                        <td width="110">{{item.qymc}}</td>
+                                        <td width="80">{{item.ygxm}}</td>
+                                        <td width="90">{{item.rzsj}}</td>
+                                        <td width="90">{{item.je}}</td>
+                                     </tr>
+                                    </tbody>
                                 </table>
                                 <no-data col="1" v-else />
                             </Card>
@@ -69,7 +77,7 @@
                     </div>
                     <div class="" col="3" flex>
                         <Card col="3" title="分包效率">
-                            <doublebar-chart></doublebar-chart>
+                            <doublebar-chart :data="barData" :count="count"></doublebar-chart>
                         </Card>
                     </div>
                 </main>
@@ -86,28 +94,30 @@
     <div flex col="1" spacebetween colcenter>
         <div flex spacebetween colcenter style="background-image: linear-gradient(-180deg, rgb(227, 144, 0,0.6) 0%, rgba(221,206,0,0.4) 20%, rgba(214,213,0,0.2) 48%, rgba(209,202,0,0.00) 100%);width:100%;height:50px;padding:0 20px;">
             <span class="text">效率</span>
-            <span class="num">40%</span>
+            <span class="num">
+                {{(!xmData.wcl||!xmData.cb?0:Number(xmData.wcl)/Number(xmData.cb)*100).toFixed(0)}}
+            </span>
         </div>
     </div>
 </div>
 <div col="1" flex spacebetween>
     <div flex col="1" spacearound colcenter>
         <span class="text">完工</span>
-        <span class="num">200</span>
+        <span class="num">{{!xmData.wcl?0:xmData.wcl}}</span>
     </div>
     <div flex col="1" spacearound colcenter>
         <span class="text">验收</span>
-        <span class="num">180</span>
+        <span class="num">{{!xmData.ysl?0:xmData.ysl}}</span>
     </div>
 </div>
 <div col="1" flex spacebetween>
     <div flex col="1" spacearound colcenter>
         <span class="text">收入</span>
-        <span class="num">200</span>
+        <span class="num">{{!xmData.sr?0:xmData.sr}}</span>
     </div>
     <div flex col="1" spacearound colcenter>
         <span class="text">成本</span>
-        <span class="num">180</span>
+        <span class="num">{{!xmData.cb?0:xmData.cb}}</span>
     </div>
 </div>
 </Card>
@@ -118,21 +128,23 @@
     <div col="1" flex spacebetween>
         <div flex col="1" spacearound colcenter>
             <span class="text">完工</span>
-            <span class="num">200</span>
+            <span class="num">{{!otherData.wcl?0:otherData.wcl}}</span>
         </div>
         <div flex col="1" spacearound colcenter>
-            <span class="text">验收</span>
-            <span class="num">180</span>
+            <span class="text">效率</span>
+            <span class="num">
+                 {{(!otherData.wcl||!otherData.cb?0:Number(otherData.wcl)/Number(otherData.cb)*100).toFixed(0)}}
+            </span>
         </div>
     </div>
     <div col="1" flex spacebetween>
         <div flex col="1" spacearound colcenter>
             <span class="text">收入</span>
-            <span class="num">200</span>
+            <span class="num">{{!otherData.sr?0:otherData.sr}}</span>
         </div>
         <div flex col="1" spacearound colcenter>
             <span class="text">成本</span>
-            <span class="num">180</span>
+            <span class="num">{{!otherData.cb?0:otherData.cb}}</span>
         </div>
     </div>
 </Card>
@@ -141,25 +153,25 @@
     <Card col="3" title="过保项目">
         <div flex spacearound>
             <div class="totalStatics-item" flex-column center>
-                <div class="num fontsize60">200</div>
+                <div class="num fontsize60">{{pannelData.gbxms}}</div>
                 <h3>过保项目数</h3>
             </div>
             <div class="totalStatics-item" flex-column center>
-                <div class="num fontsize60">50</div>
+                <div class="num fontsize60">{{pannelData.gbjxfws}}</div>
                 <h3>继续服务数</h3>
             </div>
         </div>
         <div flex spacearound>
             <div class="totalStatics-item" flex-column center>
-                <div class="num num1 fontsize60">114</div>
+                <div class="num num1 fontsize60">{{pannelData.gbrlfy}}</div>
                 <h3>人力</h3>
             </div>
             <div class="totalStatics-item" flex-column center>
-                <div class="num num2 fontsize60">24</div>
+                <div class="num num2 fontsize60">{{!pannelData.gbekfy?0:pannelData.gbekfy}}</div>
                 <h3>二开</h3>
             </div>
             <div class="totalStatics-item" flex-column center>
-                <div class="num num3 fontsize60">24</div>
+                <div class="num num3 fontsize60">{{pannelData.gbkbfy}}</div>
                 <h3>可变</h3>
             </div>
         </div>
@@ -171,6 +183,7 @@
 </div>
 </template>
 <script type="text/javascript">
+import { getMyDate } from '../../utils.js'
 import headBar from '../../components/header.vue'
 import progressBarGroup from '../../components/progressBarGroup.vue'
 import Card from '../../components/Card.vue'
@@ -238,13 +251,43 @@ export default {
                 { value: 310, name: '二开' },
                 { value: 230, name: '可变' }
             ],
+            pannelData:{},
+            jsData:[],
+            barData:[],
+            count:0,
+            xmData:{},
+            otherData:{},
+            nowDate:'',
+            animate:false,
+            timer:null
         }
     },
     created() {
         this.$nextTick(() => {
-            this.initChart('pieItems1', this.pie1Value);
             this.initMap();
         });
+        this.nowDate = getMyDate(new Date());
+        this.queryCostAnalysisPanel();
+        this.$get(this.API.queryRegionSubcontractEfficiency,{}).then(res=>{
+            if(res.data.state == 'success'){
+                this.count = 2;
+                let qymcArr = [];  
+                let zjeArr = [];
+                let ywcArr = [];
+                res.data.data.forEach(ele=>{
+                    qymcArr.push(ele.qymc.split('区域工程')[0]);
+                    zjeArr.push(ele.zje);
+                    ywcArr.push(ele.wcl);
+                })
+                this.barData[0] = qymcArr;
+                this.barData[1] = zjeArr;
+                this.barData[2] = ywcArr;
+            }
+        });
+        this.queryRegionCostStat(this.curTabindex1==0?true:false,1);
+        this.queryRegionCostStat(this.curTabindex2==0?true:false,'2,3');
+
+        this.timer = setInterval(this.scroll,1000);
     },
     watch: {
         currentProvince(){
@@ -255,12 +298,65 @@ export default {
     },
     mounted() {},
     methods: {
+        handleClearTimer(){
+            clearInterval(this.timer);
+        },
+        handleStartTimer(){
+            this.timer = setInterval(this.scroll,1000);
+        },
+        scroll(){
+                this.animate=true;    
+                setTimeout(()=>{     
+                    this.jsData.push(this.jsData[0]); 
+                    this.jsData.shift();              
+                    this.animate = false; 
+             },500)
+         },
+        queryCostAnalysisPanel(qymc){
+             this.$get(this.API.queryCostAnalysisPanel,{
+                curPage:1,
+                pageSize:9999,
+                qymc:qymc
+            }).then(res=>{
+                if(res.data.state == 'success'){
+                  this.pannelData = res.data.data
+                  res.data.data.jsData.forEach((ele,i,arr)=>{
+                      ele.mc = i+1
+                  })
+                  this.jsData =  res.data.data.jsData
+                  this.pie1Value[0].value = res.data.data.zbrlfy
+                  this.pie1Value[1].value = res.data.data.zbekfy
+                  this.pie1Value[2].value = res.data.data.zbkbfy
+                  this.initChart('pieItems1', this.pie1Value);
+                }else{
+                    this.$Message.error({content: res.data.msg,duration: 5,closable: true});  
+                }
+            })
+        },
+        queryRegionCostStat(isDn,xmlb){
+            this.$get(this.API.queryRegionCostStat,{
+                isDn:isDn,
+                xmlb:xmlb
+            }).then(res=>{
+                if(res.data.state == 'success'){
+                    if(xmlb == 1){
+                       this.xmData = res.data.data
+                    }else{
+                       this.otherData = res.data.data 
+                    }
+                }else{
+                    this.$Message.error({content: res.data.msg,duration: 5,closable: true});
+                }
+            })
+        },
         //卡片右上角按钮
         chooseBtn1(index) {
-            this.curTabindex1 = index
+            this.curTabindex1 = index;
+            this.queryRegionCostStat(this.curTabindex1==0?true:false,1);
         },
         chooseBtn2(index) {
-            this.curTabindex2 = index
+            this.curTabindex2 = index;
+            this.queryRegionCostStat(this.curTabindex2==0?true:false,'2,3');
         },
         initMap() {
             var _this = this
@@ -406,22 +502,28 @@ export default {
             @include gradient(#FFD891, #F7791C);
         }
     }
-
-    table {
-        table-layout: fixed;
-        width: 100%;
-        height: 100%;
+    .theadTable{
         th {
             text-align: center;
             color: #999;
         }
-        td {
-            text-align: center;
-            @include truncate(70%);
-        }
-        .title {
-            border-left: 5px solid #F9B74C;
-            padding-left: 10px;
+    }
+    .table {
+        table-layout: fixed;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        tbody{
+            display: block;
+            width: 100%;
+            height:95%;
+            td {
+                text-align: center;
+                height:30px;
+                line-height: 30px;
+                @include truncate(70%);
+           }
+           
         }
         td.date {
             text-align: right;

@@ -49,7 +49,7 @@ export default {
 .card {
     overflow: hidden;
     background: rgba(0, 0, 0, 0.2);
-    margin: $paddingHalf / 2;
+    margin: $paddingHalf / 2 + 0.05  $paddingHalf / 2;
     display: flex;
     flex-direction: column;
     .card__heading {

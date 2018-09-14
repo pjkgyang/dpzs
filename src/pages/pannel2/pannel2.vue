@@ -1,43 +1,35 @@
 <template>
     <div class="pannel2">
         <div>
-            <head-bar :title="'工程验收分析'" :time="'2018/08/08 00:00:00'"></head-bar>
+            <head-bar :title="'工程验收分析'" :time="nowDate"></head-bar>
         </div>
         <div class="app__content">
             <div class="secure height100" flex>
                 <main flex-column col="3">
                     <div class="top" flex col="6">
-                        <Card class="secure__map" col="4" title="验收统计" flex>
+                        <Card class="secure__map" col="4" title="" flex>
                             <div ref="chinamap" id="chinamap"></div>
                         </Card>
                     </div>
                     <div class="secure__detail" col="4" flex>
                         <Card col="3" title="区域验收统计">
-                            <doublebar-chart></doublebar-chart>
+                            <doublebar-chart :data="qyysData" :count="count"></doublebar-chart>
                         </Card>
                     </div>
                 </main>
                 <!-- 右侧表格 -->
                 <aside class="secure__rightaside" flex-column col="2">
                     <Card col="6" title="验收动态">
-                        <div style="padding:50px;">
-                            <table class="table" v-if="waitDealEvent.length > 0">
-                                <thead>
-                                    <th width="70%" class="title"></th>
-                                    <th width="90"></th>
-                                    <th width="90"></th>
-                                </thead>
-                                <tr v-for="(e,index) in waitDealEvent" :key="index" style="border-bottom: 1px solid rgba(255,255,255,0.1)">
-                                    <td>{{e.companyName}}{{e.companyName}}{{e.companyName}}</td>
-                                    <td class="date">{{e.signTime}}</td>
-                                    <td style="text-align: right;color:#E9B042;">已验收</td>
-                                </tr>
-                                <tr v-for="(i,index) in (5 - waitDealEvent.length)" :key="'padding'+index">
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                </tr>
-                            </table>
+                        <div style="padding:20px 30px;" @mouseover="handleCloseTimer" @mouseout="handleStartTimer">
+                             <div style="overflow:hidden"  v-if="ysdtData.length > 0"> 
+                                <table class="table"  :class="{animys:animate==true}">
+                                    <tr v-for="(item,index) in ysdtData" :key="index" >
+                                        <td :title="item.xmmc">{{item.xmmc}}</td>
+                                        <td class="date">{{item.yssj}}</td>
+                                        <td class="date" style="color:#F2A51B">{{item.xmzt}}</td>
+                                    </tr>
+                                </table>
+                            </div>
                             <no-data col="1" v-else />
                         </div>
                     </Card>
@@ -48,9 +40,9 @@
                                 <div id="pieItems1" col="4"></div>
                                 <div col="2" flex-column rowcenter>
                                     <h4>全年目标</h4>
-                                    <div class="num" style="color:#F9B74C;font-size: 25px;margin-bottom: 20px;">1140000</div>
+                                    <div class="num" style="color:#F9B74C;font-size: 25px;margin-bottom: 20px;">{{pannelData.dnysmb}}</div>
                                     <h4>已完成</h4>
-                                    <div class="num" style="color:#3AC868;font-size: 25px;">114000</div>
+                                    <div class="num" style="color:#3AC868;font-size: 25px;">{{pannelData.dnyswcl}}</div>
                                 </div>
                             </div>
                         </div>
@@ -60,9 +52,9 @@
                                 <div id="pieItems2" col="4"></div>
                                 <div col="2" flex-column rowcenter>
                                     <h4>本月目标</h4>
-                                    <div class="num" style="color:#E85650;font-size: 25px;margin-bottom: 20px;">1140000</div>
+                                    <div class="num" style="color:#E85650;font-size: 25px;margin-bottom: 20px;">{{pannelData.byysjh}}</div>
                                     <h4>已完成</h4>
-                                    <div class="num" style="color:#27A6F6;font-size: 25px;">114000</div>
+                                    <div class="num" style="color:#27A6F6;font-size: 25px;">{{pannelData.byyswcl}}</div>
                                 </div>
                             </div>
                         </div>
@@ -73,6 +65,7 @@
     </div>
 </template>
 <script type="text/javascript">
+import { getMyDate } from '../../utils.js'
 import headBar from '../../components/header.vue'
 import numCardGroup from '../../components/numCardGroup.vue'
 import progressBarGroup from '../../components/progressBarGroup.vue'
@@ -93,171 +86,6 @@ export default {
             summary: {
                 totalNum: 864
             },
-            areaStatisc: [],
-            signInfoList: [{
-                    "signTime": "2018-04-13",
-                    "companyName": "1合肥职业技术学院",
-                    "position": "主任/处长/部长",
-                    "department": "信息（网络）中心",
-                    "userName": "10",
-                    current: "校长",
-                    overdate: 20
-                }, {
-                    "signTime": "2018-04-13",
-                    "companyName": "2合肥职业技术学院",
-                    "position": "主任/处长/部长",
-                    "department": "信息（网络）中心",
-                    "userName": "9",
-                    current: "校长",
-                    overdate: 20
-                }, {
-                    "signTime": "2018-04-13",
-                    "companyName": "3浙江机电职业",
-                    "department": "",
-                    "userName": "8",
-                    current: "校长",
-                    overdate: 20
-                }, {
-                    "signTime": "2018-04-13",
-                    "companyName": "4浙江机电职业技术学院",
-                    "position": "老师",
-                    "department": "学工处",
-                    "userName": "7",
-                    current: "校长",
-                    overdate: 20
-                },
-                {
-                    "signTime": "2018-04-12",
-                    "companyName": "5湖北师范大学",
-                    "position": "主任/处长/部长",
-                    "department": "信息（网络）中心",
-                    "userName": "6",
-                    current: "校长",
-                    overdate: 20
-                }, {
-                    "signTime": "2018-04-12",
-                    "companyName": "6上海建桥学院",
-                    "position": "主任/处长/部长",
-                    "department": "校办",
-                    "userName": "5",
-                    current: "校长",
-                    overdate: 20
-                }, {
-                    "signTime": "2018-04-12",
-                    "companyName": "7西安欧亚学院",
-                    "position": "科长",
-                    "department": "信息（网络）中心",
-                    "userName": "4",
-                    current: "校长",
-                    overdate: 20
-                }, {
-                    "signTime": "2018-04-12",
-                    "companyName": "8西安欧亚学院",
-                    "position": "科长",
-                    "department": "信息（网络）中心",
-                    "userName": "4",
-                    current: "校长",
-                    overdate: 20
-                }, {
-                    "signTime": "2018-04-12",
-                    "companyName": "9西安欧亚学院",
-                    "position": "科长",
-                    "department": "信息（网络）中心",
-                    "userName": "4",
-                    current: "校长",
-                    overdate: 20
-                }, {
-                    "signTime": "2018-04-12",
-                    "companyName": "10西安欧亚学院",
-                    "position": "科长",
-                    "department": "信息（网络）中心",
-                    "userName": "4",
-                    current: "校长",
-                    overdate: 20
-                }, {
-                    "signTime": "2018-04-12",
-                    "companyName": "11西安欧亚学院",
-                    "position": "科长",
-                    "department": "信息（网络）中心",
-                    "userName": "4",
-                    current: "校长",
-                    overdate: 20
-                }, {
-                    "signTime": "2018-04-12",
-                    "companyName": "12西安欧亚学院",
-                    "position": "科长",
-                    "department": "信息（网络）中心",
-                    "userName": "4",
-                    current: "校长",
-                    overdate: 20
-                }, {
-                    "signTime": "2018-04-12",
-                    "companyName": "13西安欧亚学院",
-                    "position": "科长",
-                    "department": "信息（网络）中心",
-                    "userName": "4",
-                    current: "校长",
-                    overdate: 20
-                }, {
-                    "signTime": "2018-04-12",
-                    "companyName": "14西安欧亚学院",
-                    "position": "科长",
-                    "department": "信息（网络）中心",
-                    "userName": "4",
-                    current: "校长",
-                    overdate: 20
-                }, {
-                    "signTime": "2018-04-12",
-                    "companyName": "15西安欧亚学院",
-                    "position": "科长",
-                    "department": "信息（网络）中心",
-                    "userName": "4",
-                    current: "校长",
-                    overdate: 20
-                }, {
-                    "signTime": "2018-04-12",
-                    "companyName": "16西安欧亚学院",
-                    "position": "科长",
-                    "department": "信息（网络）中心",
-                    "userName": "4",
-                    current: "校长",
-                    overdate: 20
-                }, {
-                    "signTime": "2018-04-12",
-                    "companyName": "17西安欧亚学院",
-                    "position": "科长",
-                    "department": "信息（网络）中心",
-                    "userName": "4",
-                    current: "校长",
-                    overdate: 20
-                }, {
-                    "signTime": "2018-04-12",
-                    "companyName": "18西安欧亚学院",
-                    "position": "科长",
-                    "department": "信息（网络）中心",
-                    "userName": "4",
-                    current: "校长",
-                    overdate: 20
-                }, {
-                    "signTime": "2018-04-12",
-                    "companyName": "19西安欧亚学院",
-                    "position": "科长",
-                    "department": "信息（网络）中心",
-                    "userName": "4",
-                    current: "校长",
-                    overdate: 20
-                }, {
-                    "signTime": "2018-04-12",
-                    "companyName": "20西安欧亚学院",
-                    "position": "科长",
-                    "department": "信息（网络）中心",
-                    "userName": "4",
-                    current: "校长",
-                    overdate: 20
-                },
-            ],
-            waitDealEvent: [],
-            intervalIndex: {},
             jobDistributes: [{
                 name: "未响应",
                 value: 34
@@ -269,14 +97,22 @@ export default {
                 value: 50
             }],
             pie1Value: [
-                { value: 35, name: '终止' },
-                { value: 310, name: '在建' },
+                { value: 0, name: '未完成' },
+                { value: 0, name: '已完成' },
             ],
             pie2Value: [
-                { value: 335, name: '合同' },
-                { value: 310, name: '在读' },
+                { value: 335, name: '未完成' },
+                { value: 310, name: '已完成' },
             ],
-            currentProvince:provinceArr
+            
+            currentProvince:provinceArr,
+            animate:false,
+            qyysData:[],
+            pannelData:{},
+            ysdtData:[],
+            count:0,
+            nowDate:'',
+            timer:null
         }
     },
     watch: {
@@ -284,18 +120,74 @@ export default {
             this.$nextTick(() => {
                 this.initMap();
             });
-        }
+        },
     },
     created() {
-        this.scrollShow()
         this.$nextTick(() => {
-            this.initChart1();
-            this.initChart2();
             this.initMap();
         });
+        this.queryProjectAcceptancePanel();
+        //  获取验收统计
+        this.$get(this.API.queryYqWgData,{
+                isYs:true
+            }).then(res=>{
+                if(res.data.state == 'success'){
+                this.count = 1;
+                let qymcArr = [];  
+                let mbArr = [];
+                let ywcArr = [];
+                res.data.data.forEach(ele=>{
+                    qymcArr.push(ele.qymc.split('区域工程')[0]);
+                    mbArr.push(ele.mbwcl);
+                    ywcArr.push(ele.wcl);
+                })
+                this.qyysData[0] = qymcArr;
+                this.qyysData[1] = mbArr;
+                this.qyysData[2] = ywcArr;
+            }
+        })
+        
+        this.nowDate = getMyDate(new Date());
     },
     mounted() {},
     methods: {
+        handleCloseTimer(){
+           clearInterval(this.timer);
+        },
+        handleStartTimer(){
+           this.timer = setInterval(this.scroll,1000);  
+        },
+        scroll(){
+                this.animate=true;    
+                setTimeout(()=>{     
+                    this.ysdtData.push(this.ysdtData[0]); 
+                    this.ysdtData.shift();              
+                    this.animate = false; 
+             },500)
+         },
+          queryProjectAcceptancePanel(qymc){
+            this.$get(this.API.queryProjectAcceptancePanel,{
+                curPage:1,
+                pageSize:99999,
+                qymc:qymc
+            }).then(res=>{
+                if(res.data.state == 'success'){
+                    this.pannelData = res.data.data
+                    this.ysdtData = res.data.data.ysData
+                    this.pie1Value[0].value = (Number(res.data.data.dnysmb)-Number(res.data.data.dnyswcl))<0?0:Number(res.data.data.dnysmb)-Number(res.data.data.dnyswcl)
+                    this.pie1Value[1].value = res.data.data.dnyswcl
+                    
+                    this.pie2Value[0].value = (Number(res.data.data.byysjh)-Number(res.data.data.byyswcl))<0?0:Number(res.data.data.byysjh)-Number(res.data.data.byyswcl)
+                    this.pie2Value[1].value = res.data.data.byyswcl
+                    
+                    this.initChart1();
+                    this.initChart2();
+                    if(this.ysdtData.length > 5){
+                        this.timer = setInterval(this.scroll,1000);
+                    }
+                }
+            })
+        },
         initMap() {
             var _this = this
             // 绘图方法
@@ -377,14 +269,19 @@ export default {
             var option = {
                 tooltip: {
                     trigger: 'item',
-                    formatter: "{b}: {c} ({d}%)"
+                    formatter: "{b}: {c} ({d}%)",
+                    position: function(point, params, dom, rect, size){
+                        //其中params为当前鼠标的位置
+                        return [params[0]-220,'10%'];
+
+                        }
                 },
 
                 series: [{
                     type: 'pie',
                     radius: ['40%', '70%'],
                     // avoidLabelOverlap: false,
-                    color: ['#3AC868', '#F9B74C', '#E85650', '#37A2F7'],
+                    color:['#D1D1D1', '#3AC868'],
                     label: {
                         show: false,
                         fontSize: 14,
@@ -416,7 +313,7 @@ export default {
                     type: 'pie',
                     radius: ['40%', '70%'],
                     // avoidLabelOverlap: false,
-                    color: ['#E85650', '#37A2F7'],
+                    color: ['#D1D1D1', '#27A6F6'],
                     label: {
                         show: false,
                         fontSize: 14,
@@ -435,45 +332,6 @@ export default {
 
             // 使用刚指定的配置项和数据显示图表。
             myChart.setOption(option);
-        },
-        scrollShow() {
-            var that = this;
-            var page = 1;
-            var size = 5;
-
-            if (!this.signInfoList) {
-                return;
-            }
-            if (this.signInfoList.length <= 5) {
-                this.waitDealEvent = this.signInfoList.reverse()
-                return;
-            }
-
-            var count = this.signInfoList.length;
-
-            clearInterval(this.intervalIndex);
-            var i = 0;
-            this.intervalIndex = setInterval(function() {
-                if (i > count - 5) {
-                    i = 0;
-                }
-                var attactTemp = [];
-
-                for (let m = i; m < count && m < i + 5; m++) {
-                    let o = that.signInfoList[m];
-
-                    attactTemp.push(o);
-                }
-
-                attactTemp.forEach(function(e) {
-                    that.waitDealEvent.unshift(e);
-                });
-
-                while (that.waitDealEvent.length > 5) {
-                    that.waitDealEvent.pop();
-                }
-                i++;
-            }, 2000);
         }
     },
 
@@ -520,16 +378,21 @@ export default {
         height: 100%;
         th {
             text-align: left;
+           
         }
         td {
+            height: 40px;
             @include truncate(70%);
+        }
+        td:nth-child(1){
+            width: 60%;
         }
         .title {
             border-left: 5px solid #F9B74C;
             padding-left: 10px;
         }
         td.date {
-            text-align: right;
+            text-align: center;
         }
         .current {
             color: #419EF8;

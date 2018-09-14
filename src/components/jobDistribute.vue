@@ -1,6 +1,6 @@
 <template>
     <div class="top5" flex>
-        <div col="2" center flex><span class="num fontsize60 sum">57</span></div>
+        <div col="2" center flex><span class="num fontsize60 sum">{{clzwts}}</span></div>
         <div col="3" class="top5__items">
             <div v-for="item in percents" class="top5__item" col="1">
                 <div class="top5__bar" :style="{height: item.percent + '%', background: item.color}">
@@ -31,6 +31,10 @@ export default {
             },
             type: Array
         },
+        clzwts:{
+            type:Number,
+            default:0
+        }
         
     },
     computed: {

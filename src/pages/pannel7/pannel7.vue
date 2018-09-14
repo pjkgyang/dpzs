@@ -9,7 +9,7 @@
                 <aside class="left-statics" flex-column col="2">
                     <div col="2" flex-column :row='false'>
                         <div class="top" flex col="3">
-                            <Card class="" col="4" title="验收统计" flex>
+                            <Card class="" col="4" title="验收统计(万元)" flex>
                                 <div class="statics bottom-split" flex-column col="1">
                                     <h3 col="1" flex rowcenter colcenter style="background-image: linear-gradient(-180deg, rgba(0, 134, 227,0.6) 0%, rgba(0,113,221,0.5) 21%, rgba(0,89,214,0.4) 46%, rgba(0,70,209,0.00) 97%);">全年计划</h3>
                                     <div col="1" flex spacearound colcenter>
@@ -35,7 +35,7 @@
                             </Card>
                         </div>
                         <div class="" col="3" flex>
-                            <Card class="" col="4" title="完工统计" flex>
+                            <Card class="" col="4" title="完工统计(万元)" flex>
                                 <div class="statics bottom-split" flex-column col="1">
                                     <h3 col="1" flex rowcenter colcenter style="background-image: linear-gradient(-180deg, rgba(227, 0, 0,0.5) 0%, rgba(255,42,42,0.4) 22%, rgba(240,33,33,0.2) 48%, rgba(209,0,0,0.00) 100%);">全年计划</h3>
                                     <div col="1" flex spacearound colcenter>
@@ -66,7 +66,10 @@
                     <div class="" flex col="6">
                         <Card class="" col="4" title="" flex>
                             <div col="5" flex style="position:relative;">
-                                <div col="1">
+                                <div col="2">
+                                    <div>
+                                        <h2 class="curqy">{{!qymc?'全部工程区域':qymc}}</h2>
+                                    </div>
                                     <div class="circle circle1" flex-column center>
                                         <span class="num">{{zhgkData.khs}}</span>
                                         <span>客户数</span>
@@ -76,7 +79,11 @@
                                         <span>总项目数</span>
                                     </div>
                                 </div>
-                                <div ref="chinamap" col="4" id="chinamap"></div>
+                                <div ref="chinamap" col="7" id="chinamap"></div>
+                                <div col="1"  class="other-qygc">
+                                      <Button size="small" @click="handleChangeqy('渠道工程')">渠道工程</Button><br>
+                                      <Button size="small" @click="handleChangeqy('深圳区域工程')">深圳区域工程</Button>
+                                </div>
                             </div>
                             <div col="1" flex spacearound>
                                 <div class="totalStatics-item" flex-column center>
@@ -205,7 +212,7 @@
                     </div>
                     <div class="" col="3" flex>
                         <Card col="3" title="项目动态" >
-                            <div style="height:300px;overflow:hidden"  v-if="ysData.length > 0"> 
+                            <div style="height:300px;overflow:hidden"  v-if="ysData.length > 0" @mouseover="handleClearTimer" @mouseout="handleStartTimer"> 
                                 <table class="table"  :class="{anim:animate==true}">
                                     <tr v-for="(item,index) in ysData" :key="index" >
                                         <td :title="item.xmmc">{{item.xmmc}}</td>
@@ -265,10 +272,9 @@ export default {
             date:'',
             zhgkData:{},
             animate:false,
-            objArr:[{
-                name:'黑龙江',
-                value:'111'
-            }]
+            objArr:[],
+            qymc:'',
+            timer:null
         }
     },
     created() {
@@ -276,8 +282,8 @@ export default {
             this.initMap();
         });
         this.date = getMyDate(new Date())
-        this.queryOverallPanel('福建区域工程');
-        setInterval(this.scroll,850);
+        this.queryOverallPanel();
+        this.getDictEnum();
     },
     mounted() {},
     watch: {
@@ -288,15 +294,45 @@ export default {
         }
     },
     methods: {
-          scroll(){
+        handleChangeqy(param){
+            this.qymc = param;
+            this.queryOverallPanel(param);
+        },
+        getDictEnum(){
+            this.$get(this.API.getDictEnum,{
+                name:'xzqh',
+                isInterface:true
+            }).then(res=>{
+                if(res.data.state == 'success'){
+                    res.data.data.forEach(ele=>{
+                          if(ele.XZMC.indexOf('市') != -1){
+                              ele.XZMC = ele.XZMC.split('市')[0]
+                          }else if(ele.XZMC.indexOf('省') != -1){
+                              ele.XZMC = ele.XZMC.split('省')[0]
+                          }else if(ele.XZMC.indexOf('自治区') != -1){
+                              ele.XZMC = ele.XZMC.split('自治区')[0]
+                        } 
+                    })
+                    this.objArr = res.data.data;
+                }
+            })
+        },
+        handleClearTimer(){
+            clearInterval(this.timer);
+        },
+        handleStartTimer(){
+            this.timer = setInterval(this.scroll,1000);
+        },
+        scroll(){
                 this.animate=true;    
                 setTimeout(()=>{     
-                        this.ysData.push(this.ysData[0]); 
-                        this.ysData.shift();              
-                        this.animate = false; 
-             },800)
+                    this.ysData.push(this.ysData[0]); 
+                    this.ysData.shift();              
+                    this.animate = false; 
+             },500)
          },
         queryOverallPanel(qymc){
+            clearInterval(this.timer);
             this.$get(this.API.queryOverallPanel,{
                 curPage:1,
                 pageSize:9999,
@@ -305,17 +341,28 @@ export default {
                 if(res.data.state == 'success'){
                     this.zhgkData = res.data.data
                     this.ysData = res.data.data.ysData
+                    if(this.ysData.length > 7){
+                        this.timer = setInterval(this.scroll,1000);
+                    }
+                }else{
+                    this.$Message.error({content: res.data.msg,duration: 5,closable: true});
                 }
             })
         },
         filterObj(val){
-            let num = ''
-            this.objArr.forEach(ele=>{
-                if(ele.name == val){
-                    num =  ele.value
+            this.qymc = ''
+            let arr = [];
+            this.objArr.forEach(ele=>{ 
+                if(ele.XZMC == val){
+                    this.qymc =  ele.QYMC
+                    this.objArr.forEach(ele=>{
+                       if(ele.QYMC == this.qymc){
+                          arr.push(ele.XZMC)     
+                       } 
+                    }) 
                 };
             })
-            return num;
+            return arr;
         },
         initMap() {
             var _this = this
@@ -329,12 +376,12 @@ export default {
                     map: 'china',
                 },
                     // dataRange: {
-                    //     orient: 'horizontal',
+                    //     orient: 'vertitle',
                     //     min: 0,
                     //     max: 100,
                     //     text:['高','低'],           // 文本，默认为数值文本
                     //     splitNumber:0,
-                    //     color: ['#eee', '#949fb1', '#f3ce85']
+                    //     color: ['#66235d', '#a5559a','#e0d2de']
                     // },
                 series: [{
                     type: 'map',
@@ -349,13 +396,21 @@ export default {
                 }]
             });
             this.chart.hideLoading();
-            this.chart.on('click', function(params) {
-                // console.log(params);
-                 console.log(_this.filterObj(params.name));
-
-
+            this.chart.off('click');
+            this.chart.on('click',function(params) {
+                let tempArr = JSON.parse(JSON.stringify(provinceArr));
+                 if(_this.filterObj(params.name).includes(params.name)){
+                     _this.queryOverallPanel(_this.qymc);
+                     tempArr.forEach((item,index)=>{
+                        if(_this.filterObj(params.name).includes(item.name)){
+                             _this.$set(tempArr[index],'selected',true) 
+                        }
+                    })
+                 }
+                _this.currentProvince = tempArr
+                return;
                 //联动区域
-                let tempArr = JSON.parse(JSON.stringify(provinceArr))
+                // let tempArr = JSON.parse(JSON.stringify(provinceArr))
                 if(params.name=='黑龙江'||params.name=='吉林'||params.name=='辽宁'){
                     tempArr.forEach((item,index)=>{
                         if(item.name=='黑龙江'||item.name=='吉林'||item.name=='辽宁'){
@@ -455,6 +510,10 @@ export default {
     display: flex;
     min-height: 670px;
     flex-direction: column;
+    .curqy{
+        white-space: nowrap;
+        @include gradient(#FFFFFF, #d1cbcb); 
+    }
     .left-statics {
         h3 {
             font-size: 16px;
@@ -490,13 +549,23 @@ export default {
             font-size: 26px;
         }
     }
+    .other-qygc>button{
+        margin-top:4px;
+        color: #fff;
+        background:rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+    .other-qygc>button:hover{
+       background:rgba(255, 255, 255, 0.4);   
+       border-color: rgba(255, 255, 255, 0.2);  
+    }
     .circle {
         position: absolute;
         width: 100px;
         height: 100px;
         border-radius: 50%;
         .num {
-            font-size: 50px;
+            font-size: 36px;
         }
     }
     .circle1 {
@@ -538,6 +607,7 @@ export default {
         }
         td:nth-child(1){
             width: 60%;
+            text-align: left;
         }
         .title {
             border-left: 5px solid #F9B74C;

@@ -52,6 +52,12 @@ img {
 .fontsize60{
 	font-size:60px;
 }
+.fontsize50{
+	font-size:50px;
+}
+.fontsize30{
+	font-size:30px;
+}
 .fontsize14{
   font-size:14px;
 }
@@ -87,6 +93,7 @@ img {
 .textcenter, [textcenter] {
   text-align: center;
 }
+
 .height100 {
   height: 100%;
 }
@@ -105,8 +112,20 @@ img {
   padding: 0 1em 1em;
 }
 .anim{
-  transition: all 0.8s;
+  transition: all 0.5s;
   margin-top: -32px;
+}
+.animWT{
+  transition: all 0.5s;
+  margin-top: -45px;
+}
+.animys{
+  transition: all 0.5s;
+  margin-top: -40px;
+}
+.animcb{
+  transition: all 0.5s;
+  margin-top: -30px;
 }
 @for $i from 1 to 10 {
   [col='#{$i}'] {

@@ -23,18 +23,20 @@ export default {
             },
             type: Array
         },
+        count:{
+            type:Number,
+            default:0
+        }
     },
     watch: {
-        data() {
-            this.$nextTick(() => {
-                this.initChart();
-            });
+        count(n,o){
+            this.initChart();
         }
     },
     mounted() {
-        this.$nextTick(() => {
-            this.initChart();
-        });
+        // this.$nextTick(() => {
+        //     this.initChart();
+        // });
     },
     methods: {
         initChart() {
@@ -49,10 +51,10 @@ export default {
                     }
                 },
                 legend: {
-                    data: ['目标','已完成'],
+                    data: [this.count==1?'目标':'总金额',this.count==1?'已完成':'总完工'],
                     textStyle:{color:'#fff'}
                 },
-                color: ['#27A6F6', '#F9B74C'],
+                color: ['#27A6F6','#F9B74C'],
 
                 grid: {
                     left: '3%',
@@ -67,7 +69,7 @@ export default {
 
                 xAxis: {
                     type: 'category',
-                    data: ['北京', '浙江', '沪皖', '山东', '广州', '湖北', '湖南','山东', '广州', '湖北', '湖南'],
+                    data:this.data[0],
                     axisLine: {
                         show: false,
                     },
@@ -80,30 +82,32 @@ export default {
                 },
 
                 series: [{
-                        name: '已完成',
+                        name:this.count==1?'已完成':'总完工',
                         type: 'bar',
                         stack: '总量',
                         label: {
                             normal: {
                                 show: true,
-                                position: 'right'
+                                position: 'insideTop',
+                                 color:"#fff"
                             }
                         },
                         barWidth: 20,
-                        data: [150, 212, 201, 154, 190, 330, 410, 212, 201, 154, 190]
+                        data:this.data[2]
                     },
                     {
-                        name: '目标',
+                        name:this.count==1?'目标':'总金额',
                         type: 'bar',
                         stack: '总量',
                         label: {
                             normal: {
                                 show: true,
-                                position: 'right'
+                                position: 'top',
+                                color:"#fff"
                             }
                         },
                         barWidth: 20,
-                        data: [820, 832, 901, 934, 1290, 1330, 1320, 901, 934, 1290, 1330]
+                        data:this.data[1]
                     }
                 ]
             };
@@ -111,11 +115,11 @@ export default {
             // 使用刚指定的配置项和数据显示图表。
             myChart.setOption(option);
 
-            myChart.dispatchAction({
-                type: 'showTip',
-                seriesIndex:0 ,//第几条series
-                dataIndex:5,//第几个tooltip
-             });
+            // myChart.dispatchAction({
+            //     type: 'showTip',
+            //     seriesIndex:0 ,//第几条series
+            //     dataIndex:5,//第几个tooltip
+            //  });
         },
     },
     components: {},

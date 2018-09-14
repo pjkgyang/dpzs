@@ -1,47 +1,52 @@
 <template>
     <div class="pannel5">
          <div>
-            <head-bar :title="'工程人员概况'" :time="'2018/08/08 00:00:00'"></head-bar>
+            <head-bar :title="'工程人员概况'" :time="nowDate"></head-bar>
         </div>
         <div class="app__content">
             <div class="secure height100" flex>
                 <!-- 左侧 -->
                 <aside class="" flex-column col="2">
                     <div col="2" flex-column :row='false'>
-                        <div class="top" flex col="3">
+                        <div class="top" flex col="4">
                             <Card class="" col="4" title="人员统计" flex>
                                 <div col="1" flex-column spacearound>
                                     <div flex spacearound colcenter>
-                                        <span class="fontsize18">人员总数</span>
-                                        <span class="num fontsize60">300</span>
+                                        <span class="fontsize18">人 员 总 数</span>
+                                        <span class="num numzs fontsize50">{{pannelData.ryzs}}</span>
                                     </div>
                                     <div flex spacearound>
                                         <div class="totalStatics-item" flex-column center>
-                                            <div class="num num2 fontsize60">24</div>
+                                            <div class="num num2 fontsize50">{{pannelData.sxrs}}</div>
                                             <h3>实习</h3>
                                         </div>
                                         <div class="totalStatics-item" flex-column center>
-                                            <div class="num num1 fontsize60">114</div>
+                                            <div class="num num1 fontsize50">{{pannelData.zsrs}}</div>
                                             <h3>正式</h3>
                                         </div>
                                     </div>
                                 </div>
                             </Card>
                         </div>
-                        <Card class="" col="6" flex-column>
+                        <Card class="" col="6" flex-column :title="'人员级别'">
+                          <div  flex-column  v-if="ryjbData.length">
                             <div col="1" flex colcenter>
-                                <div col="1" flex colcenter spacearound><span class="dot dot1"></span>初级</div>
-                                <div col="1" flex colcenter spacearound><span class="dot dot2"></span>中级</div>
-                                <div col="1" flex colcenter spacearound><span class="dot dot3"></span>高级</div>
+                                <div col="1"  textcenter><span class="dot dot1"></span>&nbsp;初级</div>
+                                <div col="1"  textcenter><span class="dot dot2"></span>&nbsp;中级</div>
+                                <div col="1"  textcenter><span class="dot dot3"></span>&nbsp;高级</div>
                             </div>
-                            <div col="1" flex-column spacearound colcenter v-for="item in progress">
-                                <div class="progress-outter">
-                                    <span class="progress-low num" :style="{width:item.low*100/(item.low+item.mid+item.high) + '%'}">{{item.low}}</span>
-                                    <span class="progress-mid num" :style="{width:item.mid*100/(item.low+item.mid+item.high) + '%'}">{{item.mid}}</span>
-                                    <span class="progress-high num" :style="{width:item.high*100/(item.low+item.mid+item.high) + '%'}">{{item.high}}</span>
+                            <div col="8">
+                                <div  flex-column  colcenter v-for="item in ryjbData" >
+                                    <div class="progress-outter">
+                                        <span class="progress-low num" :style="{width:Number(item.cj)*100/(Number(item.cj)+Number(item.zj)+Number(item.gj)) + '%'}">{{item.cj}}</span>
+                                        <span class="progress-mid num" :style="{width:Number(item.zj)*100/(Number(item.cj)+Number(item.zj)+Number(item.gj)) + '%'}">{{item.zj}}</span>
+                                        <span class="progress-high num" :style="{width:Number(item.gj)*100/(Number(item.cj)+Number(item.zj)+Number(item.gj)) + '%'}">{{item.gj}}</span>
+                                    </div>
+                                    <h4>{{item.CPXMC}}</h4>
                                 </div>
-                                <h4>{{item.name}}</h4>
                             </div>
+                           </div>
+                            <no-data col="1" v-else />
                         </Card>
                     </div>
                 </aside>
@@ -51,19 +56,19 @@
                             <div ref="chinamap" id="chinamap" col="5"></div>
                             <div col="1" flex spacearound>
                                 <div class="totalStatics-item" flex-column center>
-                                    <div class="num num3 fontsize60">2</div>
+                                    <div class="num num3 fontsize50">{{pannelData.per200up}}</div>
                                     <h3 class="arrowtop">200%以上</h3>
                                 </div>
                                 <div class="totalStatics-item" flex-column center>
-                                    <div class="num num3 fontsize60">23</div>
+                                    <div class="num num3 fontsize50">{{pannelData.per100up}}</div>
                                     <h3 class="arrowtop">100%以上</h3>
                                 </div>
                                 <div class="totalStatics-item" flex-column center>
-                                    <div class="num num3 fontsize60">40</div>
+                                    <div class="num num3 fontsize50">{{pannelData.per75up}}</div>
                                     <h3 class="arrowtop">75%以上</h3>
                                 </div>
                                 <div class="totalStatics-item" flex-column center>
-                                    <div class="num num2 fontsize60">2</div>
+                                    <div class="num num2 fontsize50">{{pannelData.per50down}}</div>
                                     <h3 class="arrowdown">50%以下</h3>
                                 </div>
                             </div>
@@ -74,27 +79,27 @@
                             <div col="1" flex spacebetween colcenter>
                                 <div flex col="9" spacearound colcenter style="height:60px;background-image: linear-gradient(-180deg, rgba(0, 134, 227,0.6) 0%, rgba(0,113,221,0.3) 21%, rgba(0,89,214,0.2) 46%, rgba(0,70,209,0.04) 97%);">
                                     <span class="text">当年入职</span>
-                                    <span class="num">60</span>
+                                    <span class="num">{{pannelData.dnrzrs}}</span>
                                 </div>
                                 <div col="1">
                                     
                                 </div>
                                 <div flex col="9" spacearound colcenter style="height:60px;background-image: linear-gradient(-180deg, rgb(227, 0, 0,0.4) 0%, rgba(255,42,42,0.3) 22%, rgba(240,33,33,0.2) 48%, rgba(209,0,0,0.05) 100%);">
                                     <span class="text">当年离职</span>
-                                    <span class="num">20</span>
+                                    <span class="num">{{pannelData.dnlzrs}}</span>
                                 </div>
                             </div>
                             <div col="1" flex spacebetween>
                                 <div flex col="9" spacearound colcenter style="height:60px;background-image: linear-gradient(-180deg, rgba(0, 134, 227,0.6) 0%, rgba(0,113,221,0.3) 21%, rgba(0,89,214,0.2) 46%, rgba(0,70,209,0.04) 97%);">
                                     <span class="text">当月入职</span>
-                                    <span class="num">20</span>
+                                    <span class="num">{{pannelData.dyrzrs}}</span>
                                 </div>
                                 <div col="1">
                                     
                                 </div>
                                 <div flex col="9" spacearound colcenter style="height:60px;background-image: linear-gradient(-180deg, rgb(227, 0, 0,0.4) 0%, rgba(255,42,42,0.3) 22%, rgba(240,33,33,0.2) 48%, rgba(209,0,0,0.05) 100%);">
                                     <span class="text">当月离职</span>
-                                    <span class="num">5</span>
+                                    <span class="num">{{pannelData.dylzrs}}</span>
                                 </div>
                             </div>
                         </Card>
@@ -104,35 +109,43 @@
                 <aside class="" flex-column col="2">
                     <div class="" flex-column col="3">
                         <Card col="3" title="人员挣值">
-                            <table class="table" v-if="ranks.length > 0">
-                                <thead>
-                                    <th width="90">姓名</th>
-                                    <th width="120">总挣值</th>
-                                    <th width="90">效率</th>
-                                </thead>
-                                <tr v-for="(e,index) in ranks" :key="index">
-                                    <td>{{e.name}}</td>
-                                    <td>{{e.time}}</td>
-                                    <td>{{e.money}}</td>
-                                </tr>
-                            </table>
+                            <table class="theadTable">
+                                    <thead flex spacearound>
+                                        <th width="90">姓名</th>
+                                        <th width="120">总挣值</th>
+                                        <th width="90">效率</th>
+                                    </thead>
+                                </table>
+                                <table  v-if="ryzzData.length > 0"  class="table" @mouseover="handleClearTimer" @mouseout="handleStartTimer">
+                                    <tbody :class="{animcb:animate==true}">
+                                      <tr v-for="(item,index) in ryzzData" :key="index" flex spacearound >
+                                        <td width="90">{{item.mc}}</td>
+                                        <td width="120">{{item.zz}}</td>
+                                        <td width="90">{{item.xl}}</td>
+                                     </tr>
+                                    </tbody>
+                              </table>
                             <no-data col="1" v-else />
                         </Card>
                     </div>
                     <div class="" col="3" flex>
                         <Card col="3" title="战队挣值">
-                            <table class="table" v-if="ranks.length > 0">
-                                <thead>
-                                    <th width="90">姓名</th>
-                                    <th width="120">总挣值</th>
-                                    <th width="90">效率</th>
-                                </thead>
-                                <tr v-for="(e,index) in ranks" :key="index">
-                                    <td>{{e.name}}</td>
-                                    <td>{{e.time}}</td>
-                                    <td>{{e.money}}</td>
-                                </tr>
-                            </table>
+                            <table class="theadTable">
+                                    <thead flex spacearound>
+                                        <th width="90">战队名称</th>
+                                        <th width="120">总挣值</th>
+                                        <th width="90">效率</th>
+                                    </thead>
+                                </table>
+                                <table  v-if="zdzzData.length > 0"  class="table" @mouseover="handleClearTimer2" @mouseout="handleStartTimer2">
+                                    <tbody :class="{animcb:animateZd==true}">
+                                      <tr v-for="(item,index) in zdzzData" :key="index" flex spacearound >
+                                        <td width="90">{{item.mc}}</td>
+                                        <td width="120">{{item.zz}}</td>
+                                        <td width="90">{{item.xl}}</td>
+                                     </tr>
+                                    </tbody>
+                              </table>
                             <no-data col="1" v-else />
                         </Card>
                     </div>
@@ -142,6 +155,7 @@
     </div>
 </template>
 <script type="text/javascript">
+import { getMyDate } from '../../utils.js'
 import headBar from '../../components/header.vue'
 import numCardGroup from '../../components/numCardGroup.vue'
 import progressBarGroup from '../../components/progressBarGroup.vue'
@@ -233,12 +247,25 @@ export default {
                 { value: 230, name: '可变' }
             ],
              currentProvince:provinceArr,
+             pannelData:{},
+             ryzzData:[],
+             zdzzData:[],
+             ryjbData:[],
+             animate:false,
+             animateZd:false,
+             timer:null,
+             timer2:null,
+             nowDate:''
         }
     },
     created() {
         this.$nextTick(() => {
             this.initMap();
         });
+        this.queryPersonnelPanel();
+        this.timer = setInterval(this.scroll,1000);
+        this.timer2 = setInterval(this.scrollZd,1000);
+        this.nowDate = getMyDate(new Date());
     },
     watch: {
         currentProvince(){
@@ -249,6 +276,67 @@ export default {
     },
     mounted() {},
     methods: {
+        handleClearTimer(){
+            clearInterval(this.timer);
+        },
+        handleStartTimer(){
+            this.timer = setInterval(this.scroll,1000);
+        },
+        handleClearTimer2(){
+            clearInterval(this.timer2);
+        },
+        handleStartTimer2(){
+            this.timer2 = setInterval(this.scrollZd,1000);
+        },
+        scroll(){
+                this.animate=true;    
+                setTimeout(()=>{     
+                    this.ryzzData.push(this.ryzzData[0]); 
+                    this.ryzzData.shift();              
+                    this.animate = false; 
+             },500)
+         },
+         scrollZd(){
+                this.animateZd = true;    
+                setTimeout(()=>{     
+                    this.zdzzData.push(this.zdzzData[0]); 
+                    this.zdzzData.shift();              
+                    this.animateZd = false; 
+             },500)
+         },    
+        queryPersonnelPanel(qymc){
+              this.$get(this.API.queryPersonnelPanel,{
+                curPage:1,
+                pageSize:9999,
+                qymc:qymc
+            }).then(res=>{
+                if(res.data.state == 'success'){
+                    this.pannelData = res.data.data
+                    this.ryzzData = res.data.data.ryzzData
+                    this.zdzzData = res.data.data.zdzzData
+                    this.ryjbData = res.data.data.ryjbData
+                    let keyMap = {
+                        "1" : "cj",
+                        "2" : "zj",
+                        "3" : "gj",
+                        'CPXBH':'CPXBH',
+                        'CPXMC':'CPXMC'
+                    };
+                    for(var i = 0;i < this.ryjbData.length;i++){
+                        var obj = this.ryjbData[i];
+                        for(var key in obj){
+                                var newKey = keyMap[key];
+                                if(newKey){
+                                       obj[newKey] = obj[key];
+                                    //    delete obj[key];
+                                    }
+                            }
+                       }
+                }else{
+                    this.$Message.error({content: res.data.msg,duration: 5,closable: true});
+                }
+            })
+        },
         initMap() {
             var _this = this
             // 绘图方法
@@ -375,6 +463,11 @@ export default {
     display: flex;
     min-height: 670px;
     flex-direction: column;
+    .totalStatics-item{
+        h3{
+            font-size: 14px;
+        }
+    }
     h3.arrowtop{
         background:url(../../../static/assets/arrowtop.png) 0 60% no-repeat;
         text-indent: 26px;
@@ -405,6 +498,7 @@ export default {
         font-size: 0;
         height: 28px;
         line-height: 28px;
+        margin-bottom:8px;
         span {
             display: inline-block;
             height: 100%;
@@ -443,22 +537,32 @@ export default {
     .num.num3 {
         @include gradient(#FFD891, #F7791C);
     }
+    .num.numzs{
+        @include gradient(#FFFFFF, #D1D1D1);
+    }
 
-    table {
-        table-layout: fixed;
-        width: 100%;
-        height: 100%;
+    .theadTable{
         th {
             text-align: center;
             color: #999;
         }
-        td {
-            text-align: center;
-            @include truncate(70%);
-        }
-        .title {
-            border-left: 5px solid #F9B74C;
-            padding-left: 10px;
+    }
+    .table {
+        table-layout: fixed;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        tbody{
+            display: block;
+            width: 100%;
+            height:80%;
+            td {
+                text-align: center;
+                height:30px;
+                line-height: 30px;
+                @include truncate(70%);
+           }
+           
         }
         td.date {
             text-align: right;

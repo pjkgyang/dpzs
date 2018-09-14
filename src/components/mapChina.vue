@@ -3,33 +3,33 @@
         <div col="4" flex>
             <div class="circle__box">
                 <div class="secure_circle" flex center>
-                    <span class="num">51%</span>
+                    <span class="num">{{((Number(pannelData.yjjs)/Number(pannelData.wtzs)*100).toFixed(0))+'%'}}</span>
                 </div>
-                <div class="circle-text">项目超期率</div>
+                <div class="circle-text">问题解决率</div>
             </div>
             <div ref="chart" id="attack_chart">
             </div>
         </div>
         <div col="1" flex colcenter spacearound>
-            <div class="secure_intro" flex colcenter>
+            <div class="secure_intro" flex colcenter spacearound>
                 <h3 class="name">超期未解决问题数</h3>
-                <div class="num fontsize60">4</div>
+                <div class="num ">{{pannelData.cqwjjs}}</div>
             </div>
-            <div class="secure_intro" flex colcenter>
+            <div class="secure_intro" flex colcenter spacearound>
                 <h3 class="name">超期未响应问题数</h3>
-                <div class="num fontsize60">3</div>
+                <div class="num ">{{pannelData.cqwxys}}</div>
             </div>
-            <div class="secure_intro" flex colcenter>
-                <h3 class="name">超期项目数</h3>
-                <div class="num fontsize60">3</div>
+            <div class="secure_intro" flex colcenter spacearound>
+                <h3 class="name">超期解决问题数</h3>
+                <div class="num ">{{pannelData.cqyjjs}}</div>
             </div>
-            <div class="secure_intro" flex colcenter>
-                <h3 class="name">投诉</h3>
-                <div class="num fontsize60">3</div>
+            <div class="secure_intro" flex colcenter spacearound>
+                <h3 class="name">投诉数</h3>
+                <div class="num ">{{pannelData.tss}}</div>
             </div>
-            <div class="secure_intro" flex colcenter>
+            <div class="secure_intro" flex colcenter spacearound>
                 <h3 class="name">问题处理不满意数</h3>
-                <div class="num fontsize60">3</div>
+                <div class="num ">{{pannelData.bmys}}</div>
             </div>
         </div>
     </div>
@@ -54,6 +54,12 @@ export default {
             },
             type: Array
         },
+        pannelData:{
+            type:Object,
+            default:()=>{
+                return {}
+            }
+        }
     },
     watch: {
         data() {
@@ -159,12 +165,12 @@ export default {
         flex: 1 0 0;
     }
     .secure_intro {
+        width: 20%;
         .name {
-            width: 80px;
-            flex: 80px 0 0;
+            width:60px;
         }
         .num {
-            flex: 1 0 0;
+            font-size: 32px;
             @include gradient(#FAD961, #F76B1C);
         }
     }
@@ -191,7 +197,7 @@ export default {
         left: 0;
         bottom: 0;
         .num {
-            font-size: 50px;
+            font-size: 40px;
         }
     }
 }

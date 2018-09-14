@@ -1,41 +1,51 @@
 <template>
     <div class="barChart" flex>
-        <div col="2" center flex><span class="num fontsize60 sum">73</span></div>
+        <div col="2" center flex><span class="num fontsize60 sum">{{clwcwts}}</span></div>
         <div col="4" id="barItems"></div>
     </div>
 </template>
 <script>
 import echarts from 'echarts'
+import numCardVue from './numCard.vue';
 
 export default {
     data() {
         return {
-            chart: {}
+            chart: {},
+
         }
     },
     props: {
+        mys:{
+            type:Number,
+            default:10
+        },
+        bmys:{
+            type:Number,
+            default:20
+        },
         data: {
             default: function() {
-                return [
-                        { value: 335, name: '满意' },
-                        { value: 310, name: '不满意' },
-
-                    ]
+                return []
             },
             type: Array
         },
+        clwcwts:{
+            type:Number,
+            default:0
+        }
     },
     watch: {
-        data() {
-            this.$nextTick(() => {
+        mys(n,o) {
+            // this.$nextTick(() => {
                 this.initChart();
-            });
+            // });
         }
     },
     mounted() {
-        this.$nextTick(() => {
-            this.initChart();
-        });
+        // this.$nextTick(() => {
+            // this.initChart();
+        // });
     },
     methods: {
         initChart() {
@@ -65,10 +75,10 @@ export default {
                     labelLine: {
                         show: false
                     },
-                    data: this.data
+                    data:[{ value:this.mys, name: '满意' },
+                          { value:this.bmys, name: '不满意' },]
                 }]
             };
-
             // 使用刚指定的配置项和数据显示图表。
             myChart.setOption(option);
 
