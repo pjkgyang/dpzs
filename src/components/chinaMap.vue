@@ -1,40 +1,22 @@
 <template>
-    <div class="china-map" flex-column>
-        <div col="4" flex>
-            <div class="circle__box">
+    <div class="china-map" flex>
+        <div col="1" flex>
+            <div col="1" v-if="!circleShow">
                 <h2 class="curqy">{{!qymc?'全国':qymc}}</h2>
-                <div class="secure_circle" flex center>
-                    <span class="num">{{((Number(pannelData.yjjs)/Number(pannelData.wtzs)*100).toFixed(0))+'%'}}</span>
-                </div>
-                <div class="circle-text">问题解决率</div>
             </div>
-            <div ref="chart" id="attack_chart"></div>
-            <div  class="other-qygc">
+            <div class="circle__box"  col="1" v-if="circleShow">
+                <h2 class="curqy">{{!qymc?'全国':qymc}}</h2>
+                <div class="secure_circle" flex-column center>
+                    <span class="num">{{numPer}}%</span>
+                    <span>{{title}}</span>
+                </div>
+                <div class="circle-text"></div>
+            </div>
+            <div ref="chart" id="attack_chart" col="5"></div>
+            <div  class="other-qygc" col="1">
                <Button size="small" @click="handleChangeqy('')">全部区域工程</Button><br>
                <Button size="small" @click="handleChangeqy('渠道工程')">渠道工程</Button><br>
                <Button size="small" @click="handleChangeqy('深圳区域工程')">深圳区域工程</Button>
-            </div>
-        </div>
-        <div col="1" flex colcenter spacearound>
-            <div class="secure_intro" flex colcenter spacearound>
-                <h3 class="name">超期未解决问题数</h3>
-                <div class="num ">{{pannelData.cqwjjs}}</div>
-            </div>
-            <div class="secure_intro" flex colcenter spacearound>
-                <h3 class="name">超期未响应问题数</h3>
-                <div class="num ">{{pannelData.cqwxys}}</div>
-            </div>
-            <div class="secure_intro" flex colcenter spacearound>
-                <h3 class="name">超期解决问题数</h3>
-                <div class="num ">{{pannelData.cqyjjs}}</div>
-            </div>
-            <div class="secure_intro" flex colcenter spacearound>
-                <h3 class="name">投诉数</h3>
-                <div class="num ">{{pannelData.tss}}</div>
-            </div>
-            <div class="secure_intro" flex colcenter spacearound>
-                <h3 class="name">问题处理不满意数</h3>
-                <div class="num ">{{pannelData.bmys}}</div>
             </div>
         </div>
     </div>
@@ -53,7 +35,7 @@ export default {
             qymc:'',
             currentProvince:[],
             // provinceArr
-            max:''
+            max:100
         }
     },
     props: {
@@ -63,15 +45,36 @@ export default {
             },
             type: Array
         },
-        pannelData:{
-            type:Object,
+        numPer:{
+            type:String,
+            default:''
+        },
+        title:{
+            type:String,
+            default:'完工率'
+        },
+        mapData:{
+            type:Array,
             default:()=>{
-                return {}
+                return []
             }
+        },
+        toolipTitle:{
+            type:String,
+            default:'验收完成率'
+        },
+        circleShow:{
+            type:Boolean,
+            default:true
         }
     },
     watch: {
-        data(n,o) {
+        // data() {
+        //     this.$nextTick(() => {
+        //         this.initChart();
+        //     });
+        // },
+        mapData(n,o){
             this.max = n[0].value;
             let len = n.length; 
                 for (var i = 1; i < len; i++){ 
@@ -79,21 +82,27 @@ export default {
                     this.max = n[i].value; 
                 } 
             } 
-            this.initChart(this.data);
+            this.initChart(this.mapData);
         },
         // currentProvince(){
+        //     console.log('===')
         //     this.$nextTick(() => {
-        //         this.initChart();
+        //         this.initMap();
         //     });
         // }
-    },
-    mounted() {
+     },
+     mounted() {
         // this.$nextTick(() => {
-        //     this.initChart();
+            // this.initChart(this.mapData);
         // });
         this.getDictEnum();
+        this.$bus.$on('handleChooseBar',(params)=>{
+            this.filterArr(params);
+            this.qymc = params;
+        });
     },
     methods: {
+
          getDictEnum(){
             this.$get(this.API.getDictEnum,{
                 name:'xzqh',
@@ -101,7 +110,7 @@ export default {
             }).then(res=>{
                 if(res.data.state == 'success'){
                     res.data.data.forEach(ele=>{
-                           if(ele.XZMC.indexOf('市') != -1){
+                          if(ele.XZMC.indexOf('市') != -1){
                               ele.XZMC = ele.XZMC.split('市')[0]
                           }else if(ele.XZMC.indexOf('省') != -1){
                               ele.XZMC = ele.XZMC.split('省')[0]
@@ -117,13 +126,12 @@ export default {
                 }
             })
         },
-
         filterObj(val){
             this.qymc = ''
             let arr = [];
             this.qyArr.forEach(ele=>{ 
                 if(ele.XZMC == val){
-                    this.qymc =  ele.QYMC
+                    this.qymc = ele.QYMC
                     this.qyArr.forEach(ele=>{
                        if(ele.QYMC == this.qymc){
                           arr.push(ele.XZMC)     
@@ -133,20 +141,40 @@ export default {
             })
             return arr;
         },
+        filterArr(name){
+            // provinceArr
+            let tempArr = JSON.parse(JSON.stringify(this.mapData));
+            this.qyArr.forEach((ele,i,arr)=>{
+               if(ele.QYMC == name && ele.QYMC != "渠道工程" && ele.QYMC != "深圳区域工程"){
+                   if(this.filterObj(ele.XZMC).includes(ele.XZMC)){
+                     tempArr.forEach((item,index)=>{
+                        if(this.filterObj(ele.XZMC).includes(item.name)){
+                             this.$set(tempArr[index],'selected',true) 
+                        }
+                    })
+                  }
+                }else{
+                   return;
+                }
+             })
+        //    this.currentProvince = tempArr
+              this.initChart(tempArr);
+        },
         handleChangeqy(params){
+            this.initChart(this.mapData);
             this.$emit('handleChangeqy',params);
             this.qymc = params;
         },
         initChart(data) {
-            var _this = this
+            var _this = this;
             // 绘图方法
             echarts.registerMap('china', json);
             this.chart = echarts.init(this.$refs.chart);
             // 皮肤添加同一般使用方式
             this.chart.showLoading()
             this.chart.setOption({
-                title : {
-                    text: '全国 ( 问题解决率 ) 分布',
+                  title : {
+                    text: '全国 ( '+_this.toolipTitle+' ) 分布',
                     x:'center',
                     textStyle:{
                         color:'#fff',
@@ -168,11 +196,20 @@ export default {
                         if(!qymc){
                             return params.name+' 暂无区域工程'
                         }else{
-                            return  qymc+'<br/>'+ '问题解决率 : '+ params.value+'%';
+                            return  qymc+'<br/>'+ _this.toolipTitle +' : '+ params.value+'%';
                         }
+                        // var myseries = option.series;
+                        // for (var i = 0; i < myseries.length; i++) {
+                        //     for(var j=0;j<myseries[i].data.length;j++){
+                        //         if(myseries[i].data[j].name==params.name){
+                        //             res+=myseries[i].name +' : '+myseries[i].data[j].value+'</br>';
+                        //         }
+                        //     }
+                        // }
+                        
                     }
                 },
-                dataRange: {
+                 dataRange: {
                         orient: 'vertitle',
                         min: 0,
                         max:this.max,
@@ -183,35 +220,35 @@ export default {
                         textStyle:{
                             color:'#fff'
                         }
-                },
+                    },
                 series: [{
                     type: 'map',
                     selectedMode : 'multiple',
                     mapType: 'china', // 自定义扩展图表类型
                     itemStyle: {
                         normal: { //未选中状态
-                            label:{show:true},
-                            areaColor: '#a2bbc5', //背景颜色
+                            label:{ show : true } ,
+                            areaColor:'#a2bbc5', //背景颜色
                         },
                     },
                     data:data
-                    //  _this.currentProvince
+                    // _this.currentProvince
                 }]
             });
             this.chart.hideLoading();
             this.chart.off('click');
             this.chart.on('click', function(params) {
-                let tempArr = JSON.parse(JSON.stringify(_this.data));
+                let tempArr = JSON.parse(JSON.stringify(_this.mapData));
                  if(_this.filterObj(params.name).includes(params.name)){
-                     _this.$emit('handleFilterqy',_this.qymc)
+                     _this.$emit('handleFilterqy',_this.qymc);
                      tempArr.forEach((item,index)=>{
                         if(_this.filterObj(params.name).includes(item.name)){
-                             _this.$set(tempArr[index],'selected',true) 
+                             _this.$set(tempArr[index],'selected',true);
                         }
                     })
                  }
-                _this.initChart(tempArr);
                 // _this.currentProvince = tempArr
+                 _this.initChart(tempArr);
             });
         },
     },
@@ -257,7 +294,7 @@ export default {
         left: 0;
         bottom: 0;
         .num {
-            font-size: 40px;
+            font-size: 30px;
         }
     }
 }

@@ -68,7 +68,7 @@
                             <div col="5" flex style="position:relative;">
                                 <div col="2">
                                     <div>
-                                        <h2 class="curqy">{{!qymc?'全部工程区域':qymc}}</h2>
+                                        <h2 class="curqy">{{!qymc?'全国':qymc}}</h2>
                                     </div>
                                     <div class="circle circle1" flex-column center>
                                         <span class="num">{{zhgkData.khs}}</span>
@@ -79,8 +79,9 @@
                                         <span>总项目数</span>
                                     </div>
                                 </div>
-                                <div ref="chinamap" col="7" id="chinamap"></div>
+                                <div ref="chinamap" col="8" id="chinamap"></div>
                                 <div col="1"  class="other-qygc">
+                                      <Button size="small" @click="handleChangeqy('')">全部区域工程</Button><br>
                                       <Button size="small" @click="handleChangeqy('渠道工程')">渠道工程</Button><br>
                                       <Button size="small" @click="handleChangeqy('深圳区域工程')">深圳区域工程</Button>
                                 </div>
@@ -128,23 +129,23 @@
                                 </div>
                             </div>
                         </Card>
-                        <Card col="3" title="分包统计">
+                        <Card col="3" title="分包统计(万元)">
                             <div flex spacearound>
                                 <div class="totalStatics-item" flex-column center>
                                     <div class="num fontsize60">{{zhgkData.fbwgl}}</div>
-                                    <h3>完工量</h3>
+                                    <h3>分包完工量</h3>
                                 </div>
                                 <div class="totalStatics-item" flex-column center>
                                     <div class="num fontsize60">
                                         {{((Number(zhgkData.fbwgl)/(Number(zhgkData.fbrl)+Number(zhgkData.fbek)+Number(zhgkData.fbkb)))*100).toFixed(0)+'%'}}
                                     </div>
-                                    <h3>效率</h3>
+                                    <h3>分包效率</h3>
                                 </div>
                             </div>
                             <div flex spacearound>
                                 <div class="totalStatics-item" flex-column center>
                                     <div class="num num1 fontsize60">{{zhgkData.fbrl}}</div>
-                                    <h3>人力</h3>
+                                    <h3>实施</h3>
                                 </div>
                                 <div class="totalStatics-item" flex-column center>
                                     <div class="num num2 fontsize60">{{zhgkData.fbek}}</div>
@@ -246,57 +247,54 @@ var json = require('echarts/map/json/china.json')
 export default {
     data() {
         return {
-            currentProvince:provinceArr,
+            currentProvince:[],
             summary: {
                 totalNum: 864
             },
-            areaStatisc: [],
-            waitDealEvent: [],
-            intervalIndex: {},
-            jobDistributes: [{
-                name: "未响应",
-                value: 34
-            }, {
-                name: "未解决",
-                value: 10
-            }, {
-                name: "正常",
-                value: 50
-            }],
             ysData: [],
             pie1Value: [
-                { value: 35, name: '人力' },
+                { value: 35, name: '实施' },
                 { value: 310, name: '二开' },
                 { value: 230, name: '可变' }
             ],
             date:'',
             zhgkData:{},
             animate:false,
-            objArr:[],
+            qyArr:[],
             qymc:'',
-            timer:null
+            timer:null,
+            mapData:[],
+            max:''
         }
     },
     created() {
-        this.$nextTick(() => {
-            this.initMap();
-        });
         this.date = getMyDate(new Date())
         this.queryOverallPanel();
         this.getDictEnum();
     },
     mounted() {},
     watch: {
-        currentProvince(){
-            this.$nextTick(() => {
-                this.initMap();
-            });
+        // currentProvince(){
+        //     this.$nextTick(() => {
+        //         this.initMap();
+        //     });
+        // }
+        mapData(n,o){
+            this.max = n[0].value;
+            let len = n.length; 
+                for (var i = 1; i < len; i++){ 
+                    if (n[i].value > this.max) { 
+                    this.max = n[i].value; 
+                } 
+            }
+           this.initMap(this.mapData); 
         }
     },
     methods: {
         handleChangeqy(param){
             this.qymc = param;
             this.queryOverallPanel(param);
+            this.initMap(this.mapData);
         },
         getDictEnum(){
             this.$get(this.API.getDictEnum,{
@@ -309,11 +307,15 @@ export default {
                               ele.XZMC = ele.XZMC.split('市')[0]
                           }else if(ele.XZMC.indexOf('省') != -1){
                               ele.XZMC = ele.XZMC.split('省')[0]
-                          }else if(ele.XZMC.indexOf('自治区') != -1){
+                          }else if(ele.XZMC.indexOf('自治区') != -1 && ele.XZMC.indexOf('维吾尔') == -1 && ele.XZMC.indexOf('回族') == -1){
                               ele.XZMC = ele.XZMC.split('自治区')[0]
-                        } 
+                          }else if(ele.XZMC.indexOf('维吾尔') != -1){
+                              ele.XZMC = ele.XZMC.split('维吾尔')[0] 
+                          }else if(ele.XZMC.indexOf('回族') != -1){
+                              ele.XZMC = ele.XZMC.split('回族')[0] 
+                          }
                     })
-                    this.objArr = res.data.data;
+                    this.qyArr = res.data.data;
                 }
             })
         },
@@ -341,21 +343,51 @@ export default {
                 if(res.data.state == 'success'){
                     this.zhgkData = res.data.data
                     this.ysData = res.data.data.ysData
+                    if(!this.mapData.length && !!res.data.data.provinceData){
+                        res.data.data.provinceData.forEach(ele=>{
+                        if(ele.PROVINCE.indexOf('市') != -1){
+                            ele.PROVINCE = ele.PROVINCE.split('市')[0]
+                        }else if(ele.PROVINCE.indexOf('省') != -1){
+                            ele.PROVINCE = ele.PROVINCE.split('省')[0]
+                        }else if(ele.PROVINCE.indexOf('自治区') != -1 && ele.PROVINCE.indexOf('维吾尔') == -1 && ele.PROVINCE.indexOf('回族') == -1){
+                            ele.PROVINCE = ele.PROVINCE.split('自治区')[0]
+                        }else if(ele.PROVINCE.indexOf('维吾尔') != -1){
+                            ele.PROVINCE = ele.PROVINCE.split('维吾尔')[0] 
+                        }else if(ele.PROVINCE.indexOf('回族') != -1){
+                            ele.PROVINCE = ele.PROVINCE.split('回族')[0] 
+                        }
+                     })
+                        this.mapData = res.data.data.provinceData;
+                        let keyMap = {
+                            "PROVINCE" : "name",
+                            "PROVINCEDATA" : "value",
+                        };
+                        for(var i = 0;i < this.mapData.length;i++){
+                                var obj = this.mapData[i];
+                                for(var key in obj){
+                                    var newKey = keyMap[key];
+                                    if(newKey){
+                                        obj[newKey] = obj[key];
+                                        delete obj[key];
+                                }
+                            }
+                        }
+                    }
                     if(this.ysData.length > 7){
                         this.timer = setInterval(this.scroll,1000);
                     }
                 }else{
-                    this.$Message.error({content: res.data.msg,duration: 5,closable: true});
+                   this.$alert(res.data.msg, '提示', {confirmButtonText: '确定',type:'error'});
                 }
             })
         },
         filterObj(val){
             this.qymc = ''
             let arr = [];
-            this.objArr.forEach(ele=>{ 
+            this.qyArr.forEach(ele=>{ 
                 if(ele.XZMC == val){
                     this.qymc =  ele.QYMC
-                    this.objArr.forEach(ele=>{
+                    this.qyArr.forEach(ele=>{
                        if(ele.QYMC == this.qymc){
                           arr.push(ele.XZMC)     
                        } 
@@ -364,7 +396,7 @@ export default {
             })
             return arr;
         },
-        initMap() {
+        initMap(data) {
             var _this = this
             // 绘图方法
             echarts.registerMap('china', json);
@@ -372,33 +404,62 @@ export default {
             // 皮肤添加同一般使用方式
             this.chart.showLoading()
             this.chart.setOption({
+                title : {
+                    text: '全国 ( 客户数 ) 分布',
+                    x:'center',
+                    textStyle:{
+                        color:'#fff',
+                        fontSize:16,
+                    }
+                },
                 geo: {
                     map: 'china',
                 },
-                    // dataRange: {
-                    //     orient: 'vertitle',
-                    //     min: 0,
-                    //     max: 100,
-                    //     text:['高','低'],           // 文本，默认为数值文本
-                    //     splitNumber:0,
-                    //     color: ['#66235d', '#a5559a','#e0d2de']
-                    // },
+                 tooltip: {
+                    trigger: 'item',
+                    formatter: function(params) {
+                        let qymc = qymc;
+                         _this.qyArr.forEach(ele=>{ 
+                            if(ele.XZMC == params.name){
+                                qymc = ele.QYMC
+                            };
+                        })
+                        if(!qymc){
+                            return params.name+' 暂无区域工程'
+                        }else{
+                            return  qymc+'<br/>'+'客户数 : ' + params.value;
+                        }
+                    }
+                },
+                dataRange: {
+                    orient: 'vertitle',
+                    min: 0,
+                    max:this.max,
+                    text:['多','少'],           // 文本，默认为数值文本
+                    splitNumber:0,
+                    color: ['#61A5FA','#F76B1C'],
+                    x:'right',
+                    textStyle:{
+                        color:'#fff'
+                    }
+                },
                 series: [{
                     type: 'map',
                     mapType: 'china', // 自定义扩展图表类型
                     itemStyle: {
                         normal: { //未选中状态
                             areaColor: '#a2bbc5', //背景颜色
-                            label:{show:false}
+                            label:{show:true}
                         },
                     },
-                    data: _this.currentProvince
+                    data:data
+                    //  _this.currentProvince
                 }]
             });
             this.chart.hideLoading();
             this.chart.off('click');
             this.chart.on('click',function(params) {
-                let tempArr = JSON.parse(JSON.stringify(provinceArr));
+                let tempArr = JSON.parse(JSON.stringify(_this.mapData));
                  if(_this.filterObj(params.name).includes(params.name)){
                      _this.queryOverallPanel(_this.qymc);
                      tempArr.forEach((item,index)=>{
@@ -407,54 +468,8 @@ export default {
                         }
                     })
                  }
-                _this.currentProvince = tempArr
-                return;
-                //联动区域
-                // let tempArr = JSON.parse(JSON.stringify(provinceArr))
-                if(params.name=='黑龙江'||params.name=='吉林'||params.name=='辽宁'){
-                    tempArr.forEach((item,index)=>{
-                        if(item.name=='黑龙江'||item.name=='吉林'||item.name=='辽宁'){
-                            _this.$set(tempArr[index],'selected',true)
-                        }
-                    })
-                }else if(params.name=='湖北'||params.name=='湖南'){
-                    tempArr.forEach((item,index)=>{
-                        if(item.name=='湖北'||item.name=='湖南'){
-                            _this.$set(tempArr[index],'selected',true)
-                        }
-                    })
-                }else if(params.name=='安徽'||params.name=='上海'){
-                    tempArr.forEach((item,index)=>{
-                        if(item.name=='安徽'||item.name=='上海'){
-                            _this.$set(tempArr[index],'selected',true)
-                        }
-                    })
-                }else if(params.name=='陕西'||params.name=='甘肃'){
-                    tempArr.forEach((item,index)=>{
-                        if(item.name=='陕西'||item.name=='甘肃'){
-                            _this.$set(tempArr[index],'selected',true)
-                        }
-                    })
-                }else if(params.name=='河北'||params.name=='天津'){
-                    tempArr.forEach((item,index)=>{
-                        if(item.name=='河北'||item.name=='天津'){
-                            _this.$set(tempArr[index],'selected',true)
-                        }
-                    })
-                }else if(params.name=='四川'||params.name=='重庆'||params.name=='云南'||params.name=='贵州'){
-                    tempArr.forEach((item,index)=>{
-                        if(item.name=='四川'||item.name=='重庆'||item.name=='云南'||item.name=='贵州'){
-                            _this.$set(tempArr[index],'selected',true)
-                        }
-                    })
-                }else{
-                    tempArr.forEach((item,index)=>{
-                        if(item.name==params.name){
-                            _this.$set(tempArr[index],'selected',true)
-                        }
-                    })
-                }
-                _this.currentProvince = tempArr
+                // _this.currentProvince = tempArr
+                _this.initMap(tempArr);
             });
         },
         initChart(id, value, color = ['#3AC868', '#F9B74C', '#E85650', '#37A2F7']) {
@@ -510,10 +525,6 @@ export default {
     display: flex;
     min-height: 670px;
     flex-direction: column;
-    .curqy{
-        white-space: nowrap;
-        @include gradient(#FFFFFF, #d1cbcb); 
-    }
     .left-statics {
         h3 {
             font-size: 16px;
@@ -548,16 +559,6 @@ export default {
             display: inline-block;
             font-size: 26px;
         }
-    }
-    .other-qygc>button{
-        margin-top:4px;
-        color: #fff;
-        background:rgba(255, 255, 255, 0.2);
-        border-color: rgba(255, 255, 255, 0.2);
-    }
-    .other-qygc>button:hover{
-       background:rgba(255, 255, 255, 0.4);   
-       border-color: rgba(255, 255, 255, 0.2);  
     }
     .circle {
         position: absolute;

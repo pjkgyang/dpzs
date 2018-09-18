@@ -1,6 +1,5 @@
 var path = require('path')
 var webpack = require('webpack')
-// const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
     entry: './src/main.js',
@@ -8,16 +7,6 @@ module.exports = {
         path: path.resolve(__dirname, './dist'),
         publicPath: '/dist/',
         filename: 'build.js'
-    },
-    resolve: {
-        extensions: ['.js', '.vue', '.json'],
-        modules: [
-            'src',
-            'node_modules',
-        ],
-        alias: {
-            'vue$': 'vue/dist/vue.common.js'
-        }
     },
     module: {
         rules: [{
@@ -42,12 +31,6 @@ module.exports = {
         }, {
             test: /\.js$/,
             loader: 'babel-loader',
-            // use: [{
-            //     loader: 'babel-loader',
-            //     options: {
-            //        presets: ['es2015']
-            //     }
-            // }],
             exclude: /node_modules/
         }, {
             test: /\.css$/,
@@ -77,7 +60,16 @@ module.exports = {
             }
         }]
     },
-
+    resolve: {
+        extensions: ['.js', '.vue', '.json'],
+        modules: [
+            'src',
+            'node_modules'
+        ],
+        alias: {
+            'vue$': 'vue/dist/vue.common.js'
+        }
+    },
     devServer: {
         disableHostCheck: true,
         historyApiFallback: true,
@@ -99,7 +91,7 @@ if (process.env.NODE_ENV === 'production') {
             'process.env': {
                 NODE_ENV: '"production"'
             },
-            "WEBPACK_CONFIG_HOST": 'http://careful.wisedu.com/emap/sys/etender/api/'
+            "WEBPACK_CONFIG_HOST": '"http://careful.wisedu.com/emap/sys/etender/api/"'
         }),
         new webpack.optimize.UglifyJsPlugin({
             sourceMap: true,
@@ -107,34 +99,6 @@ if (process.env.NODE_ENV === 'production') {
                 warnings: false
             }
         }),
-        // new UglifyJsPlugin({
-        //     // sourceMap: true,
-        //     // compress: {
-        //     //     warnings: false
-        //     // }
-        //     parallel: true,
-        //     uglifyOptions: {
-        //     ie8: false,
-        //     ecma: 6,
-        //     warnings: false,
-        //     mangle: true, // debug false
-        //     output: {
-        //     comments: false,
-        //     beautify: false, // debug true
-        //     },
-        //     compress: {
-        //     // 在UglifyJs删除没有用到的代码时不输出警告
-        //     warnings: false,
-        //     // 删除所有的 `console` 语句
-        //     // 还可以兼容ie浏览器
-        //     drop_console: true,
-        //     // 内嵌定义了但是只用到一次的变量
-        //     collapse_vars: true,
-        //     // 提取出出现多次但是没有定义成变量去引用的静态值
-        //     reduce_vars: true,
-        //     }
-        //     }
-        // }),
         new webpack.LoaderOptionsPlugin({
             minimize: true,
         })
@@ -145,7 +109,7 @@ if (process.env.NODE_ENV === 'production') {
             'process.env': {
                 NODE_ENV: '"development"'
             },
-            "WEBPACK_CONFIG_HOST": '"http://172.16.40.85:8080/emap/sys/etender/api/"'
+            "WEBPACK_CONFIG_HOST": '"http://172.16.40.142:8080/emap/sys/etender/api/"'
         })
     ])
 }

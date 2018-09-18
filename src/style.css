@@ -27,3 +27,7 @@
 .ivu-message-notice-content span{
     color: #000 !important;
 }
+.el-scrollbar__wrap {
+    overflow-x: hidden !important;
+    overflow-y: auto;
+  }

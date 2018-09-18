@@ -1,7 +1,7 @@
 <template>
     <div class="pannel1">
         <div>
-            <head-bar :title="'问题跟踪分析'" :time="nowDate"></head-bar>
+            <head-bar :title="'学校问题跟踪分析'" :time="nowDate"></head-bar>
         </div>
         <div class="app__content">
             <div class="secure height100" flex>
@@ -36,7 +36,7 @@
                             </Card>
                         </aside>
                         <Card class="secure__map" col="4" title="" flex>
-                            <map-china :data="areaStatisc" :pannelData="pannelData" />
+                            <map-china :data="mapData" :pannelData="pannelData" @handleChangeqy="handleChangeqy" @handleFilterqy="handleFilterqy"/>
                         </Card>
                     </div>
                     <div class="secure__detail" col="3" flex :row=true>
@@ -50,7 +50,7 @@
                                 <span class="num fontsize60">{{pannelData.yjjs}}</span>
                             </div>
                         </Card>
-                        <Card col="1" :title="'未关闭投诉'">
+                        <Card col="1" :title="'未关闭投诉'" :show="true">
                               <div style="height:300px;overflow:hidden"  v-if="wgbtsData.length > 0" @mouseover="handleClearTimerTs" @mouseout="handleStartTimerTs"> 
                                 <table class="table"  :class="{animWT:animate==true}">
                                     <tr v-for="(item,index) in wgbtsData" :key="index" >
@@ -61,9 +61,9 @@
                             </div>
                             <no-data col="1" v-else />
                         </Card>
-                        <Card col="1" :title="'超期未解决问题'">
-                                <div style="height:300px;overflow:hidden"  v-if="cqwjjData.length > 0" @mouseover="handleClearTimerCq" @mouseout="handleStartTimerCq"> 
-                                <table class="table"  :class="{animWT:animateCq==true}">
+                        <Card col="1" :title="'超期未解决问题'" :show="true" >
+                             <div style="height:300px;overflow:hidden"  v-if="cqwjjData.length > 0" @mouseover="handleClearTimerCq" @mouseout="handleStartTimerCq"> 
+                                <table class="table"  :class="{animWT:animateCq==true}" >
                                     <tr v-for="(item,index) in cqwjjData" :key="index" >
                                         <td :title="item.bt">{{item.bt}}<br><span class="current">当前环节:{{item.zt}}</span></td>
                                         <td class="date">{{item.fbrq}}<br><span class="overdate">已超期: {{item.cqts}} 天</span></td>
@@ -79,14 +79,14 @@
                     <Card class="secure__type" col="3" title="处理中问题数" :gradient='["rgba(214,0,0,0.5)","rgba(214,0,0,0.1)"]'>
                         <div col="1" flex>
                             <job-distribute v-if="jobDistributes.length > 0" :data="jobDistributes" 
-                             :clzwts="Number(pannelData.wxys)+Number(pannelData.wjjs)+Number(pannelData.wjjsqgb)"/>
+                             :clzwts="Number(pannelData.wtzs) - Number(pannelData.yjjs)"/>
                             <no-data col="1" v-else />
                         </div>
                     </Card>
                     <Card col="3" title="处理完成问题数" :gradient='["rgba(0,221,137,0.5)","rgba(0,0,0,0.1)"]'>
                         <bar-chart :mys="mys" :bmys="bmys" :clwcwts="Number(pannelData.bmys)+Number(pannelData.mys)"></bar-chart>
                     </Card>
-                    <Card col="3" :title="'未关闭催办'">
+                    <Card col="3" :title="'未关闭催办'" :show="true">
                             <div style="height:300px;overflow:hidden"  v-if="wgbcbData.length > 0" @mouseover="handleClearTimerCb" @mouseout="handleStartTimerCb"> 
                                 <table class="table"  :class="{animWT:animateCb==true}">
                                     <tr v-for="(item,index) in wgbcbData" :key="index" >
@@ -119,7 +119,6 @@ export default {
             summary: {
                 totalNum: 864
             },
-            areaStatisc: [],
             jobDistributes: [{
                 name: "未响应",
                 value:30
@@ -142,7 +141,8 @@ export default {
             nowDate:'',
             timerTs:null,
             timerCq:null,
-            timerCb:null
+            timerCb:null,
+            mapData:[],
         }
     },
     created() {
@@ -151,23 +151,35 @@ export default {
     },
     mounted() {},
     methods: {
+        handleChangeqy(data){
+            this.querySchoolQuestionPanel(data);     
+        }, 
+        handleFilterqy(data){   //切换区域
+            this.querySchoolQuestionPanel(data);   
+        },
         handleClearTimerTs(){
             clearInterval(this.timerTs);
         },
         handleStartTimerTs(){
-            this.timerTs =  setInterval(this.scroll,1000);
+            if(this.wgbtsData.length > 5){
+                this.timerTs =  setInterval(this.scroll,1000);
+            }
         },
         handleClearTimerCq(){
             clearInterval(this.timerCq);
         },
         handleStartTimerCq(){
-            this.timerCq = setInterval(this.scrollCq,1000);
+           if(this.cqwjjData.length > 5){
+                this.timerCq = setInterval(this.scrollCq,1000);
+            }
         },
         handleClearTimerCb(){
             clearInterval(this.timerCb);
         },
         handleStartTimerCb(){
-            this.timerCb = setInterval(this.scrollCb,1000);
+            if(this.wgbcbData.length > 5){
+                this.timerCb = setInterval(this.scrollCb,1000);
+            }
         },
         scroll(){
                 this.animate=true;    
@@ -195,6 +207,10 @@ export default {
          },
          
         querySchoolQuestionPanel(qymc){
+            clearInterval(this.timerTs);
+            clearInterval(this.timerCq);
+            clearInterval(this.timerCb);
+
             this.$get(this.API.querySchoolQuestionPanel,{
                 curPage:1,
                 pageSize:9999,
@@ -210,13 +226,36 @@ export default {
                     this.jobDistributes[2].value = res.data.data.wjjsqgb
                     this.mys = Number(res.data.data.mys)
                     this.bmys = Number(res.data.data.bmys)
-                    this.cqwjjData.forEach(ele=>{
-                        if(this.DateMinus(ele.cnjsrq) >= 0 ){
-                            ele.cqts =  Math.abs(this.DateMinus(ele.cnjsrq));
-                        }else{
-                            ele.cqts = 0    
+                    if(!this.mapData.length && !!res.data.data.provinceData){
+                        res.data.data.provinceData.forEach(ele=>{
+                        if(ele.PROVINCE.indexOf('市') != -1){
+                            ele.PROVINCE = ele.PROVINCE.split('市')[0]
+                        }else if(ele.PROVINCE.indexOf('省') != -1){
+                            ele.PROVINCE = ele.PROVINCE.split('省')[0]
+                        }else if(ele.PROVINCE.indexOf('自治区') != -1 && ele.PROVINCE.indexOf('维吾尔') == -1 && ele.PROVINCE.indexOf('回族') == -1){
+                            ele.PROVINCE = ele.PROVINCE.split('自治区')[0]
+                        }else if(ele.PROVINCE.indexOf('维吾尔') != -1){
+                            ele.PROVINCE = ele.PROVINCE.split('维吾尔')[0] 
+                        }else if(ele.PROVINCE.indexOf('回族') != -1){
+                            ele.PROVINCE = ele.PROVINCE.split('回族')[0] 
                         }
-                    })
+                     })
+                        this.mapData = res.data.data.provinceData;
+                        let keyMap = {
+                            "PROVINCE" : "name",
+                            "PROVINCEDATA" : "value",
+                        };
+                        for(var i = 0;i < this.mapData.length;i++){
+                                var obj = this.mapData[i];
+                                for(var key in obj){
+                                    var newKey = keyMap[key];
+                                    if(newKey){
+                                        obj[newKey] = obj[key];
+                                        delete obj[key];
+                                }
+                            }
+                        }
+                    }
                     if(this.wgbtsData.length > 5){
                        this.timerTs =  setInterval(this.scroll,1000);
                     }
@@ -226,6 +265,8 @@ export default {
                     if(this.wgbcbData.length > 5){
                        this.timerCb = setInterval(this.scrollCb,1000);
                     }
+                }else{
+                    this.$alert(res.data.msg, '提示', {confirmButtonText: '确定',type:'error'});
                 }
             })
         },
@@ -235,51 +276,10 @@ export default {
         　　var days = now.getTime() - sdate.getTime(); 
         　　var day = parseInt(days / (1000 * 60 * 60 * 24)); 
         　　return day; 
-        },
-
-        //控制表格滚动
-        scrollShow() {
-            var that = this;
-            // var page = 1;
-            // var size = 5;
-
-            if (!this.signInfoList) {
-                return;
-            }
-            if (this.signInfoList.length <= 3) {
-                this.waitDealEvent = this.signInfoList.reverse()
-                return;
-            }
-            var count = this.signInfoList.length;
-            clearInterval(this.intervalIndex);
-            var i = 0;
-            this.intervalIndex = setInterval(function() {
-            if (i > count - 3) {
-                i = 0;
-            }
-            var attactTemp = [];
-            for (let m = i; m < count && m < i + 3; m++) {
-                let o = that.signInfoList[m];
-
-                attactTemp.push(o);
-            }
-            attactTemp.forEach(function(e) {
-                that.waitDealEvent.unshift(e);
-            });
-
-            while (that.waitDealEvent.length > 3) {
-                that.waitDealEvent.pop();
-            }
-            // console.log('---------当前签到明细-------------------')
-            // console.log(that.waitDealEvent)
-            // console.log('当前循环的i值:' + i)
-            i++;
-            }, 2000);
         }
     },
 
     components: {
-
         numCardGroup,
         progressBarGroup,
         Card,
@@ -322,11 +322,11 @@ export default {
         width: 100%;
         height: 100%;
         td {
-            height: 45px;
+            height: 42px;
             @include truncate(70%);
         }
         td:nth-child(1){
-            width: 62%;
+            width: 60%;
         }
         .title {
             border-left: 5px solid #F9B74C;

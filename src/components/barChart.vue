@@ -62,7 +62,7 @@ export default {
                     type: 'pie',
                     radius: ['40%', '70%'],
                     // avoidLabelOverlap: false,
-                    color: ['#3AC868', '#F9B74C'],
+                    color: ['#3AC868', '#D1D1D1'],
                     label: {
                         show: true,
                         fontSize: 16,

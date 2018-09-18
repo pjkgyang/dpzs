@@ -1,25 +1,21 @@
 
 import axios from 'axios'
-// import iView from 'iview';
+import { Loading, Message, MessageBox } from 'element-ui'
+
+
+
+
+let loading        //定义loading变量
 
 function startLoading() {
-    iView.Spin.show({
-        render: (h) => {
-            return h('div', [
-                h('Icon', {
-                    'class': 'demo-spin-icon-load',
-                    props: {
-                        type: 'ios-loading',
-                        size: 24
-                    }
-                }),
-                h('div', '加载中~')
-            ])
-        }
-    });
+    loading = Loading.service({
+        lock: true,
+        text: '加载中...',
+        background: 'rgba(0, 0, 0, 0.7)'
+    })
 }
 function endLoading() {
-    iView.Spin.hide();
+    loading.close()
 }
 //声明一个变量 needLoadingRequestCount，每次调用showFullScreenLoading方法 needLoadingRequestCount + 1。
 //调用tryHideFullScreenLoading()方法，needLoadingRequestCount - 1。needLoadingRequestCount为 0 时，结束 loading。
@@ -39,18 +35,19 @@ export function tryHideFullScreenLoading() {
         endLoading()
     }
 }
+
 axios.defaults.timeout = 30000
 
 axios.interceptors.request.use(config => {
-    // showFullScreenLoading();
+    showFullScreenLoading();
     return config;
 }, error => {
-    // iView.$Message.error({
-    //     content:'请求超时 ~',
-    //     duration: 10,
-    //     closable: true
-    // });
-    // tryHideFullScreenLoading();
+        MessageBox.alert('请求超时...', '提示', {
+            type: 'error',
+            confirmButtonText: '确定',
+        });
+    
+    tryHideFullScreenLoading();
     return Promise.reject(error)
 })
 
@@ -58,16 +55,20 @@ axios.interceptors.request.use(config => {
 // http响应拦截器
 axios.interceptors.response.use(
     response => {
-        // tryHideFullScreenLoading();
+        tryHideFullScreenLoading();
         return response;
+
     },
     error => {
-        // iView.Message.error({
-        //     content:'请求超时 ~',
-        //     duration: 10,
-        //     closable: true
-        // });
-        // tryHideFullScreenLoading();
+        if (error.response) {
+            console.log(error.response)
+        }
+           MessageBox.alert('请求超时...', '提示', {
+             type: 'error',
+             confirmButtonText: '确定',
+          });
+        tryHideFullScreenLoading();
         return Promise.reject(error);
     })
+
 export default axios

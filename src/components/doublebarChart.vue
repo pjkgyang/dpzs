@@ -9,7 +9,7 @@ import echarts from 'echarts'
 export default {
     data() {
         return {
-
+            chart:''
         }
     },
     props: {
@@ -26,22 +26,44 @@ export default {
         count:{
             type:Number,
             default:0
+        },
+        qymc:{
+            type:String,
+            default:''
         }
     },
     watch: {
         count(n,o){
             this.initChart();
-        }
+        },
+        qymc(n,o){
+            if(!!n){
+              this.data[0].forEach((ele,i,arr)=>{
+                  if(n.indexOf(ele) != -1){
+                    this.chart.dispatchAction({
+                        type: 'showTip',
+                        seriesIndex:0 ,//第几条series
+                        dataIndex:i,//第几个tooltip
+                     });  
+                  }
+              })  
+            }else{
+               this.chart.dispatchAction({
+                    type: 'showTip',
+                    seriesIndex:0 ,//第几条series
+                    dataIndex:20,//第几个tooltip
+                });   
+            }
+        },
     },
     mounted() {
-        // this.$nextTick(() => {
-        //     this.initChart();
-        // });
+        
     },
     methods: {
         initChart() {
+            let _this = this;
             // 基于准备好的dom，初始化echarts实例
-            var myChart = echarts.init(document.getElementById('doublebarItems'));
+            this.chart = echarts.init(document.getElementById('doublebarItems'));
             // 指定图表的配置项和数据
             var option = {
                 tooltip: {
@@ -54,7 +76,7 @@ export default {
                     data: [this.count==1?'目标':'总金额',this.count==1?'已完成':'总完工'],
                     textStyle:{color:'#fff'}
                 },
-                color: ['#27A6F6','#F9B74C'],
+                color: ['#F9B74C','#27A6F6'],
 
                 grid: {
                     left: '3%',
@@ -78,10 +100,12 @@ export default {
                     },
                     axisLabel: {
                         color: '#fff',
+                        margin:12
                     }
                 },
 
-                series: [{
+                series: [
+                    {
                         name:this.count==1?'已完成':'总完工',
                         type: 'bar',
                         stack: '总量',
@@ -111,10 +135,14 @@ export default {
                     }
                 ]
             };
-
+            
             // 使用刚指定的配置项和数据显示图表。
-            myChart.setOption(option);
-
+             this.chart.setOption(option);
+             this.chart.on('click',function(params){
+                 let qymc = params.name=='渠道'?'渠道工程':params.name+'区域工程';
+                 _this.$bus.$emit('handleChooseBar',qymc);
+                 _this.$emit('handleChooseBar',qymc);
+             })   
             // myChart.dispatchAction({
             //     type: 'showTip',
             //     seriesIndex:0 ,//第几条series

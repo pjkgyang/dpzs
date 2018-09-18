@@ -9,12 +9,18 @@ import api from './api'
 import axios from 'axios'
 import 'bh-mint-ui2/lib/style.css'
 import 'echarts/map/js/china.js'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css';
+
+// 总线
+const EventBus = new Vue();
 // import iView from 'iview';
 // import 'iview/dist/styles/iview.css';
 // Vue.use(iView);
 // Vue.prototype.$Spin = iView.Spin
 Vue.prototype.API = api;
 Vue.prototype.$get = utils.Get;
+Vue.prototype.$bus = EventBus;
 import './http.js'
 
 if (window.smile) {
@@ -24,9 +30,10 @@ if (window.smile) {
       window.WEBPACK_CONFIG_HOST = WEBPACK_CONFIG_HOST
   }
   // 初始化eventBus
-  window.smile.eventBus = new Vue()
+//   window.smile.eventBus = new Vue()
 }
 
+Vue.use(ElementUI);
 Vue.use(Mint);
 Vue.use(VueRouter);
 const router = new VueRouter(route);

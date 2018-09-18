@@ -9,7 +9,7 @@
                 <aside class="" flex-column col="2">
                     <div col="2" flex-column :row='false'>
                         <div class="top" flex col="6">
-                            <Card class="" col="4" title="综合统计" flex :gradient='["#0086E3","rgba(0,70,209,0.33)"]'>
+                            <Card class="" col="4"  title="综合统计(万元)" flex :gradient='["#0086E3","rgba(0,70,209,0.33)"]'>
                                 <div col="1" flex-column spacearound>
                                     <div flex spacearound>
                                         <div class="totalStatics-item" flex-column center>
@@ -18,7 +18,7 @@
                                         </div>
                                         <div class="totalStatics-item" flex-column center>
                                             <div class="num fontsize60">
-                                                {{(Number(pannelData.zbwgl)/(Number(pannelData.zbrlfy)+Number(pannelData.zbekfy)+Number(pannelData.zbkbfy))*100).toFixed(0)+"%"}}
+                                                {{(((Number(pannelData.zbrlfy)+Number(pannelData.zbekfy)+Number(pannelData.zbkbfy))/Number(pannelData.zbwgl))*100).toFixed(0)+"%"}}
                                             </div>
                                             <h3>效率</h3>
                                         </div>
@@ -26,7 +26,7 @@
                                     <div flex spacearound>
                                         <div class="totalStatics-item" flex-column center>
                                             <div class="num num1 fontsize60">{{pannelData.zbrlfy}}</div>
-                                            <h3>人力</h3>
+                                            <h3>实施</h3>
                                         </div>
                                         <div class="totalStatics-item" flex-column center>
                                             <div class="num num2 fontsize60">{{pannelData.zbekfy}}</div>
@@ -50,11 +50,11 @@
                                         <th width="110">区域</th>
                                         <th width="80">姓名</th>
                                         <th width="90">入职时间</th>
-                                        <th width="90">金额(元)</th>
+                                        <th width="90">金额(万元)</th>
                                     </thead>
                                 </table>
                                 <table  v-if="jsData.length > 0"  class="table" @mouseover="handleClearTimer" @mouseout="handleStartTimer">
-                                    <tbody :class="{animcb:animate==true}">
+                                    <tbody :class="{animcb1:animate==true}">
                                       <tr v-for="(item,index) in jsData" :key="index" flex spacearound >
                                         <td width="30">{{item.mc}}</td>
                                         <td width="110">{{item.qymc}}</td>
@@ -71,78 +71,80 @@
                 </aside>
                 <main flex-column col="4">
                     <div class="" flex col="6">
-                        <Card class="" col="4" title="" flex>
-                            <div ref="chinamap" id="chinamap"></div>
+                        <Card class="" col="4"  title="" flex>
+                            <!-- <div ref="chinamap" id="chinamap"></div> -->
+                             <china-map  @handleChangeqy="handleChangeqy" @handleFilterqy="handleFilterqy" :mapData="mapData" 
+                             :circle-show="false" :toolip-title="'分包效率'"></china-map>
                         </Card>
                     </div>
                     <div class="" col="3" flex>
                         <Card col="3" title="分包效率">
-                            <doublebar-chart :data="barData" :count="count"></doublebar-chart>
+                            <doublebar-chart :data="barData" :count="count" :qymc="qymc" @handleChooseBar="handleChooseBar"></doublebar-chart>
                         </Card>
                     </div>
                 </main>
                 <!-- 右侧表格 -->
                 <aside class="" flex-column col="2">
                     <div class="" flex-column col="6">
-                        <Card class="projects" col="1" title="软件项目" flex rowcenter style="position:relative;">
+                        <Card class="projects" col="1" title="软件项目(万元)" flex rowcenter style="position:relative;">
                             <span style="position:absolute;top:16px;right:16px;">
                                 <template v-for="(items,index) in tabbtn">
                                     <span :class="{'titlebutton':true,'titlebtnactive':index==curTabindex1}" @click='chooseBtn1(index)'>{{items}}</span>
 </template>
 </span>
-<div col="1" flex style="width:90%;margin: 0 auto;">
+<div col="1" flex style="width:98%;margin: 0 auto;">
     <div flex col="1" spacebetween colcenter>
         <div flex spacebetween colcenter style="background-image: linear-gradient(-180deg, rgb(227, 144, 0,0.6) 0%, rgba(221,206,0,0.4) 20%, rgba(214,213,0,0.2) 48%, rgba(209,202,0,0.00) 100%);width:100%;height:50px;padding:0 20px;">
             <span class="text">效率</span>
-            <span class="num">
-                {{(!xmData.wcl||!xmData.cb?0:Number(xmData.wcl)/Number(xmData.cb)*100).toFixed(0)}}
+            <span class="num" style="text-align:right">
+                {{(!xmData.wcl||!xmData.cb?0:Number(xmData.cb)/Number(xmData.wcl)*100).toFixed(0)}}%
             </span>
         </div>
     </div>
 </div>
 <div col="1" flex spacebetween>
-    <div flex col="1" spacearound colcenter>
+    <div flex col="1" rowcenter colcenter>
         <span class="text">完工</span>
         <span class="num">{{!xmData.wcl?0:xmData.wcl}}</span>
     </div>
-    <div flex col="1" spacearound colcenter>
+    <div flex col="1" rowcenter colcenter>
         <span class="text">验收</span>
         <span class="num">{{!xmData.ysl?0:xmData.ysl}}</span>
     </div>
 </div>
 <div col="1" flex spacebetween>
-    <div flex col="1" spacearound colcenter>
+    <div flex col="1" rowcenter colcenter>
         <span class="text">收入</span>
         <span class="num">{{!xmData.sr?0:xmData.sr}}</span>
     </div>
-    <div flex col="1" spacearound colcenter>
+    <div flex col="1" rowcenter colcenter>
         <span class="text">成本</span>
         <span class="num">{{!xmData.cb?0:xmData.cb}}</span>
     </div>
 </div>
 </Card>
-<Card class="projects" col="1" title="其他项目" flex style="position:relative;">
+<Card class="projects" col="1" title="其他项目(万元)" flex style="position:relative;">
     <span style="position:absolute;top:16px;right:16px;">
                                 <span v-for="(items,index) in tabbtn" :class="{'titlebutton':true,'titlebtnactive':index==curTabindex2}" @click='chooseBtn2(index)'>{{items}}</span>
     </span>
     <div col="1" flex spacebetween>
-        <div flex col="1" spacearound colcenter>
+        <div flex col="1"  colcenter rowcenter>
             <span class="text">完工</span>
             <span class="num">{{!otherData.wcl?0:otherData.wcl}}</span>
         </div>
-        <div flex col="1" spacearound colcenter>
+        <div flex col="1" rowcenter colcenter>
             <span class="text">效率</span>
             <span class="num">
-                 {{(!otherData.wcl||!otherData.cb?0:Number(otherData.wcl)/Number(otherData.cb)*100).toFixed(0)}}
+                 {{(!otherData.wcl||!otherData.cb?0:Number(otherData.cb)/Number(otherData.wcl)*100).toFixed(0)}}%
             </span>
         </div>
     </div>
     <div col="1" flex spacebetween>
-        <div flex col="1" spacearound colcenter>
+        <div flex col="1" rowcenter colcenter>
             <span class="text">收入</span>
             <span class="num">{{!otherData.sr?0:otherData.sr}}</span>
         </div>
-        <div flex col="1" spacearound colcenter>
+        <div flex col="1" rowcenter colcenter>
             <span class="text">成本</span>
             <span class="num">{{!otherData.cb?0:otherData.cb}}</span>
         </div>
@@ -164,7 +166,7 @@
         <div flex spacearound>
             <div class="totalStatics-item" flex-column center>
                 <div class="num num1 fontsize60">{{pannelData.gbrlfy}}</div>
-                <h3>人力</h3>
+                <h3>实施</h3>
             </div>
             <div class="totalStatics-item" flex-column center>
                 <div class="num num2 fontsize60">{{!pannelData.gbekfy?0:pannelData.gbekfy}}</div>
@@ -189,65 +191,22 @@ import progressBarGroup from '../../components/progressBarGroup.vue'
 import Card from '../../components/Card.vue'
 import doublebarChart from '../../components/doublebarChart.vue'
 import arrowBar from '../../components/arrowBar.vue'
-import mapChina from '../../components/mapChina.vue'
 import noData from '../../components/noData.vue'
-import provinceArr from '../../../static/mapjson/province.js'
+import chinaMap from '../../components/chinaMap.vue'
 import echarts from 'echarts'
-var json = require('echarts/map/json/china.json')
+var json = require('echarts/map/json/china.json');
 
 export default {
     data() {
         return {
-            currentProvince:provinceArr,
             summary: {
                 totalNum: 864
             },
             curTabindex1: 0,
             curTabindex2: 0,
             tabbtn: ["当年", "往年"],
-            areaStatisc: [],
-            waitDealEvent: [],
-            intervalIndex: {},
-            jobDistributes: [{
-                name: "未响应",
-                value: 34
-            }, {
-                name: "未解决",
-                value: 10
-            }, {
-                name: "正常",
-                value: 50
-            }],
-            ranks: [{
-                    area: "江苏",
-                    name: "张三",
-                    time: "2012.11.24",
-                    money: "5000",
-                },
-                {
-                    area: "江苏",
-                    name: "张三",
-                    time: "2012.11.24",
-                    money: "5000",
-                }, {
-                    area: "江苏",
-                    name: "张三",
-                    time: "2012.11.24",
-                    money: "5000",
-                }, {
-                    area: "江苏",
-                    name: "张三",
-                    time: "2012.11.24",
-                    money: "5000",
-                }, {
-                    area: "江苏",
-                    name: "张三",
-                    time: "2012.11.24",
-                    money: "5000",
-                }
-            ],
             pie1Value: [
-                { value: 35, name: '人力' },
+                { value: 35, name: '实施' },
                 { value: 310, name: '二开' },
                 { value: 230, name: '可变' }
             ],
@@ -259,13 +218,12 @@ export default {
             otherData:{},
             nowDate:'',
             animate:false,
-            timer:null
+            timer:null,
+            qymc:'',
+            mapData:[]
         }
     },
     created() {
-        this.$nextTick(() => {
-            this.initMap();
-        });
         this.nowDate = getMyDate(new Date());
         this.queryCostAnalysisPanel();
         this.$get(this.API.queryRegionSubcontractEfficiency,{}).then(res=>{
@@ -274,7 +232,10 @@ export default {
                 let qymcArr = [];  
                 let zjeArr = [];
                 let ywcArr = [];
-                res.data.data.forEach(ele=>{
+                res.data.data.qydata.forEach(ele=>{
+                    if(ele.qymc == '渠道工程'){
+                        ele.qymc =   ele.qymc.split('工程')[0]; 
+                    }
                     qymcArr.push(ele.qymc.split('区域工程')[0]);
                     zjeArr.push(ele.zje);
                     ywcArr.push(ele.wcl);
@@ -282,27 +243,61 @@ export default {
                 this.barData[0] = qymcArr;
                 this.barData[1] = zjeArr;
                 this.barData[2] = ywcArr;
+                res.data.data.provinceData.forEach(ele=>{
+                    if(ele.PROVINCE.indexOf('市') != -1){
+                        ele.PROVINCE = ele.PROVINCE.split('市')[0]
+                    }else if(ele.PROVINCE.indexOf('省') != -1){
+                        ele.PROVINCE = ele.PROVINCE.split('省')[0]
+                    }else if(ele.PROVINCE.indexOf('自治区') != -1 && ele.PROVINCE.indexOf('维吾尔') == -1 && ele.PROVINCE.indexOf('回族') == -1){
+                        ele.PROVINCE = ele.PROVINCE.split('自治区')[0]
+                    }else if(ele.PROVINCE.indexOf('维吾尔') != -1){
+                        ele.PROVINCE = ele.PROVINCE.split('维吾尔')[0] 
+                    }else if(ele.PROVINCE.indexOf('回族') != -1){
+                        ele.PROVINCE = ele.PROVINCE.split('回族')[0] 
+                    }
+                })
+                this.mapData = res.data.data.provinceData;
+                let keyMap = {
+                        "PROVINCE" : "name",
+                        "PROVINCEDATA" : "value",
+                    };
+                    for(var i = 0;i < this.mapData.length;i++){
+                        var obj = this.mapData[i];
+                        for(var key in obj){
+                            var newKey = keyMap[key];
+                            if(newKey){
+                                obj[newKey] = obj[key];
+                                delete obj[key];
+                        }
+                    }
+                 }
             }
         });
         this.queryRegionCostStat(this.curTabindex1==0?true:false,1);
         this.queryRegionCostStat(this.curTabindex2==0?true:false,'2,3');
-
-        this.timer = setInterval(this.scroll,1000);
     },
-    watch: {
-        currentProvince(){
-            this.$nextTick(() => {
-                this.initMap();
-            });
-        }
-    },
+    watch: {},
     mounted() {},
     methods: {
+        handleChooseBar(data){
+            this.queryCostAnalysisPanel(data);
+            this.qymc = data;
+        },
+        handleChangeqy(data){
+            this.queryCostAnalysisPanel(data);
+            this.qymc = data;
+        },
+        handleFilterqy(data){
+            this.queryCostAnalysisPanel(data);
+            this.qymc = data;
+        },
         handleClearTimer(){
             clearInterval(this.timer);
         },
         handleStartTimer(){
-            this.timer = setInterval(this.scroll,1000);
+             if(this.jsData.length > 7){
+                this.timer = setInterval(this.scroll,1000);
+            }
         },
         scroll(){
                 this.animate=true;    
@@ -313,6 +308,7 @@ export default {
              },500)
          },
         queryCostAnalysisPanel(qymc){
+            clearInterval(this.timer);
              this.$get(this.API.queryCostAnalysisPanel,{
                 curPage:1,
                 pageSize:9999,
@@ -328,8 +324,11 @@ export default {
                   this.pie1Value[1].value = res.data.data.zbekfy
                   this.pie1Value[2].value = res.data.data.zbkbfy
                   this.initChart('pieItems1', this.pie1Value);
+                  if(this.jsData.length > 7){
+                      this.timer = setInterval(this.scroll,1000);
+                   }
                 }else{
-                    this.$Message.error({content: res.data.msg,duration: 5,closable: true});  
+                   this.$alert(res.data.msg, '提示', {confirmButtonText: '确定',type:'error'});
                 }
             })
         },
@@ -357,79 +356,6 @@ export default {
         chooseBtn2(index) {
             this.curTabindex2 = index;
             this.queryRegionCostStat(this.curTabindex2==0?true:false,'2,3');
-        },
-        initMap() {
-            var _this = this
-            // 绘图方法
-            echarts.registerMap('china', json);
-            this.chart = echarts.init(this.$refs.chinamap);
-            // 皮肤添加同一般使用方式
-            this.chart.showLoading()
-            this.chart.setOption({
-                geo: {
-                    map: 'china',
-                },
-                series: [{
-                    type: 'map',
-                    mapType: 'china', // 自定义扩展图表类型
-                    itemStyle: {
-                        normal: { //未选中状态
-                            areaColor: '#a2bbc5', //背景颜色
-                        },
-                    },
-                    data: _this.currentProvince
-                }]
-            });
-            this.chart.hideLoading();
-            this.chart.on('click', function(params) {
-                console.log(params)
-                //联动区域
-                let tempArr = JSON.parse(JSON.stringify(provinceArr))
-                if(params.name=='黑龙江'||params.name=='吉林'||params.name=='辽宁'){
-                    tempArr.forEach((item,index)=>{
-                        if(item.name=='黑龙江'||item.name=='吉林'||item.name=='辽宁'){
-                            _this.$set(tempArr[index],'selected',true)
-                        }
-                    })
-                }else if(params.name=='湖北'||params.name=='湖南'){
-                    tempArr.forEach((item,index)=>{
-                        if(item.name=='湖北'||item.name=='湖南'){
-                            _this.$set(tempArr[index],'selected',true)
-                        }
-                    })
-                }else if(params.name=='安徽'||params.name=='上海'){
-                    tempArr.forEach((item,index)=>{
-                        if(item.name=='安徽'||item.name=='上海'){
-                            _this.$set(tempArr[index],'selected',true)
-                        }
-                    })
-                }else if(params.name=='陕西'||params.name=='甘肃'){
-                    tempArr.forEach((item,index)=>{
-                        if(item.name=='陕西'||item.name=='甘肃'){
-                            _this.$set(tempArr[index],'selected',true)
-                        }
-                    })
-                }else if(params.name=='河北'||params.name=='天津'){
-                    tempArr.forEach((item,index)=>{
-                        if(item.name=='河北'||item.name=='天津'){
-                            _this.$set(tempArr[index],'selected',true)
-                        }
-                    })
-                }else if(params.name=='四川'||params.name=='重庆'||params.name=='云南'||params.name=='贵州'){
-                    tempArr.forEach((item,index)=>{
-                        if(item.name=='四川'||item.name=='重庆'||item.name=='云南'||item.name=='贵州'){
-                            _this.$set(tempArr[index],'selected',true)
-                        }
-                    })
-                }else{
-                    tempArr.forEach((item,index)=>{
-                        if(item.name==params.name){
-                            _this.$set(tempArr[index],'selected',true)
-                        }
-                    })
-                }
-                _this.currentProvince = tempArr
-            });
         },
         initChart(id, value, color = ['#3AC868', '#F9B74C', '#E85650', '#37A2F7']) {
             // 基于准备好的dom，初始化echarts实例
@@ -468,10 +394,10 @@ export default {
         doublebarChart,
         progressBarGroup,
         Card,
-        mapChina,
         noData,
         arrowBar,
-        headBar
+        headBar,
+        chinaMap
     },
 }
 </script>
@@ -486,9 +412,11 @@ export default {
     .projects {
         .text {
             font-size: 16px;
+            width: 50px;
         }
         .num {
             font-size: 20px;
+            width: 55%;
         }
     }
     .totalStatics-item {

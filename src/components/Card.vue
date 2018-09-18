@@ -1,7 +1,7 @@
 <template>
     <section class="card" ref="card">
         <h3 class="card__heading" v-if="title" spacebetween>
-          <span class="card__heading-title" v-html>{{title}}</span>
+          <span><span class="border-front" v-if="show"></span><span class="card__heading-title" v-html>{{title}}</span></span>
           <span class="" v-html="subtitle"></span>
         </h3>
         <div class="card__body" :flex="row" :flex-column="!row">
@@ -32,6 +32,10 @@ export default {
                 return []
             },
             type:Array,
+        },
+        show:{
+            type:Boolean,
+            default:false
         }
     },
     mounted() {
@@ -66,6 +70,10 @@ export default {
             font-weight: bold;
             white-space: nowrap;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.30);
+        }
+        .border-front{
+            border-left: 5px solid #da8920;
+            margin-right:5px; 
         }
         sub {
             @include gradient;

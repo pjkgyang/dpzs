@@ -12,7 +12,7 @@
             </div>
         </div> -->
         <div  :class="{outer:true}"><span>目标:{{total}}</span></div>
-        <div class="inner" :style="{backgroundSize:scale+'100%'}">完成:{{done}}</div>
+        <div class="inner" :style="{backgroundSize:scale+'100%'}">完成:{{done}} ({{scale}})</div>
         <div rowcenter flex>基线目标</div>
     </div>
 </template>
@@ -42,7 +42,7 @@ export default {
     computed: {
         scale() {
             if (this.total == 0) { return 0 }
-            return Math.floor(this.done / this.total * 100)  +'%'
+            return (this.done / this.total * 100).toFixed(2) +'%'
         }
     },
     mounted() {},
