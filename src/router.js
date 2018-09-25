@@ -12,7 +12,7 @@ import NotFoundComponent from './pages/errorPage/errorPage.vue';
 
 export default {
     mode:'history',
-    // base:'dp',
+    base:'dp',
     routes: [
         {
             path: '/',

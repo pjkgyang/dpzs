@@ -16,13 +16,17 @@
                                         <span class="num numzs fontsize50">{{pannelData.ryzs}}</span>
                                     </div>
                                     <div flex spacearound>
+                                      <div class="totalStatics-item" flex-column center>
+                                            <div class="num num1 fontsize50">{{pannelData.zsrs}}</div>
+                                            <h3>正式</h3>
+                                        </div>
                                         <div class="totalStatics-item" flex-column center>
                                             <div class="num num2 fontsize50">{{pannelData.sxrs}}</div>
                                             <h3>实习</h3>
                                         </div>
                                         <div class="totalStatics-item" flex-column center>
-                                            <div class="num num1 fontsize50">{{pannelData.zsrs}}</div>
-                                            <h3>正式</h3>
+                                            <div class="num num3 fontsize50">{{pannelData.qtrs}}</div>
+                                            <h3>其他</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -31,17 +35,19 @@
                         <Card class="" col="6" flex-column :title="'人员级别'">
                                 <div  flex-column  v-if="ryjbData.length">
                                     <div col="1" flex colcenter>
+                                        <div col="1"  textcenter><span class="dot dot4"></span>&nbsp;资格</div>
                                         <div col="1"  textcenter><span class="dot dot1"></span>&nbsp;初级</div>
                                         <div col="1"  textcenter><span class="dot dot2"></span>&nbsp;中级</div>
                                         <div col="1"  textcenter><span class="dot dot3"></span>&nbsp;高级</div>
                                     </div>
                                     <div col="8" style="padding:15px 0">
-                                        <el-scrollbar style="height:100%">
-                                            <div  flex-column  colcenter v-for="item in ryjbData" >
+                                        <el-scrollbar style="height:400px">
+                                            <div style="margin-bottom:12px" flex-column  colcenter v-for="item in ryjbData" >
                                                 <div class="progress-outter">
-                                                    <span class="progress-low num" :style="{width:Number(item.cj)*100/(Number(item.cj)+Number(item.zj)+Number(item.gj)) + '%'}">{{item.cj}}</span>
-                                                    <span class="progress-mid num" :style="{width:Number(item.zj)*100/(Number(item.cj)+Number(item.zj)+Number(item.gj)) + '%'}">{{item.zj}}</span>
-                                                    <span class="progress-high num" :style="{width:Number(item.gj)*100/(Number(item.cj)+Number(item.zj)+Number(item.gj)) + '%'}">{{item.gj}}</span>
+                                                    <span class="progress-zg num" :style="{width:Number(!item.zg?0:item.zg)*100/(Number(!item.zg?0:item.zg)+Number(!item.cj?0:item.cj)+Number(!item.zj?0:item.zj)+Number(!item.gj?0:item.gj)) + '%'}">{{!item.zg?0:item.zg}}</span>
+                                                    <span class="progress-low num" :style="{width:Number(!item.cj?0:item.cj)*100/(Number(!item.zg?0:item.zg)+Number(!item.cj?0:item.cj)+Number(!item.zj?0:item.zj)+Number(!item.gj?0:item.gj)) + '%'}">{{item.cj}}</span>
+                                                    <span class="progress-mid num" :style="{width:Number(!item.zj?0:item.zj)*100/(Number(!item.zg?0:item.zg)+Number(!item.cj?0:item.cj)+Number(!item.zj?0:item.zj)+Number(!item.gj?0:item.gj)) + '%'}">{{item.zj}}</span>
+                                                    <span class="progress-high num" :style="{width:Number(!item.gj?0:item.gj)*100/(Number(!item.zg?0:item.zg)+Number(!item.cj?0:item.cj)+Number(!item.zj?0:item.zj)+Number(!item.gj?0:item.gj)) + '%'}">{{item.gj}}</span>
                                                 </div>
                                                 <h4>{{item.CPXMC}}</h4>
                                             </div>
@@ -57,8 +63,8 @@
                     <div class="" flex col="6">
                         <Card class="" col="4" title="" flex>
                             <!-- <div ref="chinamap" id="chinamap" col="5"></div> -->
-                            <chinaMap col="5" @handleChangeqy="handleChangeqy" @handleFilterqy="handleFilterqy" :circleShow="false"
-                            :mapData="mapData"  :toolip-title="'挣值效率'"></chinaMap>
+                            <chinaMap col="5" @handleChangeqy="handleChangeqy" @handleFilterqy="handleFilterqy" :title="'挣值效率'"
+                            :mapData="mapData"  :toolip-title="'挣值效率'" :num-per="(Number(pannelData.zzz)/Number(pannelData.zjx)*100).toFixed(2)"></chinaMap>
                             <div col="1" flex spacearound>
                                 <div class="totalStatics-item" flex-column center>
                                     <div class="num num3 fontsize50">{{pannelData.per200up}}</div>
@@ -256,11 +262,12 @@ export default {
           this.zdzzData = res.data.data.zdzzData;
           this.ryjbData = res.data.data.ryjbData;
           let keyMap = {
-            "1": "cj",
-            "2": "zj",
-            "3": "gj",
-            CPXBH: "CPXBH",
-            CPXMC: "CPXMC"
+            "1": "zg",
+            "2": "cj",
+            "3": "zj",
+            "4": "gj",
+            // CPXBH: "CPXBH",
+            // CPXMC: "CPXMC"
           };
           for (var i = 0; i < this.ryjbData.length; i++) {
             var obj = this.ryjbData[i];
@@ -268,26 +275,31 @@ export default {
               var newKey = keyMap[key];
               if (newKey) {
                 obj[newKey] = obj[key];
-                //    delete obj[key];
+                   delete obj[key];
               }
             }
           }
           if (!!res.data.data.provinceData) {
             res.data.data.provinceData.forEach(ele => {
-              if (ele.PROVINCE.indexOf("市") != -1) {
+             if (ele.PROVINCE.indexOf("市") != -1) {
                 ele.PROVINCE = ele.PROVINCE.split("市")[0];
               } else if (ele.PROVINCE.indexOf("省") != -1) {
                 ele.PROVINCE = ele.PROVINCE.split("省")[0];
               } else if (
                 ele.PROVINCE.indexOf("自治区") != -1 &&
                 ele.PROVINCE.indexOf("维吾尔") == -1 &&
-                ele.PROVINCE.indexOf("回族") == -1
+                ele.PROVINCE.indexOf("回族") == -1 &&
+                ele.PROVINCE.indexOf("壮族") == -1
               ) {
                 ele.PROVINCE = ele.PROVINCE.split("自治区")[0];
               } else if (ele.PROVINCE.indexOf("维吾尔") != -1) {
                 ele.PROVINCE = ele.PROVINCE.split("维吾尔")[0];
               } else if (ele.PROVINCE.indexOf("回族") != -1) {
                 ele.PROVINCE = ele.PROVINCE.split("回族")[0];
+              }else if (ele.PROVINCE.indexOf("壮族") != -1) {
+                ele.PROVINCE = ele.PROVINCE.split("壮族")[0];
+              }else if (ele.PROVINCE.indexOf("特别行政区") != -1) {
+                ele.PROVINCE = ele.PROVINCE.split("特别行政区")[0];
               }
             });
             this.mapData = res.data.data.provinceData;
@@ -405,30 +417,39 @@ export default {
   .dot3 {
     background: #37a2f7;
   }
+  .dot4{
+    background: #24b63c;  
+  }
   .progress-outter {
     width: 80%;
     font-size: 0;
     height: 28px;
     line-height: 28px;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
+    border-radius: 5px;
+    overflow: hidden;
     span {
       display: inline-block;
-      height: 100%;
       font-size: 20px;
       text-align: center;
     }
+    span.progress-zg{
+       background: #24b63c;
+      //  border-bottom-left-radius: 10px;
+      //  border-top-left-radius: 10px;
+    }
     span.progress-low {
       background: #e9b042;
-      border-bottom-left-radius: 10px;
-      border-top-left-radius: 10px;
+      // border-bottom-left-radius: 10px;
+      // border-top-left-radius: 10px;
     }
     span.progress-mid {
       background: #9d81d2;
     }
     span.progress-high {
       background: #37a2f7;
-      border-bottom-right-radius: 10px;
-      border-top-right-radius: 10px;
+      // border-bottom-right-radius: 10px;
+      // border-top-right-radius: 10px;
     }
   }
   .peoples {

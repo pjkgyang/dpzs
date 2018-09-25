@@ -38,8 +38,11 @@ export function tryHideFullScreenLoading() {
 
 axios.defaults.timeout = 30000
 
+// http请求拦截器
 axios.interceptors.request.use(config => {
-    showFullScreenLoading();
+    if(config.url.indexOf('queryRegionCostStat') == -1){
+        showFullScreenLoading(); 
+    }
     return config;
 }, error => {
         MessageBox.alert('请求超时...', '提示', {
@@ -57,7 +60,6 @@ axios.interceptors.response.use(
     response => {
         tryHideFullScreenLoading();
         return response;
-
     },
     error => {
         if (error.response) {

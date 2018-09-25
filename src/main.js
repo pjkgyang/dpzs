@@ -12,6 +12,7 @@ import 'echarts/map/js/china.js'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css';
 
+
 // 总线
 const EventBus = new Vue();
 // import iView from 'iview';
@@ -35,11 +36,16 @@ if (window.smile) {
 
 Vue.use(ElementUI);
 Vue.use(Mint);
+
 Vue.use(VueRouter);
 const router = new VueRouter(route);
 
 router.beforeEach((to, from, next) => {
   // 加载页面smile依赖
+  if(to.meta.title){
+    utilTitle.Util.title(to.meta.title);
+    next();
+  }
   if (window.smile) {
       var require = []
       var promiseArr = []
@@ -66,6 +72,7 @@ router.beforeEach((to, from, next) => {
   } else {
       next()
   }
+
 })
 
 new Vue({

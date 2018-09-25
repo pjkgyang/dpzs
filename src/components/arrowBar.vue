@@ -13,7 +13,6 @@
         </div> -->
         <div  :class="{outer:true}"><span>目标:{{total}}</span></div>
         <div class="inner" :style="{backgroundSize:scale+'100%'}">完成:{{done}} ({{scale}})</div>
-        <div rowcenter flex>基线目标</div>
     </div>
 </template>
 <script type="text/javascript">

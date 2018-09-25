@@ -30,6 +30,10 @@ export default {
         qymc:{
             type:String,
             default:''
+        },
+        max:{
+            type:Number,
+            default:100
         }
     },
     watch: {
@@ -70,24 +74,62 @@ export default {
                     trigger: 'axis',
                     axisPointer: { // 坐标轴指示器，坐标轴触发有效
                         type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
-                    }
+                    },
+                    formatter: function(params) {
+                        let res = params[0].name;
+                        params.forEach(ele=>{
+                            if(ele.seriesName == (_this.count==1?'验收完成率':_this.count==3?'完工率':'效率')){
+                               ele.value = ele.value + '%' 
+                            }
+                            res += '<br/>'+ ele.marker + ele.seriesName + ' : ' + ele.value;
+                        })
+                       return res;
+                    },
                 },
                 legend: {
-                    data: [this.count==1?'目标':'总金额',this.count==1?'已完成':'总完工'],
+                    data: [this.count==1||this.count==3?'目标':'总金额',this.count==1||this.count==3?'已完成':'总完工',this.count==1?'验收完成率':this.count==3?'完工率':'效率'],
                     textStyle:{color:'#fff'}
                 },
                 color: ['#F9B74C','#27A6F6'],
-
                 grid: {
                     left: '3%',
                     right: '4%',
                     bottom: '3%',
                     containLabel: true
                 },
-                yAxis: {
+                yAxis: [{
                     show: false,
-                    type: 'value'
+                    type: 'value',
                 },
+                {
+                    show:false,
+                    type: 'value',
+                    name:this.count==1?'验收完成率(%)':this.count==3?'完工率(%)':'效率(%)',
+                    min: 0,
+                    max:this.max,
+                    interval:20,
+                    axisLabel: {
+                        formatter: '{value} ',
+                        color:'#fff'
+                    },
+                    axisLine:{
+                      show:false, 
+                      lineStyle:{
+                          color:'#fff', 
+                      } 
+                    },
+                    axisTick:{
+                      lineStyle:{
+                          color:'#fff', 
+                      } 
+                    },
+                    splitLine:{
+                    },
+                    nameTextStyle:{
+                        color:'#fff'
+                    }
+                   }
+                ],
 
                 xAxis: {
                     type: 'category',
@@ -106,7 +148,7 @@ export default {
 
                 series: [
                     {
-                        name:this.count==1?'已完成':'总完工',
+                        name:this.count==1||this.count==3?'已完成':'总完工',
                         type: 'bar',
                         stack: '总量',
                         label: {
@@ -120,7 +162,7 @@ export default {
                         data:this.data[2]
                     },
                     {
-                        name:this.count==1?'目标':'总金额',
+                        name:this.count==1||this.count==3?'目标':'总金额',
                         type: 'bar',
                         stack: '总量',
                         label: {
@@ -132,7 +174,15 @@ export default {
                         },
                         barWidth: 20,
                         data:this.data[1]
-                    }
+                    },
+                     {
+                        name:this.count==1?'验收完成率':this.count==3?'完工率':'效率',
+                        type:'line',
+                        yAxisIndex: 1,
+                        color:['#d14a61'],
+                        data:this.data[3]
+                        // [80,70,50,55,63,69,89,90,60,60,30,30,50,55,99,50,30]
+                     }
                 ]
             };
             
@@ -143,11 +193,6 @@ export default {
                  _this.$bus.$emit('handleChooseBar',qymc);
                  _this.$emit('handleChooseBar',qymc);
              })   
-            // myChart.dispatchAction({
-            //     type: 'showTip',
-            //     seriesIndex:0 ,//第几条series
-            //     dataIndex:5,//第几个tooltip
-            //  });
         },
     },
     components: {},

@@ -2,6 +2,12 @@
 import axios from 'axios'
 import api from './api'
 
+export const utilTitle = {};
+utilTitle.title = function (title) {
+    title = title ? title + ' - Home' : 'iView project';
+    window.document.title = title;
+};
+
 
 
 const UA = navigator.userAgent.toLowerCase()

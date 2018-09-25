@@ -65,12 +65,13 @@ export default {
                     color: ['#3AC868', '#D1D1D1'],
                     label: {
                         show: true,
-                        fontSize: 16,
+                        fontSize: 14,
                         fontFamily: "DINCondensed",
-                        fontWeight:"bolder",
-                        position:"inside",
-                        textBorderWidth:0,
+                        fontWeight: "bolder",
+                        position: "inside",
+                        textBorderWidth: 0,
                         align: "right",
+                        formatter: "{b}:{d}%",
                     },
                     labelLine: {
                         show: false
