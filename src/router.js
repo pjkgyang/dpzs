@@ -12,7 +12,7 @@ import NotFoundComponent from './pages/errorPage/errorPage.vue';
 
 export default {
     mode:'history',
-    base:'dp',
+    // base:'dp',
     routes: [
         {
             path: '/',
@@ -47,11 +47,16 @@ export default {
             component: pannel7
         },
         {
-            path: '*',
+            path: "/404",
+            name: "notFound",
             component: NotFoundComponent,
             meta:{
                 title:'404'
             }
+        },
+        {
+            path: "*", // 此处需特别注意置于最底部
+            redirect: "/404"
         }
     ]
 };

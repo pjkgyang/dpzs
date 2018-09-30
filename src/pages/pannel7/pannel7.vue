@@ -222,7 +222,7 @@
                                     <tr v-for="(item,index) in ysData" :key="index" >
                                         <td :title="item.xmmc">{{item.xmmc}}</td>
                                         <td>{{item.yssj}}</td>
-                                        <td style="color:#F2A51B">{{item.xmzt}}</td>
+                                        <td :class="{'active-ys':item.xmzt=='验收','active-syx':item.xmzt=='试运行'}"  style="color:#F2A51B">{{item.xmzt}}</td>
                                     </tr>
                                 </table>
                             </div>

@@ -108,15 +108,16 @@
           <h3>当年完工</h3>
       </div>
       <div class="totalStatics-item" flex-column center>
-          <div class="num num2 fontsize60">{{!pannelData.dnrjys?0:pannelData.dnrjys}}</div>
-          <h3>当年验收</h3>
+          <div class="num num2 fontsize60">{{!pannelData.wnrjwg?0:pannelData.wnrjwg}}</div>
+          <h3>往年完工</h3>
       </div>
+      
 </div>
 
      <div col="1" flex spacearound>
       <div class="totalStatics-item" flex-column center>
-          <div class="num num1 fontsize60">{{!pannelData.wnrjwg?0:pannelData.wnrjwg}}</div>
-          <h3>往年完工</h3>
+          <div class="num num1 fontsize60">{{!pannelData.dnrjys?0:pannelData.dnrjys}}</div>
+          <h3>当年验收</h3>
       </div>
       <div class="totalStatics-item" flex-column center>
           <div class="num num2 fontsize60">{{!pannelData.wnrjys?0:pannelData.wnrjys}}</div>

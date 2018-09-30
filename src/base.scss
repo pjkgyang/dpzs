@@ -152,7 +152,12 @@ img {
  border-color: rgba(255, 255, 255, 0.2);  
  cursor: pointer;
 }
-
+.active-ys{
+  color: #5cca78  !important;
+}
+.active-syx{
+  color: #a0b8f8 !important;
+}
 @for $i from 1 to 10 {
   [col='#{$i}'] {
     flex: $i 0 0 !important;
