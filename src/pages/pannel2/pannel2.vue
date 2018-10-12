@@ -21,6 +21,7 @@
                 <!-- 右侧表格 -->
                 <aside class="secure__rightaside" flex-column col="2">
                     <Card col="6" title="验收动态">
+                        <el-scrollbar style="height:100%">
                         <div style="padding:0 30px;" @mouseover="handleCloseTimer" @mouseout="handleStartTimer">
                              <div style="overflow:hidden"  v-if="ysdtData.length > 0"> 
                                 <table class="table"  :class="{animys:animate==true}">
@@ -33,6 +34,7 @@
                             </div>
                             <no-data col="1" v-else />
                         </div>
+                      </el-scrollbar>
                     </Card>
                     <Card col="4" flex :row=true>
                         <div col="1" flex-column>
@@ -120,6 +122,7 @@ export default {
         let mbArr = [];
         let ywcArr = [];
         let xlArr = [];
+        let oldmbArr = [];
         this.count = 1;
         res.data.data.provinceData.forEach(ele => {
           if (ele.PROVINCE.indexOf("市") != -1) {
@@ -164,6 +167,17 @@ export default {
         this.qyysData[1] = mbArr;
         this.qyysData[2] = ywcArr;
         this.qyysData[3] = xlArr;
+        mbArr.forEach((item,i,arr)=>{
+           let num = '';
+            if(Number(item) -Number(ywcArr[i]) < 0){
+              num = 0
+            }else{
+              num = Number(item) - Number(ywcArr[i])
+            }
+            oldmbArr.push(num)
+          })
+        this.qyysData[4] = oldmbArr;
+
 
         let keyMap = {
           PROVINCE: "name",
@@ -208,16 +222,18 @@ export default {
     },
     handleStartTimer() {
       if (this.ysdtData.length > 13) {
-        this.timer = setInterval(this.scroll, 1000);
+        this.timer = setInterval(this.scroll, 10000);
       }
     },
     scroll() {
       this.animate = true;
+      this.ysdtData = this.ysdtData.concat(this.ysdtData.slice(0,10));
       setTimeout(() => {
-        this.ysdtData.push(this.ysdtData[0]);
-        this.ysdtData.shift();
+        // this.ysdtData.push(this.ysdtData[0]);
+        // this.ysdtData.shift();
+        this.ysdtData.splice(0,7);
         this.animate = false;
-      }, 500);
+      }, 300);
     },
     queryProjectAcceptancePanel(qymc) {
       clearInterval(this.timer);
@@ -244,7 +260,7 @@ export default {
           this.initChart1();
           this.initChart2();
           if (this.ysdtData.length > 13) {
-            this.timer = setInterval(this.scroll, 1000);
+            this.timer = setInterval(this.scroll, 10000);
           }
         } else {
           this.$alert(res.data.msg, "提示", {
@@ -379,7 +395,7 @@ export default {
       text-align: left;
     }
     td {
-      height: 35px;
+      height: 34px;
       @include truncate(70%);
     }
     td:nth-child(1) {

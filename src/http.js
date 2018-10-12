@@ -2,8 +2,7 @@
 import axios from 'axios'
 import { Loading, Message, MessageBox } from 'element-ui'
 
-
-
+var functions = require("./fullscreen.js");
 
 let loading        //定义loading变量
 
@@ -41,7 +40,9 @@ axios.defaults.timeout = 30000
 // http请求拦截器
 axios.interceptors.request.use(config => {
     if(config.url.indexOf('queryRegionCostStat') == -1){
-        showFullScreenLoading(); 
+        if(!functions.isFullscreen()){
+            showFullScreenLoading(); 
+        }
     }
     return config;
 }, error => {

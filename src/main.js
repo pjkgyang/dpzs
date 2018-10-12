@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 import App from './App.vue';
 import Mint from 'bh-mint-ui2';
 import { Toast } from 'bh-mint-ui2';
-import route from './router';
+import router from './router';
 import * as utils from './utils'
 import api from './api'
 import axios from 'axios'
@@ -37,15 +37,16 @@ if (window.smile) {
 Vue.use(ElementUI);
 Vue.use(Mint);
 
-Vue.use(VueRouter);
-const router = new VueRouter(route);
+// Vue.use(VueRouter);
+// const router = new VueRouter(route);
 
 router.beforeEach((to, from, next) => {
   // 加载页面smile依赖
   if(to.meta.title){
-    utilTitle.Util.title(to.meta.title);
+    utils.util.title(to.meta.title);
     next();
   }
+
   if (window.smile) {
       var require = []
       var promiseArr = []

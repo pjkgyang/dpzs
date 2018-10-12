@@ -43,28 +43,30 @@
                             </Card>
                         </div>
                         <div class="" col="3" flex>
-                            <Card col="3" title="结算排名">
+                            <Card col="3" title="结算排名"  >
                                 <table class="theadTable">
                                     <thead flex spacearound>
-                                        <th width="30">排名</th>
+                                        <th width="40">排名</th>
                                         <th width="110">区域</th>
                                         <th width="80">姓名</th>
                                         <th width="90">入职时间</th>
-                                        <th width="90">金额(万元)</th>
+                                        <th width="90">金额(元)</th>
                                     </thead>
                                 </table>
-                                <table  v-if="jsData.length > 0"  class="table" @mouseover="handleClearTimer" @mouseout="handleStartTimer">
-                                    <tbody :class="{animcb1:animate==true}">
-                                      <tr v-for="(item,index) in jsData" :key="index" flex spacearound >
-                                        <td width="30">{{item.mc}}</td>
-                                        <td width="110">{{item.qymc}}</td>
-                                        <td width="80">{{item.ygxm}}</td>
-                                        <td width="90">{{item.rzsj}}</td>
-                                        <td width="90">{{item.je}}</td>
-                                     </tr>
-                                    </tbody>
-                                </table>
-                                <no-data col="1" v-else />
+                                 <el-scrollbar style="height:100%">
+                                  <table  v-if="jsData.length > 0"  class="table" @mouseover="handleClearTimer" @mouseout="handleStartTimer">
+                                      <tbody :class="{animcb1:animate==true}">
+                                        <tr v-for="(item,index) in jsData" :key="index" flex spacearound >
+                                          <td width="40">{{item.mc}}</td>
+                                          <td width="110">{{item.qymc}}</td>
+                                          <td width="80">{{item.ygxm}}</td>
+                                          <td width="90">{{item.rzsj}}</td>
+                                          <td width="90">{{item.je}}</td>
+                                      </tr>
+                                      </tbody>
+                                  </table>
+                                  <no-data col="1" v-else />
+                                 </el-scrollbar>
                             </Card>
                         </div>
                     </div>
@@ -254,6 +256,7 @@ export default {
         this.barData[1] = zjeArr;
         this.barData[2] = ywcArr;
         this.barData[3] = xlArr;
+        this.barData[4] = zjeArr;
         res.data.data.provinceData.forEach(ele => {
           if (ele.PROVINCE.indexOf("市") != -1) {
             ele.PROVINCE = ele.PROVINCE.split("市")[0];
@@ -295,7 +298,9 @@ export default {
     });
   },
   watch: {},
-  mounted() {},
+  mounted() {
+  
+  },
   methods: {
     handleChooseBar(data) {
       this.queryCostAnalysisPanel(data);
@@ -314,14 +319,16 @@ export default {
     },
     handleStartTimer() {
       if (this.jsData.length > 7) {
-        this.timer = setInterval(this.scroll, 1000);
+        this.timer = setInterval(this.scroll, 10000);
       }
     },
     scroll() {
       this.animate = true;
+      this.jsData = this.jsData.concat(this.jsData.slice(0,5))
       setTimeout(() => {
-        this.jsData.push(this.jsData[0]);
-        this.jsData.shift();
+        // this.jsData.push(this.jsData[0]);
+        // this.jsData.shift();
+        this.jsData.splice(0,5);
         this.animate = false;
       }, 500);
     },
@@ -343,7 +350,7 @@ export default {
           this.pie1Value[2].value = res.data.data.zbkbfy;
           this.initChart("pieItems1", this.pie1Value);
           if (this.jsData.length > 7) {
-            this.timer = setInterval(this.scroll, 1000);
+            this.timer = setInterval(this.scroll, 10000);
           }
         } else {
           this.$alert(res.data.msg, "提示", {
@@ -446,8 +453,8 @@ export default {
       height: 95%;
       td {
         text-align: center;
-        height: 30px;
-        line-height: 30px;
+        height: 28px;
+        line-height: 28px;
         @include truncate(70%);
       }
     }

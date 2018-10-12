@@ -1,37 +1,61 @@
 <template>
-    <router-view></router-view>
+    <transition :name="transitionName">
+      <router-view class="child-view"></router-view>
+    </transition>
 </template>
 
 <script>
-    import style from './style.css'
+    import style from './style.css';
+    var functions = require("./fullscreen.js");
+    const owner = this;
     export default {
         data () {
-            return {}
+            return {
+                transitionName: 'slide-left',
+                routerArr:['/wtgz','/gczh','/gcys','/gcwg','/gcry','/gccb'],
+                // count:0
+            }
         },
         mounted(){
-            switch (this.$route.path){
-                case '/wtgz':
-                document.title = '问题跟踪分析'
-                break;
-                case '/gczh':
-                document.title = '工程综合概况'
-                break;
-                case '/gcys':
-                document.title = '工程验收分析'
-                break;
-                case '/gcwg':
-                document.title = '工程完工分析'
-                break;
-                case '/gcry':
-                document.title = '工程人员概况'
-                break;
-                case '/gccb':
-                document.title = '工程成本分析'
-                break;
+            console.log(functions.isFullscreen())
+            let _this = this;
+            // setInterval(function(){
+            //      window.location.href = window.location.origin+_this.routerArr[_this.count];
+            //      console.log(_this.routerArr[_this.count])
+            //     _this.count ++;
+            //     if(_this.count == _this.routerArr.length-1) _this.count = 0;
+            // },5000)
+        },
+         '$route' (to, from) {
+            if(to.path == '/'){
+                this.transitionName = 'slide-right';
+            }else{
+                this.transitionName = 'slide-left';
             }
-        }
+        },
+        methods:{
+          
+         }
     }
 </script>
 <style lang="scss">
-	@import './base.scss'
+    @import './base.scss';
+.child-view {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  transition: all .5s cubic-bezier(.55,0,.1,1);
+}
+.slide-left-enter, .slide-right-leave-active {
+  opacity: 0;
+  -webkit-transform: translate(30px, 0);
+  transform: translate(30px, 0);
+}
+.slide-left-leave-active, .slide-right-enter {
+  opacity: 0;
+  -webkit-transform: translate(-30px, 0);
+  transform: translate(-30px, 0);
+}
 </style>

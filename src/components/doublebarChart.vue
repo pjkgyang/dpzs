@@ -18,7 +18,6 @@ export default {
                 return [
                     { value: 335, name: '满意' },
                     { value: 310, name: '不满意' },
-
                 ]
             },
             type: Array
@@ -34,7 +33,7 @@ export default {
         max:{
             type:Number,
             default:100
-        }
+        },
     },
     watch: {
         count(n,o){
@@ -59,6 +58,9 @@ export default {
                 });   
             }
         },
+        data(n,o){
+            console.log(n)
+        }
     },
     mounted() {
         
@@ -71,19 +73,43 @@ export default {
             // 指定图表的配置项和数据
             var option = {
                 tooltip: {
-                    trigger: 'axis',
+                    trigger: 'item',
                     axisPointer: { // 坐标轴指示器，坐标轴触发有效
                         type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
                     },
-                    formatter: function(params) {
-                        let res = params[0].name;
-                        params.forEach(ele=>{
-                            if(ele.seriesName == (_this.count==1?'验收完成率':_this.count==3?'完工率':'效率')){
-                               ele.value = ele.value + '%' 
+                    formatter: function(params,ticket) {
+                        var index = ticket.split('_')[2]
+                        var res = params.name+'<br/>';
+                        var myseries = option.series;
+                        for (var i = 0; i < myseries.length; i++) {
+                            let num = '';
+                            let marker = '';
+                            if(myseries[i].name == '目标'){
+                                num = _this.data[i][index];
+                            }else{
+                                    num = myseries[i].data[index]
+                                if(myseries[i].name=='验收完成率'||myseries[i].name=='完工率'||myseries[i].name=='效率'){
+                                    num = myseries[i].data[index] + '%'
+                                }
                             }
-                            res += '<br/>'+ ele.marker + ele.seriesName + ' : ' + ele.value;
-                        })
-                       return res;
+                            if(myseries[i].name == '目标' || myseries[i].name == '总金额'){
+                                marker = "<span style='display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#27A6F6;'></span>"
+                            }else if (myseries[i].name == '已完成' || myseries[i].name == '总完工'){
+                                marker = "<span style='display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#F9B74C;'></span>"
+                            }else{
+                                marker = "<span style='display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#d14a61;'></span>"
+                            }
+                             res += marker + myseries[i].name +' : '+ num +'</br>';
+                        }
+                        return res;
+                    //     let res = params[0].name;
+                    //     params.forEach((ele,i,arr)=>{
+                    //         if(ele.seriesName == (_this.count==1?'验收完成率':_this.count==3?'完工率':'效率')){
+                    //            ele.value = ele.value + '%' 
+                    //         }
+                    //         res += '<br/>'+ ele.marker + ele.seriesName + ' : ' + ele.value;
+                    //     })
+                    //    return res;
                     },
                 },
                 legend: {
@@ -155,7 +181,7 @@ export default {
                             normal: {
                                 show: true,
                                 position: 'insideTop',
-                                 color:"#fff"
+                                color:"#fff",
                             }
                         },
                         barWidth: 20,
@@ -169,11 +195,32 @@ export default {
                             normal: {
                                 show: true,
                                 position: 'top',
-                                color:"#fff"
+                                color:"#fff",
+                                 formatter: function(params) {
+                                     let value = _this.data[2];
+                                     let value1 = _this.data[1];
+                                     for (var i = 0,l = option.xAxis.data.length; i < l; i++) {
+                                            if (option.xAxis.data[i] == params.name) {
+                                                var val1 = value1[i] || 0;
+                                                var val2 = value[i] || 0;
+                                                return Number(val1)
+                                            }
+                                        }
+
+                                    // console.log(params)
+                                    // console.log(option.series[1].data.length);
+                                    // for(var i = 0;i<_this.data[2].length;i++){
+                                    //     let var1 = Number(_this.data[2][i]);
+                                    //     let var2 = Number(_this.data[1][i]);
+                                    //     return var1+var2;
+                                    // }
+                                },
                             }
                         },
                         barWidth: 20,
-                        data:this.data[1]
+                        data:this.data[4]
+                        // [80,70,50,55,63,69,89,90,60,60,30,30,50,55,99,50,30]
+                        // this.data[1]
                     },
                      {
                         name:this.count==1?'验收完成率':this.count==3?'完工率':'效率',
@@ -181,6 +228,10 @@ export default {
                         yAxisIndex: 1,
                         color:['#d14a61'],
                         data:this.data[3]
+                        // function(){
+                        //     return this.data[3]
+                        // }
+                        // this.data[3]
                         // [80,70,50,55,63,69,89,90,60,60,30,30,50,55,99,50,30]
                      }
                 ]

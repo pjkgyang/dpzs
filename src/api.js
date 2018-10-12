@@ -14,6 +14,7 @@ export default {
     queryProjectCompletionPanel:WEBPACK_CONFIG_HOST + 'panel/queryProjectCompletionPanel.do',// 获取完工面板数据
     queryYqWgData:WEBPACK_CONFIG_HOST + 'panel/queryYqWgData.do',//获取区域完工,验收数据
     queryRegionSubcontractEfficiency:WEBPACK_CONFIG_HOST + 'panel/queryRegionSubcontractEfficiency.do',//获取分包效率
-    queryRegionCostStat:WEBPACK_CONFIG_HOST + 'panel/queryRegionCostStat.do'//获取区域成本统计
+    queryRegionCostStat:WEBPACK_CONFIG_HOST + 'panel/queryRegionCostStat.do',//获取区域成本统计
+    queryContractData:WEBPACK_CONFIG_HOST+'panel/queryContractData.do'//获取合同数据
     
 }

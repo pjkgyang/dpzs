@@ -127,6 +127,7 @@
                                         <th width="90">效率</th>
                                     </thead>
                                 </table>
+                              <el-scrollbar style="height:100%">
                                 <table  v-if="ryzzData.length > 0"  class="table" @mouseover="handleClearTimer" @mouseout="handleStartTimer">
                                     <tbody :class="{animcb:animate==true}">
                                       <tr v-for="(item,index) in ryzzData" :key="index" flex spacearound >
@@ -137,6 +138,7 @@
                                     </tbody>
                               </table>
                             <no-data col="1" v-else />
+                          </el-scrollbar>
                         </Card>
                     </div>
                     <div class="" col="3" flex>
@@ -148,16 +150,18 @@
                                         <th width="90">效率</th>
                                     </thead>
                                 </table>
-                                <table  v-if="zdzzData.length > 0"  class="table" @mouseover="handleClearTimer2" @mouseout="handleStartTimer2">
-                                    <tbody :class="{animcb:animateZd==true}">
-                                      <tr v-for="(item,index) in zdzzData" :key="index" flex spacearound >
-                                        <td width="110">{{item.mc}}</td>
-                                        <td width="100">{{item.zz}}</td>
-                                        <td width="90">{{item.xl}}</td>
-                                     </tr>
-                                    </tbody>
-                              </table>
-                            <no-data col="1" v-else />
+                                 <el-scrollbar style="height:100%">
+                                  <table  v-if="zdzzData.length > 0"  class="table" @mouseover="handleClearTimer2" @mouseout="handleStartTimer2">
+                                      <tbody :class="{animcb:animateZd==true}">
+                                        <tr v-for="(item,index) in zdzzData" :key="index" flex spacearound >
+                                          <td width="110">{{item.mc}}</td>
+                                          <td width="100">{{item.zz}}</td>
+                                          <td width="90">{{item.xl}}</td>
+                                      </tr>
+                                      </tbody>
+                                </table>
+                               <no-data col="1" v-else />
+                            </el-scrollbar>
                         </Card>
                     </div>
                 </aside>
@@ -221,7 +225,7 @@ export default {
     },
     handleStartTimer() {
       if (this.ryzzData.length > 12) {
-        this.timer = setInterval(this.scroll, 1000);
+        this.timer = setInterval(this.scroll, 10000);
       }
     },
     handleClearTimer2() {
@@ -229,22 +233,26 @@ export default {
     },
     handleStartTimer2() {
       if (this.zdzzData.length > 12) {
-        this.timer2 = setInterval(this.scrollZd, 1000);
+        this.timer2 = setInterval(this.scrollZd, 10000);
       }
     },
     scroll() {
       this.animate = true;
+      this.ryzzData = this.ryzzData.concat(this.ryzzData.slice(0,8));
       setTimeout(() => {
-        this.ryzzData.push(this.ryzzData[0]);
-        this.ryzzData.shift();
+        // this.ryzzData.push(this.ryzzData[0]);
+        // this.ryzzData.shift();
+        this.ryzzData.splice(0,8);
         this.animate = false;
       }, 500);
     },
     scrollZd() {
       this.animateZd = true;
+      this.zdzzData = this.zdzzData.concat(this.zdzzData.slice(0,8));
       setTimeout(() => {
-        this.zdzzData.push(this.zdzzData[0]);
-        this.zdzzData.shift();
+        // this.zdzzData.push(this.zdzzData[0]);
+        // this.zdzzData.shift();
+        this.zdzzData.splice(0,8);
         this.animateZd = false;
       }, 500);
     },
@@ -319,10 +327,10 @@ export default {
             }
           }
           if (this.ryzzData.length > 12) {
-            this.timer = setInterval(this.scroll, 1000);
+            this.timer = setInterval(this.scroll, 10000);
           }
           if (this.zdzzData.length > 12) {
-            this.timer2 = setInterval(this.scrollZd, 1000);
+            this.timer2 = setInterval(this.scrollZd,10000);
           }
         } else {
           this.$alert(res.data.msg, "提示", {
@@ -491,8 +499,8 @@ export default {
       height: 80%;
       td {
         text-align: center;
-        height: 29px;
-        line-height: 29px;
+        height: 28px;
+        line-height: 28px;
         @include truncate(70%);
       }
     }

@@ -1,6 +1,9 @@
 <template>
     <div class="barChart" flex>
-        <div col="2" center flex><span class="num fontsize60 sum">{{clwcwts}}</span></div>
+        <div col="2" flex-column spacearound >
+            <div center flex-column><span class="bmy fontsize50 num">{{bmys}}</span><h3>不满意数</h3></div>
+            <div center flex-column><span class="num fontsize50 sum">{{clwcwts}}</span><h3>总数</h3></div>
+        </div>
         <div col="4" id="barItems"></div>
     </div>
 </template>
@@ -94,5 +97,9 @@ export default {
     .sum {
         @include gradient(#B4EC51, #429321);
     }
+    .bmy {
+         @include gradient(#fad961, #f76b1c);
+    }
+    
 }
 </style>

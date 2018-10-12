@@ -1,43 +1,41 @@
 <template>
-    <div class="china-map" flex-column>
-        <div col="4" flex>
-            <div class="circle__box">
-                <h2 class="curqy">{{!qymc?'全国':qymc}}</h2>
-                <div class="secure_circle" flex-column rowcenter colcenter>
-                    <span class="num">{{((Number(pannelData.yjjs)/Number(pannelData.wtzs)*100).toFixed(2))+'%'}}</span>
-                    <span >问题解决率</span>
-                </div>
-            </div>
-            <div ref="chart" id="attack_chart"></div>
-            <div  class="other-qygc">
-               <Button size="small" @click="handleChangeqy('')">全国</Button><br>
-               <!-- <Button size="small" @click="handleChangeqy('渠道工程')">渠道工程</Button><br>
-               <Button size="small" @click="handleChangeqy('深圳区域工程')">深圳区域工程</Button> -->
-            </div>
+  <div class="china-map" flex-column>
+    <div col="4" flex>
+      <div class="circle__box">
+        <h2 class="curqy">{{!qymc?'全国':qymc}}</h2>
+        <div class="secure_circle" flex-column rowcenter colcenter>
+          <span class="num">{{((Number(pannelData.yjjs)/Number(pannelData.wtzs)*100).toFixed(2))+'%'}}</span>
+          <span>问题解决率</span>
         </div>
-        <div col="1" flex colcenter spacearound>
-            <div class="secure_intro" flex colcenter spacearound>
-                <h3 class="name">超期未解决问题数</h3>
-                <div class="num ">{{pannelData.cqwjjs}}</div>
-            </div>
-            <div class="secure_intro" flex colcenter spacearound>
-                <h3 class="name">超期未响应问题数</h3>
-                <div class="num ">{{pannelData.cqwxys}}</div>
-            </div>
-            <div class="secure_intro" flex colcenter spacearound>
-                <h3 class="name">超期解决问题数</h3>
-                <div class="num ">{{pannelData.cqyjjs}}</div>
-            </div>
-            <div class="secure_intro" flex colcenter spacearound>
-                <h3 class="name">投诉数</h3>
-                <div class="num ">{{pannelData.tss}}</div>
-            </div>
-            <div class="secure_intro" flex colcenter spacearound>
+      </div>
+      <div ref="chart" id="attack_chart"></div>
+      <div class="other-qygc">
+        <Button size="small" @click="handleChangeqy('')">全国</Button><br>
+      </div>
+    </div>
+    <div col="1" flex colcenter spacearound>
+      <div class="secure_intro" flex colcenter spacearound>
+        <h3 class="name">超期未解决问题数</h3>
+        <div class="num ">{{pannelData.cqwjjs}}</div>
+      </div>
+      <div class="secure_intro" flex colcenter spacearound>
+        <h3 class="name">超期未响应问题数</h3>
+        <div class="num ">{{pannelData.cqwxys}}</div>
+      </div>
+      <div class="secure_intro" flex colcenter spacearound>
+        <h3 class="name">超期解决问题数</h3>
+        <div class="num ">{{pannelData.cqyjjs}}</div>
+      </div>
+      <div class="secure_intro" flex colcenter spacearound>
+        <h3 class="name">投诉数</h3>
+        <div class="num ">{{pannelData.tss}}</div>
+      </div>
+      <!-- <div class="secure_intro" flex colcenter spacearound>
                 <h3 class="name">问题处理不满意数</h3>
                 <div class="num ">{{pannelData.bmys}}</div>
-            </div>
-        </div>
+            </div> -->
     </div>
+  </div>
 </template>
 <script>
 import echarts from "echarts";

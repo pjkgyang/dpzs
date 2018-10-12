@@ -1,101 +1,100 @@
 <template>
-    <div class="pannel3">
-        <div>
-            <head-bar :title="'工程完工分析'" :time="nowDate"></head-bar>
-        </div>
-        <div class="app__content">
-            <div class="secure height100" flex>
-                <main flex-column col="3">
-                    <div class="top" flex col="6">
-                        <Card class="secure__map" col="4" title="" :row="true">
-                              <china-map @handleChangeqy="handleChangeqy" @handleFilterqy="handleFilterqy" 
-                              :numPer="(Number(wgtjData.wnwgwcl)/Number(wgtjData.wnwgmb)*100).toFixed(2)" :mapData="mapData" :toolip-title="'工程完工率'"></china-map>
-                        </Card>
-                    </div>
-                    <div class="secure__detail" col="4" flex>
-                        <Card col="3" title="区域完工统计">
-                            <doublebar-chart :data="qywgData" :max="max" :count="count" :qymc="qymc" @handleChooseBar="handleChooseBar"></doublebar-chart>
-                        </Card>
-                    </div>
-                </main>
-                <!-- 右侧表格 -->
-                <aside class="secure__rightaside" flex-column col="2">
-                    <Card col="2" flex-column :row=false>
-                        <div col="2" flex-column>
-                            <div flex col="3">
-                                <div col="1" flex-column>
-                                    <h4 col="1" flex colcenter class="fontsize16" style="padding-left: 28px;">当年项目( 万元 )</h4>
-                                    <div col="6" flex>
-                                        <div id="pieItems1" col="4"></div>
-                                        <div col="2" flex-column rowcenter>
-                                            <h4>当年目标</h4>
-                                            <div class="num" style="color:#3AC868;font-size: 25px;margin-bottom: 20px;">{{wgtjData.dnwgmb}}</div>
-                                            <h4>已完成</h4>
-                                            <div class="num" style="color:#F9B74C;font-size: 25px;">
-                                                {{wgtjData.dnwgwcl}}<br>({{!wgtjData.dnwgwcl||!wgtjData.dnwgmb?'-':(Number(wgtjData.dnwgwcl)/Number(wgtjData.dnwgmb)*100).toFixed(2)}}%)
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div col="1" flex-column>
-                                    <h4 col="1" flex colcenter class="fontsize16" style="padding-left: 28px;">当月完工( 万元 )</h4>
-                                    <div col="6" flex>
-                                        <div id="pieItems2" col="4"></div>
-                                        <div col="2" flex-column rowcenter>
-                                            <h4>当月目标</h4>
-                                            <div class="num" style="color:#3AC868;font-size: 24px;margin-bottom: 25px;">{{wgtjData.bywgjh}}</div>
-                                            <h4>已完成</h4>
-                                            <div class="num" style="color:#F9B74C;font-size: 25px;">
-                                                {{wgtjData.bywgwcl}}<br>({{!wgtjData.bywgwcl||!wgtjData.bywgjh?'-':(Number(wgtjData.bywgwcl)/Number(wgtjData.bywgjh)*100).toFixed(2)}}%)
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div col="1" flex>
-                               <arrow-bar :done="Number(wgtjData.dnwgwcl)" :total="Number(wgtjData.dnwgmb)" ></arrow-bar>
-                            </div>
-                        </div>
-                        <div col="2" flex-column>
-                            <div flex col="3">
-                                <div col="1" flex-column>
-                                    <h4 col="1" flex colcenter class="fontsize16" style="padding-left: 28px;">往年项目( 万元 )</h4>
-                                    <div col="6" flex>
-                                        <div id="pieItems3" col="4"></div>
-                                        <div col="2" flex-column rowcenter>
-                                            <h4>往年目标</h4>
-                                            <div class="num" style="color:#E85650;font-size: 25px;margin-bottom: 20px;">{{wgtjData.wnwgmb}}</div>
-                                            <h4>已完成</h4>
-                                            <div class="num" style="color:#37A2F7;font-size: 25px;">
-                                                {{wgtjData.wnwgwcl}}<br>({{!wgtjData.wnwgwcl||!wgtjData.wnwgmb?'-':(Number(wgtjData.wnwgwcl)/Number(wgtjData.wnwgmb)*100).toFixed(2)}}%)
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div col="1" flex-column>
-                                    <h4 col="1" flex colcenter class="fontsize16" style="padding-left: 28px;">当月完工( 万元 )</h4>
-                                    <div col="6" flex>
-                                        <div id="pieItems4" col="4"></div>
-                                        <div col="2" flex-column rowcenter>
-                                            <h4>当月目标</h4>
-                                            <div class="num" style="color:#E85650;font-size: 25px;margin-bottom: 20px;">{{wgtjData.bywnwgjh}}</div>
-                                            <h4>已完成</h4>
-                                            <div class="num" style="color:#27A6F6;font-size: 25px;">
-                                                {{wgtjData.bywnwgwcl}}<br>({{!wgtjData.bywnwgwcl||!wgtjData.bywnwgjh?'-':(Number(wgtjData.bywnwgwcl)/Number(wgtjData.bywnwgjh)*100).toFixed(2)}}%)
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div col="1">
-                                <arrow-bar :done="Number(wgtjData.wnwgwcl)" :total="Number(wgtjData.wnwgmb)" ></arrow-bar>
-                            </div>
-                        </div>
-                    </Card>
-                </aside>
-            </div>
-        </div>
+  <div class="pannel3">
+    <div>
+      <head-bar :title="'工程完工分析'" :time="nowDate"></head-bar>
     </div>
+    <div class="app__content">
+      <div class="secure height100" flex>
+        <main flex-column col="3">
+          <div class="top" flex col="6">
+            <Card class="secure__map" col="4" title="" :row="true">
+              <china-map @handleChangeqy="handleChangeqy" @handleFilterqy="handleFilterqy" :numPer="((Number(wgtjData.wnwgwcl)+Number(wgtjData.dnwgwcl))/(Number(wgtjData.wnwgmb)+Number(wgtjData.dnwgmb))*100).toFixed(2)" :mapData="mapData" :toolip-title="'工程完工率'"></china-map>
+            </Card>
+          </div>
+          <div class="secure__detail" col="4" flex>
+            <Card col="3" title="区域完工统计">
+              <doublebar-chart :data="qywgData"  :max="max" :count="count" :qymc="qymc" @handleChooseBar="handleChooseBar"></doublebar-chart>
+            </Card>
+          </div>
+        </main>
+        <!-- 右侧表格 -->
+        <aside class="secure__rightaside" flex-column col="2">
+          <Card col="2" flex-column :row=false>
+            <div col="2" flex-column>
+              <div flex col="3">
+                <div col="1" flex-column>
+                  <h4 col="1" flex colcenter class="fontsize16" style="padding-left: 28px;">当年项目( 万元 )</h4>
+                  <div col="6" flex>
+                    <div id="pieItems1" col="4"></div>
+                    <div col="2" flex-column rowcenter>
+                      <h4>当年目标</h4>
+                      <div class="num" style="color:#3AC868;font-size: 25px;margin-bottom: 20px;">{{wgtjData.dnwgmb}}</div>
+                      <h4>已完成</h4>
+                      <div class="num" style="color:#F9B74C;font-size: 25px;">
+                        {{wgtjData.dnwgwcl}}<br>({{!wgtjData.dnwgwcl||!wgtjData.dnwgmb?'-':(Number(wgtjData.dnwgwcl)/Number(wgtjData.dnwgmb)*100).toFixed(2)}}%)
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div col="1" flex-column>
+                  <h4 col="1" flex colcenter class="fontsize16" style="padding-left: 28px;">当月完工( 万元 )</h4>
+                  <div col="6" flex>
+                    <div id="pieItems2" col="4"></div>
+                    <div col="2" flex-column rowcenter>
+                      <h4>当月目标</h4>
+                      <div class="num" style="color:#3AC868;font-size: 24px;margin-bottom: 25px;">{{wgtjData.bywgjh}}</div>
+                      <h4>已完成</h4>
+                      <div class="num" style="color:#F9B74C;font-size: 25px;">
+                        {{wgtjData.bywgwcl}}<br>({{!wgtjData.bywgwcl||!wgtjData.bywgjh?'-':(Number(wgtjData.bywgwcl)/Number(wgtjData.bywgjh)*100).toFixed(2)}}%)
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div col="1" flex>
+                <arrow-bar :done="Number(wgtjData.dnwgwcl)" :total="Number(wgtjData.dnwgmb)"></arrow-bar>
+              </div>
+            </div>
+            <div col="2" flex-column>
+              <div flex col="3">
+                <div col="1" flex-column>
+                  <h4 col="1" flex colcenter class="fontsize16" style="padding-left: 28px;">往年项目( 万元 )</h4>
+                  <div col="6" flex>
+                    <div id="pieItems3" col="4"></div>
+                    <div col="2" flex-column rowcenter>
+                      <h4>往年目标</h4>
+                      <div class="num" style="color:#E85650;font-size: 25px;margin-bottom: 20px;">{{wgtjData.wnwgmb}}</div>
+                      <h4>已完成</h4>
+                      <div class="num" style="color:#37A2F7;font-size: 25px;">
+                        {{wgtjData.wnwgwcl}}<br>({{!wgtjData.wnwgwcl||!wgtjData.wnwgmb?'-':(Number(wgtjData.wnwgwcl)/Number(wgtjData.wnwgmb)*100).toFixed(2)}}%)
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div col="1" flex-column>
+                  <h4 col="1" flex colcenter class="fontsize16" style="padding-left: 28px;">当月完工( 万元 )</h4>
+                  <div col="6" flex>
+                    <div id="pieItems4" col="4"></div>
+                    <div col="2" flex-column rowcenter>
+                      <h4>当月目标</h4>
+                      <div class="num" style="color:#E85650;font-size: 25px;margin-bottom: 20px;">{{wgtjData.bywnwgjh}}</div>
+                      <h4>已完成</h4>
+                      <div class="num" style="color:#27A6F6;font-size: 25px;">
+                        {{wgtjData.bywnwgwcl}}<br>({{!wgtjData.bywnwgwcl||!wgtjData.bywnwgjh?'-':(Number(wgtjData.bywnwgwcl)/Number(wgtjData.bywnwgjh)*100).toFixed(2)}}%)
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div col="1">
+                <arrow-bar :done="Number(wgtjData.wnwgwcl)" :total="Number(wgtjData.wnwgmb)"></arrow-bar>
+              </div>
+            </div>
+          </Card>
+        </aside>
+      </div>
+    </div>
+  </div>
 </template>
 <script type="text/javascript">
 import { getMyDate } from "../../utils.js";
@@ -140,7 +139,7 @@ export default {
       qymc: "",
       qyArr: [],
       mapData: [],
-      max:100
+      max: 100
     };
   },
   watch: {},
@@ -154,6 +153,7 @@ export default {
         let mbArr = [];
         let ywcArr = [];
         let xlArr = [];
+        let oldmbArr = [];
         res.data.data.provinceData.forEach(ele => {
           if (ele.PROVINCE.indexOf("市") != -1) {
             ele.PROVINCE = ele.PROVINCE.split("市")[0];
@@ -181,7 +181,7 @@ export default {
           if (ele.qymc == "渠道工程") {
             ele.qymc = ele.qymc.split("工程")[0];
           }
-         qymcArr.push(ele.qymc.split("区域工程")[0]);
+        qymcArr.push(ele.qymc.split("区域工程")[0]);
           mbArr.push(ele.mbwcl);
           ywcArr.push(ele.wcl);
           xlArr.push(ele.xl);
@@ -197,6 +197,18 @@ export default {
         this.qywgData[1] = mbArr;
         this.qywgData[2] = ywcArr;
         this.qywgData[3] = xlArr;
+         
+        mbArr.forEach((item,i,arr)=>{
+           let num = '';
+            if(Number(item) -Number(ywcArr[i]) < 0){
+              num = 0
+            }else{
+              num = Number(item) - Number(ywcArr[i])
+            }
+            oldmbArr.push(num)
+          })
+        this.qywgData[4] = oldmbArr;
+
         let keyMap = {
           PROVINCE: "name",
           PROVINCEDATA: "value"

@@ -50,8 +50,9 @@
                                 <span class="num fontsize60">{{pannelData.yjjs}}</span>
                             </div>
                         </Card>
-                        <Card col="1" :title="'未关闭投诉 ( '+ wgbtsData.length+' )'" :show="true">
-                              <div style="height:300px;overflow:hidden"  v-if="wgbtsData.length > 0" @mouseover="handleClearTimerTs" @mouseout="handleStartTimerTs"> 
+                        <Card col="1" :title="'未关闭投诉 ( '+ wgbtsLength+' )'" :show="true">
+                          <el-scrollbar style="height:300px">
+                              <div style="height:300px;"  v-if="wgbtsLength > 0" @mouseover="handleClearTimerTs" @mouseout="handleStartTimerTs"> 
                                 <table class="table"  :class="{animWT:animate==true}">
                                     <tr v-for="(item,index) in wgbtsData" :key="index" >
                                         <td :title="item.bt">{{item.bt}}<br><span class="current">当前环节:{{item.dqhj}}</span></td>
@@ -60,9 +61,11 @@
                                 </table>
                             </div>
                             <no-data col="1" v-else />
+                          </el-scrollbar>
                         </Card>
-                        <Card col="1" :title="'超期未解决问题 ( '+ cqwjjData.length+' )'" :show="true" >
-                             <div style="height:300px;overflow:hidden"  v-if="cqwjjData.length > 0" @mouseover="handleClearTimerCq" @mouseout="handleStartTimerCq"> 
+                        <Card col="1" :title="'超期未解决问题 ( '+ cqwjjLength+' )'" :show="true" >
+                           <el-scrollbar style="height:300px">
+                             <div style="height:100%;"  v-if="cqwjjLength > 0" @mouseover="handleClearTimerCq" @mouseout="handleStartTimerCq"> 
                                 <table class="table"  :class="{animWT:animateCq==true}" >
                                     <tr v-for="(item,index) in cqwjjData" :key="index" >
                                         <td :title="item.bt">{{item.bt}}<br><span class="current">当前环节:{{item.dqhj}}</span></td>
@@ -71,6 +74,7 @@
                                 </table>
                             </div>
                             <no-data col="1" v-else />
+                           </el-scrollbar>
                         </Card>
                     </div>
                 </main>
@@ -86,16 +90,18 @@
                     <Card col="3" title="处理完成问题数" :gradient='["rgba(0,221,137,0.5)","rgba(0,0,0,0.1)"]'>
                         <bar-chart :mys="mys" :bmys="bmys" :clwcwts="Number(pannelData.bmys)+Number(pannelData.mys)"></bar-chart>
                     </Card>
-                    <Card col="3" :title="'未关闭催办 ( '+wgbcbData.length+' )'" :show="true">
-                            <div style="height:300px;overflow:hidden"  v-if="wgbcbData.length > 0" @mouseover="handleClearTimerCb" @mouseout="handleStartTimerCb"> 
-                                <table class="table"  :class="{animWT:animateCb==true}">
-                                    <tr v-for="(item,index) in wgbcbData" :key="index" >
-                                        <td :title="item.bt">{{item.bt}}<br><span class="current">当前环节:{{item.dqhj}}</span></td>
-                                        <td class="date">{{item.fbrq}}</td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <no-data col="1" v-else />
+                    <Card col="3" :title="'未关闭催办 ( '+wgbcbLength+' )'" :show="true">
+                        <el-scrollbar style="height:300px">
+                              <div style="height:100%;"  v-if="wgbcbLength > 0" @mouseover="handleClearTimerCb" @mouseout="handleStartTimerCb"> 
+                                  <table class="table"  :class="{animWT:animateCb==true}">
+                                      <tr v-for="(item,index) in wgbcbData" :key="index" >
+                                          <td :title="item.bt">{{item.bt}}<br><span class="current">当前环节:{{item.dqhj}}</span></td>
+                                          <td class="date">{{item.fbrq}}</td>
+                                      </tr>
+                                  </table>
+                              </div>
+                              <no-data col="1" v-else />
+                        </el-scrollbar>
                         </Card>
                 </aside>
             </div>
@@ -146,12 +152,17 @@ export default {
       timerTs: null,
       timerCq: null,
       timerCb: null,
-      mapData: []
+      mapData: [],
+
+      wgbcbLength:'',
+      wgbtsLength:'',
+      cqwjjLength:'',
     };
   },
   created() {
     this.querySchoolQuestionPanel();
     this.nowDate = getMyDate(new Date());
+    console.log(window.innerHeight)
   },
   mounted() {},
   methods: {
@@ -166,47 +177,53 @@ export default {
       clearInterval(this.timerTs);
     },
     handleStartTimerTs() {
-      if (this.wgbtsData.length > 5) {
-        this.timerTs = setInterval(this.scroll, 1000);
+      if (this.wgbtsData.length > window.innerHeight>850?5:4) {
+        this.timerTs = setInterval(this.scroll, 10000);
       }
     },
     handleClearTimerCq() {
       clearInterval(this.timerCq);
     },
     handleStartTimerCq() {
-      if (this.cqwjjData.length > 5) {
-        this.timerCq = setInterval(this.scrollCq, 1000);
+      if (this.cqwjjData.length > window.innerHeight>850?5:4) {
+        this.timerCq = setInterval(this.scrollCq, 10000);
       }
     },
     handleClearTimerCb() {
       clearInterval(this.timerCb);
     },
     handleStartTimerCb() {
-      if (this.wgbcbData.length > 5) {
-        this.timerCb = setInterval(this.scrollCb, 1000);
+      if (this.wgbcbData.length > window.innerHeight>850?5:4) {
+        this.timerCb = setInterval(this.scrollCb, 10000);
       }
     },
     scroll() {
       this.animate = true;
+      this.wgbtsData = this.wgbtsData.concat(this.wgbtsData.slice(0,5));
       setTimeout(() => {
-        this.wgbtsData.push(this.wgbtsData[0]);
-        this.wgbtsData.shift();
+        // this.wgbtsData.push(this.wgbtsData[0]);
+        // this.wgbtsData.shift();
+        this.wgbtsData.splice(0,5);
         this.animate = false;
       }, 500);
     },
     scrollCq() {
       this.animateCq = true;
+      this.cqwjjData = this.cqwjjData.concat(this.cqwjjData.slice(0,5));
       setTimeout(() => {
-        this.cqwjjData.push(this.cqwjjData[0]);
-        this.cqwjjData.shift();
+        // this.cqwjjData.push(this.cqwjjData[0]);
+        // this.cqwjjData.shift();
+        this.cqwjjData.splice(0,5);
         this.animateCq = false;
       }, 500);
     },
     scrollCb() {
       this.animateCb = true;
+      this.wgbcbData = this.wgbcbData.concat(this.wgbcbData.slice(0,5));
       setTimeout(() => {
-        this.wgbcbData.push(this.wgbcbData[0]);
-        this.wgbcbData.shift();
+        // this.wgbcbData.push(this.wgbcbData[0]);
+        // this.wgbcbData.shift();
+        this.wgbcbData.splice(0,5);
         this.animateCb = false;
       }, 500);
     },
@@ -226,6 +243,10 @@ export default {
           this.wgbtsData = res.data.data.wgbtsLst;
           this.cqwjjData = res.data.data.cqwjjwtLst;
           this.wgbcbData = res.data.data.wgbcbwtLst;
+          this.wgbcbLength = res.data.data.wgbcbwtLst.length;
+          this.wgbtsLength = res.data.data.wgbtsLst.length,
+          this.cqwjjLength =  res.data.data.cqwjjwtLst.length,
+
           this.jobDistributes[0].value = res.data.data.wxys;
           this.jobDistributes[1].value = res.data.data.wjjs;
           this.jobDistributes[2].value = res.data.data.wjjsqgb;
@@ -271,13 +292,13 @@ export default {
             }
           }
           if (this.wgbtsData.length > 5) {
-            this.timerTs = setInterval(this.scroll, 1000);
+            this.timerTs = setInterval(this.scroll, 10000);
           }
           if (this.cqwjjData.length > 5) {
-            this.timerCq = setInterval(this.scrollCq, 1000);
+            this.timerCq = setInterval(this.scrollCq, 10000);
           }
           if (this.wgbcbData.length > 5) {
-            this.timerCb = setInterval(this.scrollCb, 1000);
+            this.timerCb = setInterval(this.scrollCb,10000);
           }
         } else {
           this.$alert(res.data.msg, "提示", {

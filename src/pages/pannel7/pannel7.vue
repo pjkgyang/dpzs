@@ -1,202 +1,197 @@
 <template>
-    <div class="app pannel7">
-        <div>
-            <head-bar :title="'工程综合概况'" :time="date"></head-bar>
-        </div>
-        <div class="app__content">
-            <div class="secure height100" flex>
-                <!-- 左侧 -->
-                <aside class="left-statics" flex-column col="2">
-                    <div col="2" flex-column :row='false'>
-                        <div class="top" flex col="3">
-                            <Card class="" col="4" title="验收统计(万元)" flex>
-                                <div class="statics bottom-split" flex-column col="1">
-                                    <h3 col="1" flex rowcenter colcenter style="background-image: linear-gradient(-180deg, rgba(0, 134, 227,0.6) 0%, rgba(0,113,221,0.5) 21%, rgba(0,89,214,0.4) 46%, rgba(0,70,209,0.00) 97%);">全年计划</h3>
-                                    <div col="1" flex spacearound colcenter>
-                                        <div class="text">全年目标</div>
-                                        <div class="num">{{zhgkData.dnysmb}}</div>
-                                    </div> 
-                                    <div col="1" flex spacearound colcenter>
-                                        <div class="text">已完成</div>
-                                        <div class="num">{{zhgkData.dnyswcl}}</div>
-                                    </div>
-                                </div>
-                                <div class="statics" flex-column col="1">
-                                    <h3 col="1" flex rowcenter colcenter style="background-image: linear-gradient(-180deg, rgb(227, 144, 0,0.5) 0%, rgba(221,206,0,0.3) 20%, rgba(214,213,0,0.1) 48%, rgba(209,202,0,0.00) 100%);">本月计划</h3>
-                                    <div col="1" flex spacearound colcenter>
-                                        <div class="text">本月计划</div>
-                                        <div class="num">{{zhgkData.byysjh}}</div>
-                                    </div>
-                                    <div col="1" flex spacearound colcenter>
-                                        <div class="text">已完成</div>
-                                        <div class="num">{{zhgkData.byyswcl}}</div>
-                                    </div>
-                                </div>
-                            </Card>
-                        </div>
-                        <div class="" col="3" flex>
-                            <Card class="" col="4" title="完工统计(万元)" flex>
-                                <div class="statics bottom-split" flex-column col="1">
-                                    <h3 col="1" flex rowcenter colcenter style="background-image: linear-gradient(-180deg, rgba(227, 0, 0,0.5) 0%, rgba(255,42,42,0.4) 22%, rgba(240,33,33,0.2) 48%, rgba(209,0,0,0.00) 100%);">全年计划</h3>
-                                    <div col="1" flex spacearound colcenter>
-                                        <div class="text">全年目标</div>
-                                        <div class="num">{{zhgkData.dnwgmb}}</div>
-                                    </div>
-                                    <div col="1" flex spacearound colcenter>
-                                        <div class="text">已完成</div>
-                                        <div class="num">{{zhgkData.dnwgwcl}}</div>
-                                    </div>
-                                </div>
-                                <div class="statics" flex-column col="1">
-                                    <h3 col="1" flex rowcenter colcenter style="background-image: linear-gradient(-180deg, rgb(227, 144, 0,0.5) 0%, rgba(221,206,0,0.3) 20%, rgba(214,213,0,0.1) 48%, rgba(209,202,0,0.00) 100%);">本月计划</h3>
-                                    <div col="1" flex spacearound colcenter>
-                                        <div class="text">本月计划</div>
-                                        <div class="num">{{zhgkData.bywgjh}}</div>
-                                    </div>
-                                    <div col="1" flex spacearound colcenter>
-                                        <div class="text">已完成</div>
-                                        <div class="num">{{zhgkData.bywgwcl}}</div>
-                                    </div>
-                                </div>
-                            </Card>
-                        </div>
-                    </div>
-                </aside>
-                <main flex-column col="4">
-                    <div class="" flex col="6">
-                        <Card class="" col="4" title="" flex>
-                            <div col="5" flex style="position:relative;">
-                                <div col="2">
-                                    <div>
-                                        <h2 class="curqy">{{!qymc?'全国':qymc}}</h2>
-                                    </div>
-                                    <div class="circle circle1" flex-column center>
-                                        <span class="num">{{zhgkData.khs}}</span>
-                                        <span>客户数</span>
-                                    </div>
-                                    <div class="circle circle2" flex-column center>
-                                        <span class="num">{{zhgkData.xms}}</span>
-                                        <span>总项目数</span>
-                                    </div>
-                                </div>
-                                <div ref="chinamap" col="8" id="chinamap"></div>
-                                <div col="1"  class="other-qygc">
-                                      <Button size="small" @click="handleChangeqy('')">全国</Button><br>
-                                      <!-- <Button size="small" @click="handleChangeqy('渠道工程')">渠道工程</Button><br>
+  <div class="app pannel7">
+    <div>
+      <head-bar :title="'工程综合概况'" :time="date"></head-bar>
+    </div>
+    <div class="app__content">
+      <div class="secure height100" flex>
+        <!-- 左侧 -->
+        <aside class="left-statics" flex-column col="2">
+          <div col="2" flex-column :row='false'>
+            <div class="top" flex col="3">
+              <Card class="" col="4" title="验收统计(万元)" flex>
+                <div class="statics bottom-split" flex-column col="1">
+                  <h3 col="1" flex rowcenter colcenter style="background-image: linear-gradient(-180deg, rgba(0, 134, 227,0.6) 0%, rgba(0,113,221,0.5) 21%, rgba(0,89,214,0.4) 46%, rgba(0,70,209,0.00) 97%);">全年计划</h3>
+                  <div col="1" flex spacearound colcenter>
+                    <div class="text">全年目标</div>
+                    <div class="num">{{zhgkData.dnysmb}}</div>
+                  </div>
+                  <div col="1" flex spacearound colcenter>
+                    <div class="text">已完成</div>
+                    <div class="num">{{zhgkData.dnyswcl}}</div>
+                  </div>
+                </div>
+                <div class="statics" flex-column col="1">
+                  <h3 col="1" flex rowcenter colcenter style="background-image: linear-gradient(-180deg, rgb(227, 144, 0,0.5) 0%, rgba(221,206,0,0.3) 20%, rgba(214,213,0,0.1) 48%, rgba(209,202,0,0.00) 100%);">本月计划</h3>
+                  <div col="1" flex spacearound colcenter>
+                    <div class="text">本月计划</div>
+                    <div class="num">{{zhgkData.byysjh}}</div>
+                  </div>
+                  <div col="1" flex spacearound colcenter>
+                    <div class="text">已完成</div>
+                    <div class="num">{{zhgkData.byyswcl}}</div>
+                  </div>
+                </div>
+              </Card>
+            </div>
+            <div class="" col="3" flex>
+              <Card class="" col="4" title="完工统计(万元)" flex>
+                <div class="statics bottom-split" flex-column col="1">
+                  <h3 col="1" flex rowcenter colcenter style="background-image: linear-gradient(-180deg, rgba(227, 0, 0,0.5) 0%, rgba(255,42,42,0.4) 22%, rgba(240,33,33,0.2) 48%, rgba(209,0,0,0.00) 100%);">全年计划</h3>
+                  <div col="1" flex spacearound colcenter>
+                    <div class="text">全年目标</div>
+                    <div class="num">{{zhgkData.dnwgmb}}</div>
+                  </div>
+                  <div col="1" flex spacearound colcenter>
+                    <div class="text">已完成</div>
+                    <div class="num">{{zhgkData.dnwgwcl}}</div>
+                  </div>
+                </div>
+                <div class="statics" flex-column col="1">
+                  <h3 col="1" flex rowcenter colcenter style="background-image: linear-gradient(-180deg, rgb(227, 144, 0,0.5) 0%, rgba(221,206,0,0.3) 20%, rgba(214,213,0,0.1) 48%, rgba(209,202,0,0.00) 100%);">本月计划</h3>
+                  <div col="1" flex spacearound colcenter>
+                    <div class="text">本月计划</div>
+                    <div class="num">{{zhgkData.bywgjh}}</div>
+                  </div>
+                  <div col="1" flex spacearound colcenter>
+                    <div class="text">已完成</div>
+                    <div class="num">{{zhgkData.bywgwcl}}</div>
+                  </div>
+                </div>
+              </Card>
+            </div>
+          </div>
+        </aside>
+        <main flex-column col="4">
+          <div class="" flex col="6">
+            <Card class="" col="4" title="" flex>
+              <div col="5" flex style="position:relative;">
+                <div col="2">
+                  <div>
+                    <h2 class="curqy">{{!qymc?'全国':qymc}}</h2>
+                  </div>
+                  <div class="circle circle1" flex-column center>
+                    <span class="num">{{zhgkData.khs}}</span>
+                    <span>客户数</span>
+                  </div>
+                  <div class="circle circle2" flex-column center>
+                    <span class="num">{{zhgkData.xms}}</span>
+                    <span>总项目数</span>
+                  </div>
+                </div>
+                <div ref="chinamap" col="8" id="chinamap"></div>
+                <div col="1" class="other-qygc">
+                  <Button size="small" @click="handleChangeqy('')">全国</Button><br>
+                  <!-- <Button size="small" @click="handleChangeqy('渠道工程')">渠道工程</Button><br>
                                       <Button size="small" @click="handleChangeqy('深圳区域工程')">深圳区域工程</Button> -->
-                                </div>
-                            </div>
-                            <div col="1" flex spacearound>
-                                <div class="totalStatics-item" flex-column center>
-                                    <div class="num num3 fontsize60">{{zhgkData.zjs}}</div>
-                                    <h3>在建</h3>
-                                </div>
-                                <div class="totalStatics-item" flex-column center>
-                                    <div class="num num3 fontsize60">{{zhgkData.shs}}</div>
-                                    <h3>售后</h3>
-                                </div>
-                                <div class="totalStatics-item" flex-column center>
-                                    <div class="num num3 fontsize60">{{zhgkData.gbs}}</div>
-                                    <h3>过保</h3>
-                                </div>
-                                <div class="totalStatics-item" flex-column center>
-                                    <div class="num num3 fontsize60">{{zhgkData.zts}}</div>
-                                    <h3>在谈</h3>
-                                </div>
-                                <div class="totalStatics-item" flex-column center>
-                                    <div class="num num3 fontsize60">{{zhgkData.zzs}}</div>
-                                    <h3>终止</h3>
-                                </div>
-                            </div>
-                        </Card>
-                    </div>
-                    <div class="" col="3" flex>
-                        <Card col="3" title="人员统计">
-                            <div flex spacearound>
-                                <div class="totalStatics-item" flex-column center>
-                                    <div class="num fontsize60">{{zhgkData.ryzs}}</div>
-                                    <h3>人员总数</h3>
-                                </div>
-                            </div>
-                            <div flex spacearound>
-                               <div class="totalStatics-item" flex-column center>
-                                    <div class="num num1 fontsize60">{{!zhgkData.zsrs?0:zhgkData.zsrs}}</div>
-                                    <h3>正式</h3>
-                                </div>
-                                <div class="totalStatics-item" flex-column center>
-                                    <div class="num num2 fontsize60">{{!zhgkData.sxrs?0:zhgkData.sxrs}}</div>
-                                    <h3>实习</h3>
-                                </div>
-                                 <div class="totalStatics-item" flex-column center>
-                                    <div class="num num3 fontsize60">{{!zhgkData.qtrs?0:zhgkData.qtrs}}</div>
-                                    <h3>其他</h3>
-                                </div>
-                            </div>
-                        </Card>
-                        <Card col="3" title="成本统计(万元)">
-                            <div flex spacearound>
-                                <div class="totalStatics-item" flex-column center>
-                                    <div class="num fontsize60">{{zhgkData.fbwgl}}</div>
-                                    <h3>完工量</h3>
-                                </div>
-                                <div class="totalStatics-item" flex-column center>
-                                    <div class="num fontsize60">
-                                        {{((Number(zhgkData.fbrl)+Number(zhgkData.fbek)+Number(zhgkData.fbkb))/(Number(zhgkData.fbwgl))*100).toFixed(0)+'%'}}
-                                    </div>
-                                    <h3>效率</h3>
-                                </div>
-                            </div>
-                            <div flex spacearound>
-                                <div class="totalStatics-item" flex-column center>
-                                    <div class="num num1 fontsize60">{{!zhgkData.fbrl?0:zhgkData.fbrl}}</div>
-                                    <h3>工程</h3>
-                                </div>
-                                <div class="totalStatics-item" flex-column center>
-                                    <div class="num num2 fontsize60">{{!zhgkData.fbek?0:zhgkData.fbek}}</div>
-                                    <h3>二开</h3>
-                                </div>
-                                <div class="totalStatics-item" flex-column center>
-                                    <div class="num num3 fontsize60">{{!zhgkData.fbkb?0:zhgkData.fbkb}}</div>
-                                    <h3>可变</h3>
-                                </div>
-                            </div>
-                        </Card>
-                    </div>
-                </main>
-                <!-- 右侧表格 -->
-                <aside class="" flex-column col="2">
-                    <div class="" flex-column col="6">
-                        <Card class="projects" col="1" title="问题统计" :gradient='["rgba(214,0,0,0.5)","rgba(214,0,0,0.1)"]'>
-                            <div style="flex-wrap: wrap;" flex spacebetween>
-                                <div flex-column rowcenter colcenter  class="projects-box">
-                                    <span class="num">{{zhgkData.cqwxys}}</span>
-                                    <span class="text">超期未响应</span>
-                                </div>
-                                <div flex-column rowcenter colcenter  class="projects-box">
-                                    <span class="num">{{zhgkData.cqwjjs}}</span>
-                                    <span class="text">超期未解决</span>
-                                </div>
-                                <!-- <div flex-column rowcenter colcenter   class="projects-box">
-                                    <span class="num">{{zhgkData.cqyjjs}}</span>
-                                    <span class="text">超期已解决</span>
-                                </div> -->
-                                <div flex-column rowcenter colcenter  class="projects-box">
-                                    <span class="num">{{zhgkData.tss}}</span>
-                                    <span class="text">投诉</span>
-                                </div>
-                                <div flex-column rowcenter colcenter  class="projects-box">
-                                    <span class="num">{{!zhgkData.bmys?0:zhgkData.bmys}}</span>
-                                    <span class="text">不满意</span>
-                                </div>
-                            </div>
-                        </Card>
-                        <Card class="projects" col="1" title="使用率" flex style="position:relative;" :gradient='["rgba(221,206,0,0.5)","rgba(209,202,0,0.1)"]'>
-                            <div style="flex-wrap: wrap;" flex spacebetween>
-                                <!-- <div flex-column rowcenter colcenter  class="projects-box">
-                                    <span class="num"></span>
-                                    <span class="text">应用总量</span>
-                                </div> -->
-                                <div flex-column rowcenter colcenter  class="projects-box">
+                </div>
+              </div>
+              <div col="1" flex spacearound>
+                <div class="totalStatics-item" flex-column center>
+                  <div class="num num3 fontsize60">{{zhgkData.zjs}}</div>
+                  <h3>在建</h3>
+                </div>
+                <div class="totalStatics-item" flex-column center>
+                  <div class="num num3 fontsize60">{{zhgkData.shs}}</div>
+                  <h3>售后</h3>
+                </div>
+                <div class="totalStatics-item" flex-column center>
+                  <div class="num num3 fontsize60">{{zhgkData.gbs}}</div>
+                  <h3>过保</h3>
+                </div>
+                <div class="totalStatics-item" flex-column center>
+                  <div class="num num3 fontsize60">{{zhgkData.zts}}</div>
+                  <h3>在谈</h3>
+                </div>
+                <div class="totalStatics-item" flex-column center>
+                  <div class="num num3 fontsize60">{{zhgkData.zzs}}</div>
+                  <h3>终止</h3>
+                </div>
+              </div>
+            </Card>
+          </div>
+          <div class="" col="3" flex>
+            <Card col="3" title="人员统计">
+              <div flex spacearound>
+                <div class="totalStatics-item" flex-column center>
+                  <div class="num fontsize60">{{zhgkData.ryzs}}</div>
+                  <h3>人员总数</h3>
+                </div>
+              </div>
+              <div flex spacearound>
+                <div class="totalStatics-item" flex-column center>
+                  <div class="num num1 fontsize60">{{!zhgkData.zsrs?0:zhgkData.zsrs}}</div>
+                  <h3>正式</h3>
+                </div>
+                <div class="totalStatics-item" flex-column center>
+                  <div class="num num2 fontsize60">{{!zhgkData.sxrs?0:zhgkData.sxrs}}</div>
+                  <h3>实习</h3>
+                </div>
+                <div class="totalStatics-item" flex-column center>
+                  <div class="num num3 fontsize60">{{!zhgkData.qtrs?0:zhgkData.qtrs}}</div>
+                  <h3>其他</h3>
+                </div>
+              </div>
+            </Card>
+            <Card col="3" title="成本统计(万元)">
+              <div flex spacearound>
+                <div class="totalStatics-item" flex-column center>
+                  <div class="num fontsize60">{{zhgkData.fbwgl}}</div>
+                  <h3>完工量</h3>
+                </div>
+                <div class="totalStatics-item" flex-column center>
+                  <div class="num fontsize60">
+                    {{((Number(zhgkData.fbrl)+Number(zhgkData.fbek)+Number(zhgkData.fbkb))/(Number(zhgkData.fbwgl))*100).toFixed(0)+'%'}}
+                  </div>
+                  <h3>效率</h3>
+                </div>
+              </div>
+              <div flex spacearound>
+                <div class="totalStatics-item" flex-column center>
+                  <div class="num num1 fontsize60">{{!zhgkData.fbrl?0:zhgkData.fbrl}}</div>
+                  <h3>工程</h3>
+                </div>
+                <div class="totalStatics-item" flex-column center>
+                  <div class="num num2 fontsize60">{{!zhgkData.fbek?0:zhgkData.fbek}}</div>
+                  <h3>二开</h3>
+                </div>
+                <div class="totalStatics-item" flex-column center>
+                  <div class="num num3 fontsize60">{{!zhgkData.fbkb?0:zhgkData.fbkb}}</div>
+                  <h3>可变</h3>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </main>
+        <!-- 右侧表格 -->
+        <aside class="" flex-column col="2">
+          <div class="" flex-column col="6">
+            <Card class="projects" col="1" title="问题统计" :gradient='["rgba(214,0,0,0.5)","rgba(214,0,0,0.1)"]'>
+              <div style="flex-wrap: wrap;" flex spacebetween>
+                <div flex-column rowcenter colcenter class="projects-box">
+                  <span class="num">{{zhgkData.cqwxys}}</span>
+                  <span class="text">超期未响应</span>
+                </div>
+                <div flex-column rowcenter colcenter class="projects-box">
+                  <span class="num">{{zhgkData.cqwjjs}}</span>
+                  <span class="text">超期未解决</span>
+                </div>
+                <div flex-column rowcenter colcenter class="projects-box">
+                  <span class="num">{{zhgkData.tss}}</span>
+                  <span class="text">投诉</span>
+                </div>
+                <div flex-column rowcenter colcenter class="projects-box">
+                  <span class="num">{{!zhgkData.bmys?0:zhgkData.bmys}}</span>
+                  <span class="text">不满意</span>
+                </div>
+              </div>
+            </Card>
+            <Card class="projects" col="1" title=" 财年签单动态(万元)" flex style="position:relative;" :gradient='["rgba(221,206,0,0.5)","rgba(209,202,0,0.1)"]'>
+              <div style="flex-wrap: wrap;" flex-column spacearound>
+                <div flex spacearound center class="projects-box-qddt" v-for="(ht,index) in htData" :key="index">
+                  <div v-for="(item,i) in ht">{{item}}</div>
+                </div>
+                <!-- <div flex-column rowcenter colcenter  class="projects-box">
                                     <span class="num">{{zhgkData.fwzs}}</span>
                                     <span class="text">访问总量</span>
                                 </div>
@@ -211,28 +206,30 @@
                                 <div flex-column rowcenter colcenter  class="projects-box">
                                     <span class="num">{{zhgkData.byyhzs}}</span>
                                     <span class="text">本月用户量</span>
-                                </div>
-                            </div>
-                        </Card>
-                    </div>
-                    <div class="" col="3" flex>
-                        <Card col="3" title="项目动态" >
-                            <div style="height:300px;overflow:hidden"  v-if="ysData.length > 0" @mouseover="handleClearTimer" @mouseout="handleStartTimer"> 
-                                <table class="table"  :class="{anim:animate==true}">
-                                    <tr v-for="(item,index) in ysData" :key="index" >
-                                        <td :title="item.xmmc">{{item.xmmc}}</td>
-                                        <td>{{item.yssj}}</td>
-                                        <td :class="{'active-ys':item.xmzt=='验收','active-syx':item.xmzt=='试运行'}"  style="color:#F2A51B">{{item.xmzt}}</td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <no-data col="1" v-else />
-                        </Card>
-                    </div>
-                </aside>
-            </div>
-        </div>
+                                </div> -->
+              </div>
+            </Card>
+          </div>
+          <div class="" col="3" flex>
+            <Card col="3" title="项目动态">
+              <el-scrollbar style="height:300px">
+                <div style="height:100%" v-if="ysData.length > 0" @mouseover="handleClearTimer" @mouseout="handleStartTimer">
+                  <table class="table" :class="{anim:animate==true}">
+                    <tr v-for="(item,index) in ysData" :key="index">
+                      <td :title="item.xmmc">{{item.xmmc}}</td>
+                      <td>{{item.yssj}}</td>
+                      <td :class="{'active-ys':item.xmzt=='验收','active-syx':item.xmzt=='试运行'}" style="color:#F2A51B">{{item.xmzt}}</td>
+                    </tr>
+                  </table>
+                </div>
+                <no-data col="1" v-else />
+              </el-scrollbar>
+            </Card>
+          </div>
+        </aside>
+      </div>
     </div>
+  </div>
 </template>
 <script type="text/javascript">
 import { getMyDate } from "../../utils.js";
@@ -268,12 +265,14 @@ export default {
       qymc: "",
       timer: null,
       mapData: [],
+      htData: [], //签单动态
       max: ""
     };
   },
   created() {
     this.date = getMyDate(new Date());
     this.queryOverallPanel();
+    this.queryContractData();
     this.getDictEnum();
   },
   mounted() {},
@@ -295,9 +294,11 @@ export default {
     }
   },
   methods: {
+
     handleChangeqy(param) {
       this.qymc = param;
       this.queryOverallPanel(param);
+      this.queryContractData();
       this.initMap(this.mapData);
     },
     getDictEnum() {
@@ -322,10 +323,10 @@ export default {
               ele.XZMC = ele.XZMC.split("维吾尔")[0];
             } else if (ele.XZMC.indexOf("回族") != -1) {
               ele.XZMC = ele.XZMC.split("回族")[0];
-            }else if(ele.XZMC.indexOf("壮族") != -1){
-              ele.XZMC = ele.XZMC.split("壮族")[0];  
-            }else if(ele.XZMC.indexOf("特别行政区") != -1){
-              ele.XZMC = ele.XZMC.split("特别行政区")[0];  
+            } else if (ele.XZMC.indexOf("壮族") != -1) {
+              ele.XZMC = ele.XZMC.split("壮族")[0];
+            } else if (ele.XZMC.indexOf("特别行政区") != -1) {
+              ele.XZMC = ele.XZMC.split("特别行政区")[0];
             }
           });
           this.qyArr = res.data.data;
@@ -336,15 +337,17 @@ export default {
       clearInterval(this.timer);
     },
     handleStartTimer() {
-      this.timer = setInterval(this.scroll, 1000);
+      this.timer = setInterval(this.scroll, 10000);
     },
     scroll() {
       this.animate = true;
+      this.ysData = this.ysData.concat(this.ysData.slice(0, 7));
       setTimeout(() => {
-        this.ysData.push(this.ysData[0]);
-        this.ysData.shift();
+        // this.ysData.push(this.ysData[0]);
+        // this.ysData.shift();
+        this.ysData.splice(0, 7);
         this.animate = false;
-      }, 500);
+      }, 1000);
     },
     queryOverallPanel(qymc) {
       clearInterval(this.timer);
@@ -373,9 +376,9 @@ export default {
                 ele.PROVINCE = ele.PROVINCE.split("维吾尔")[0];
               } else if (ele.PROVINCE.indexOf("回族") != -1) {
                 ele.PROVINCE = ele.PROVINCE.split("回族")[0];
-              }else if (ele.PROVINCE.indexOf("壮族") != -1) {
+              } else if (ele.PROVINCE.indexOf("壮族") != -1) {
                 ele.PROVINCE = ele.PROVINCE.split("壮族")[0];
-              }else if (ele.PROVINCE.indexOf("特别行政区") != -1) {
+              } else if (ele.PROVINCE.indexOf("特别行政区") != -1) {
                 ele.PROVINCE = ele.PROVINCE.split("特别行政区")[0];
               }
             });
@@ -396,13 +399,23 @@ export default {
             }
           }
           if (this.ysData.length > 7) {
-            this.timer = setInterval(this.scroll, 1000);
+            this.timer = setInterval(this.scroll, 10000);
           }
         } else {
           this.$alert(res.data.msg, "提示", {
             confirmButtonText: "确定",
             type: "error"
           });
+        }
+      });
+    },
+    // 签单合同
+    queryContractData() {
+      this.$get(this.API.queryContractData, {
+        qymc: this.qymc
+      }).then(res => {
+        if (res.data.state == "success") {
+          this.htData = res.data.data;
         }
       });
     },
@@ -490,6 +503,7 @@ export default {
         let tempArr = JSON.parse(JSON.stringify(_this.mapData));
         if (_this.filterObj(params.name).includes(params.name)) {
           _this.queryOverallPanel(_this.qymc);
+          _this.queryContractData();
           tempArr.forEach((item, index) => {
             if (_this.filterObj(params.name).includes(item.name)) {
               _this.$set(tempArr[index], "selected", true);
@@ -578,6 +592,11 @@ export default {
     .projects-box {
       width: 50%;
       height: 50px;
+    }
+    .projects-box-qddt {
+      > div {
+        width: 25%;
+      }
     }
     .text {
       display: inline-block;

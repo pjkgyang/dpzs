@@ -53,11 +53,12 @@
    },
    methods:{
        handleCheck(param){
+          
         let routeData = this.$router.resolve({
             path:param,
             query: {}
         });
-        window.open(routeData.href, "_blank");
+        window.open(routeData.href);
        }
    },
    components: {}
