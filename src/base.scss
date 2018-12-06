@@ -44,6 +44,9 @@ img {
   vertical-align: middle;
   max-width: 100%;
 }
+.app__content{
+  height: calc(100% - 40px);
+}
 .num {
   font-family: DINCondensed;
   color: white;
@@ -55,8 +58,14 @@ img {
 .fontsize50{
 	font-size:50px;
 }
+.fontsize36{
+	font-size:36px;
+}
 .fontsize30{
 	font-size:30px;
+}
+.fontsize24{
+	font-size:24px;
 }
 .fontsize14{
   font-size:14px;
@@ -87,11 +96,17 @@ img {
 .wrap,[wrap]{
     flex-wrap: wrap;
 }
+.nowrap,[nowrap]{
+  flex-wrap: nowrap;
+}
 .spacearound, [spacearound] {
   justify-content: space-around;
 }
 .textcenter, [textcenter] {
   text-align: center;
+}
+.textright, [textright] {
+  text-align: right;
 }
 
 .height100 {
@@ -163,3 +178,4 @@ img {
     flex: $i 0 0 !important;
   }
 }
+

@@ -1,100 +1,99 @@
 <template>
-    <div class="pannel6">
-        <div>
-            <head-bar :title="'工程成本分析'" :time="nowDate"></head-bar>
-        </div>
-        <div class="app__content">
-            <div class="secure height100" flex>
-                <!-- 左侧 -->
-                <aside class="" flex-column col="2">
-                    <div col="2" flex-column :row='false'>
-                        <div class="top" flex col="6">
-                            <Card class="" col="4"  title="综合统计(万元)" flex :gradient='["#0086E3","rgba(0,70,209,0.33)"]'>
-                                <div col="1" flex-column spacearound>
-                                    <div flex spacearound>
-                                        <div class="totalStatics-item" flex-column center>
-                                            <div class="num fontsize60">{{pannelData.zbwgl}}</div>
-                                            <h3>完工量</h3>
-                                        </div>
-                                        <div class="totalStatics-item" flex-column center>
-                                            <div class="num fontsize60">
-                                                {{(((Number(pannelData.zbrlfy)+Number(pannelData.zbekfy)+Number(pannelData.zbkbfy))/Number(pannelData.zbwgl))*100).toFixed(0)+"%"}}
-                                            </div>
-                                            <h3>效率</h3>
-                                        </div>
-                                    </div>
-                                    <div flex spacearound>
-                                        <div class="totalStatics-item" flex-column center>
-                                            <div class="num num1 fontsize60">{{!pannelData.zbrlfy?0:pannelData.zbrlfy}}</div>
-                                            <h3>工程</h3>
-                                        </div>
-                                        <div class="totalStatics-item" flex-column center>
-                                            <div class="num num2 fontsize60">{{!pannelData.zbekfy?0:pannelData.zbekfy}}</div>
-                                            <h3>二开</h3>
-                                        </div>
-                                        <div class="totalStatics-item" flex-column center>
-                                            <div class="num num3 fontsize60">{{!pannelData.zbkbfy?0:pannelData.zbkbfy}}</div>
-                                            <h3>可变</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div col="1" id="pieItems1">
-                                </div>
-                            </Card>
-                        </div>
-                        <div class="" col="3" flex>
-                            <Card col="3" title="结算排名"  >
-                                <table class="theadTable">
-                                    <thead flex spacearound>
-                                        <th width="40">排名</th>
-                                        <th width="110">区域</th>
-                                        <th width="80">姓名</th>
-                                        <th width="90">入职时间</th>
-                                        <th width="90">金额(元)</th>
-                                    </thead>
-                                </table>
-                                 <el-scrollbar style="height:100%">
-                                  <table  v-if="jsData.length > 0"  class="table" @mouseover="handleClearTimer" @mouseout="handleStartTimer">
-                                      <tbody :class="{animcb1:animate==true}">
-                                        <tr v-for="(item,index) in jsData" :key="index" flex spacearound >
-                                          <td width="40">{{item.mc}}</td>
-                                          <td width="110">{{item.qymc}}</td>
-                                          <td width="80">{{item.ygxm}}</td>
-                                          <td width="90">{{item.rzsj}}</td>
-                                          <td width="90">{{item.je}}</td>
-                                      </tr>
-                                      </tbody>
-                                  </table>
-                                  <no-data col="1" v-else />
-                                 </el-scrollbar>
-                            </Card>
-                        </div>
+  <div class="pannel6">
+    <div>
+      <head-bar :title="'工程成本分析'" :time="nowDate"></head-bar>
+    </div>
+    <div class="app__content">
+      <div class="secure height100" flex>
+        <!-- 左侧 -->
+        <aside class="" flex-column col="2">
+          <div col="2" flex-column :row='false'>
+            <div class="top" flex col="6">
+              <Card class="" col="4" title="综合统计(万元)" flex :gradient='["#0086E3","rgba(0,70,209,0.33)"]'>
+                <div col="1" flex-column spacearound>
+                  <div flex spacearound>
+                    <div class="totalStatics-item" flex-column center>
+                      <div class="num fontsize60">{{pannelData.zbwgl}}</div>
+                      <h3>完工量</h3>
                     </div>
-                </aside>
-                <main flex-column col="4">
-                    <div class="" flex col="6">
-                        <Card class="" col="4"  title="" flex>
-                            <!-- <div ref="chinamap" id="chinamap"></div> -->
-                             <china-map  @handleChangeqy="handleChangeqy" @handleFilterqy="handleFilterqy"  
-                             :circle-show="false" :toolip-title="'效率'" :map-data="mapData" :map-color='["#f00","#50ce31"]'></china-map>
-                        </Card>
+                    <div class="totalStatics-item" flex-column center>
+                      <div class="num fontsize60">
+                        {{(((Number(pannelData.zbrlfy)+Number(pannelData.zbekfy)+Number(pannelData.zbkbfy))/Number(pannelData.zbwgl))*100).toFixed(0)+"%"}}
+                      </div>
+                      <h3>效率</h3>
                     </div>
-                    <div class="" col="3" flex>
-                        <Card col="3" title="效率(万元)">
-                            <doublebar-chart :data="barData" :max="max" :count="count" :qymc="qymc" @handleChooseBar="handleChooseBar"></doublebar-chart>
-                        </Card>
+                  </div>
+                  <div flex spacearound>
+                    <div class="totalStatics-item check-hover" flex-column center @click="hanldeCheckReport('gc')">
+                      <div class="num num1 fontsize60">{{!pannelData.zbrlfy?0:pannelData.zbrlfy}}</div>
+                      <h3>工程</h3>
                     </div>
-                </main>
-                <!-- 右侧表格 -->
-                <aside class="" flex-column col="2">
-                    <div class="" flex-column col="6">
-                        <Card class="projects" col="2" title="软件项目(万元)" flex rowcenter style="position:relative;">
-                            <!-- <span style="position:absolute;top:16px;right:16px;">
+                    <div class="totalStatics-item check-hover" flex-column center @click="hanldeCheckReport('ek')">
+                      <div class="num num2 fontsize60">{{!pannelData.zbekfy?0:pannelData.zbekfy}}</div>
+                      <h3>二开</h3>
+                    </div>
+                    <div class="totalStatics-item check-hover" flex-column center @click="hanldeCheckReport('kb')">
+                      <div class="num num3 fontsize60">{{!pannelData.zbkbfy?0:pannelData.zbkbfy}}</div>
+                      <h3>可变</h3>
+                    </div>
+                  </div>
+                </div>
+                <div col="1" id="pieItems1">
+                </div>
+              </Card>
+            </div>
+            <div class="" col="3" flex>
+              <Card col="3" title="结算排名">
+                <table class="theadTable">
+                  <thead flex spacearound>
+                    <th width="40">排名</th>
+                    <th width="110">区域</th>
+                    <th width="80">姓名</th>
+                    <th width="90">入职时间</th>
+                    <th width="90">金额(元)</th>
+                  </thead>
+                </table>
+                <el-scrollbar style="height:100%">
+                  <table v-if="jsData.length > 0" class="table" @mouseover="handleClearTimer" @mouseout="handleStartTimer">
+                    <tbody :class="{animcb1:animate==true}">
+                      <tr v-for="(item,index) in jsData" :key="index" flex spacearound>
+                        <td width="40">{{item.mc}}</td>
+                        <td width="110">{{item.qymc}}</td>
+                        <td width="80">{{item.ygxm}}</td>
+                        <td width="90">{{item.rzsj}}</td>
+                        <td width="90">{{item.je}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <no-data col="1" v-else />
+                </el-scrollbar>
+              </Card>
+            </div>
+          </div>
+        </aside>
+        <main flex-column col="4">
+          <div class="" flex col="6">
+            <Card class="" col="4" title="" flex>
+              <!-- <div ref="chinamap" id="chinamap"></div> -->
+              <china-map @handleChangeqy="handleChangeqy" @handleFilterqy="handleFilterqy" :circle-show="false" :toolip-title="'效率'" :map-data="mapData" :map-color='["#f00","#50ce31"]'></china-map>
+            </Card>
+          </div>
+          <div class="" col="3" flex>
+            <Card col="3" title="效率(万元)">
+              <doublebar-chart :data="barData" :max="max" :count="count" :qymc="qymc" @handleChooseBar="handleChooseBar"></doublebar-chart>
+            </Card>
+          </div>
+        </main>
+        <!-- 右侧表格 -->
+        <aside class="" flex-column col="2">
+          <div class="" flex-column col="6">
+            <Card class="projects" col="2" title="软件项目(万元)" flex rowcenter style="position:relative;">
+              <!-- <span style="position:absolute;top:16px;right:16px;">
                                 <template v-for="(items,index) in tabbtn">
                                     <span :class="{'titlebutton':true,'titlebtnactive':index==curTabindex1}" @click='chooseBtn1(index)'>{{items}}</span>
 </template>
 </span> -->
-<!-- <div col="1" flex style="width:98%;margin: 0 auto;">
+              <!-- <div col="1" flex style="width:98%;margin: 0 auto;">
     <div flex col="1" spacebetween colcenter>
         <div flex spacebetween colcenter style="background-image: linear-gradient(-180deg, rgb(227, 144, 0,0.6) 0%, rgba(221,206,0,0.4) 20%, rgba(214,213,0,0.2) 48%, rgba(209,202,0,0.00) 100%);width:100%;height:50px;padding:0 20px;">
             <span class="text">效率</span>
@@ -104,44 +103,44 @@
         </div>
     </div>
 </div> -->
-<div col="1" flex spacearound>
-     <div class="totalStatics-item" flex-column center>
-          <div class="num num1 fontsize60">{{!pannelData.dnrjwg?0:pannelData.dnrjwg}}</div>
-          <h3>当年完工</h3>
-      </div>
-      <div class="totalStatics-item" flex-column center>
-          <div class="num num2 fontsize60">{{!pannelData.wnrjwg?0:pannelData.wnrjwg}}</div>
-          <h3>往年完工</h3>
-      </div>
-      
-</div>
+              <div col="1" flex spacearound>
+                <div class="totalStatics-item" flex-column center>
+                  <div class="num num1 fontsize60">{{!pannelData.dnrjwg?0:pannelData.dnrjwg}}</div>
+                  <h3>当年完工</h3>
+                </div>
+                <div class="totalStatics-item" flex-column center>
+                  <div class="num num2 fontsize60">{{!pannelData.wnrjwg?0:pannelData.wnrjwg}}</div>
+                  <h3>往年完工</h3>
+                </div>
 
-     <div col="1" flex spacearound>
-      <div class="totalStatics-item" flex-column center>
-          <div class="num num1 fontsize60">{{!pannelData.dnrjys?0:pannelData.dnrjys}}</div>
-          <h3>当年验收</h3>
-      </div>
-      <div class="totalStatics-item" flex-column center>
-          <div class="num num2 fontsize60">{{!pannelData.wnrjys?0:pannelData.wnrjys}}</div>
-          <h3>往年验收</h3>
-      </div>
-</div>
-</Card>
-<Card class="projects" col="1" title="服务项目(万元)" flex style="position:relative;">
-    <!-- <span style="position:absolute;top:16px;right:16px;">
+              </div>
+
+              <div col="1" flex spacearound>
+                <div class="totalStatics-item" flex-column center>
+                  <div class="num num1 fontsize60">{{!pannelData.dnrjys?0:pannelData.dnrjys}}</div>
+                  <h3>当年验收</h3>
+                </div>
+                <div class="totalStatics-item" flex-column center>
+                  <div class="num num2 fontsize60">{{!pannelData.wnrjys?0:pannelData.wnrjys}}</div>
+                  <h3>往年验收</h3>
+                </div>
+              </div>
+            </Card>
+            <Card class="projects" col="1" title="服务项目(万元)" flex style="position:relative;">
+              <!-- <span style="position:absolute;top:16px;right:16px;">
         <span v-for="(items,index) in tabbtn" :class="{'titlebutton':true,'titlebtnactive':index==curTabindex2}" @click='chooseBtn2(index)'>{{items}}</span>
     </span> -->
-    <div col="1" flex spacearound>
-      <div class="totalStatics-item" flex-column center>
-          <div class="num num1 fontsize60">{{!pannelData.dnqtwg?0:pannelData.dnqtwg}}</div>
-          <h3>当年完工</h3>
-      </div>
-      <div class="totalStatics-item" flex-column center>
-          <div class="num num2 fontsize60">{{!pannelData.wnqtwg?0:pannelData.wnqtwg}}</div>
-          <h3>往年完工</h3>
-      </div>
-    </div>
-    <!-- <div col="1" flex spacebetween>
+              <div col="1" flex spacearound>
+                <div class="totalStatics-item" flex-column center>
+                  <div class="num num1 fontsize60">{{!pannelData.dnqtwg?0:pannelData.dnqtwg}}</div>
+                  <h3>当年完工</h3>
+                </div>
+                <div class="totalStatics-item" flex-column center>
+                  <div class="num num2 fontsize60">{{!pannelData.wnqtwg?0:pannelData.wnqtwg}}</div>
+                  <h3>往年完工</h3>
+                </div>
+              </div>
+              <!-- <div col="1" flex spacebetween>
         <div flex col="1" rowcenter colcenter>
             <span class="text">往年验收</span>
             <span class="num">
@@ -153,40 +152,40 @@
             <span class="num">{{!otherData.cb?0:otherData.cb}}</span>
         </div>
     </div> -->
-</Card>
-</div>
-<div class="" col="3" flex>
-    <Card col="3" title="过保项目">
-        <div flex spacearound>
-            <div class="totalStatics-item" flex-column center>
-                <div class="num fontsize60">{{pannelData.gbxms}}</div>
-                <h3>过保项目数</h3>
-            </div>
-            <div class="totalStatics-item" flex-column center>
-                <div class="num fontsize60">{{pannelData.gbjxfws}}</div>
-                <h3>继续服务数</h3>
-            </div>
-        </div>
-        <div flex spacearound>
-            <div class="totalStatics-item" flex-column center>
-                <div class="num num1 fontsize60">{{!pannelData.gbrlfy?0:pannelData.gbrlfy}}</div>
-                <h3>工程(万元)</h3>
-            </div>
-            <div class="totalStatics-item" flex-column center>
-                <div class="num num2 fontsize60">{{!pannelData.gbekfy?0:pannelData.gbekfy}}</div>
-                <h3>二开(万元)</h3>
-            </div>
-            <div class="totalStatics-item" flex-column center>
-                <div class="num num3 fontsize60">{{!pannelData.gbkbfy?0:pannelData.gbkbfy}}</div>
-                <h3>可变(万元)</h3>
-            </div>
-        </div>
-    </Card>
-</div>
-</aside>
-</div>
-</div>
-</div>
+            </Card>
+          </div>
+          <div class="" col="3" flex>
+            <Card col="3" title="过保项目">
+              <div flex spacearound>
+                <div class="totalStatics-item" flex-column center>
+                  <div class="num fontsize60">{{pannelData.gbxms}}</div>
+                  <h3>过保项目数</h3>
+                </div>
+                <div class="totalStatics-item" flex-column center>
+                  <div class="num fontsize60">{{pannelData.gbjxfws}}</div>
+                  <h3>继续服务数</h3>
+                </div>
+              </div>
+              <div flex spacearound>
+                <div class="totalStatics-item" flex-column center>
+                  <div class="num num1 fontsize60">{{!pannelData.gbrlfy?0:pannelData.gbrlfy}}</div>
+                  <h3>工程(万元)</h3>
+                </div>
+                <div class="totalStatics-item" flex-column center>
+                  <div class="num num2 fontsize60">{{!pannelData.gbekfy?0:pannelData.gbekfy}}</div>
+                  <h3>二开(万元)</h3>
+                </div>
+                <div class="totalStatics-item" flex-column center>
+                  <div class="num num3 fontsize60">{{!pannelData.gbkbfy?0:pannelData.gbkbfy}}</div>
+                  <h3>可变(万元)</h3>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
 </template>
 <script type="text/javascript">
 import { getMyDate } from "../../utils.js";
@@ -223,7 +222,7 @@ export default {
       timer: null,
       qymc: "",
       mapData: [],
-      max:100
+      max: 100
     };
   },
   created() {
@@ -298,10 +297,15 @@ export default {
     });
   },
   watch: {},
-  mounted() {
-  
-  },
+  mounted() {},
   methods: {
+    hanldeCheckReport(data) {
+        let routeData = this.$router.resolve({
+          path:data == "gc"?"/gcrl":data == "ek" ? "/ek" : "/kb",
+          query: { qy:this.qymc }
+        });
+        window.open(routeData.href, "_blank");
+    },
     handleChooseBar(data) {
       this.queryCostAnalysisPanel(data);
       this.qymc = data;
@@ -324,11 +328,11 @@ export default {
     },
     scroll() {
       this.animate = true;
-      this.jsData = this.jsData.concat(this.jsData.slice(0,5))
+      this.jsData = this.jsData.concat(this.jsData.slice(0, 5));
       setTimeout(() => {
         // this.jsData.push(this.jsData[0]);
         // this.jsData.shift();
-        this.jsData.splice(0,5);
+        this.jsData.splice(0, 5);
         this.animate = false;
       }, 500);
     },
@@ -421,9 +425,9 @@ export default {
       width: 100px;
       text-align: center;
     }
-    .num {
-      font-size:50px;
-    }
+    // .num {
+    //   font-size:50px;
+    // }
   }
   .totalStatics-item {
     .num.num1 {
@@ -436,6 +440,10 @@ export default {
       @include gradient(#ffd891, #f7791c);
     }
   }
+  .check-hover {
+    cursor: pointer;
+  }
+
   .theadTable {
     th {
       text-align: center;

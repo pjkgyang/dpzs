@@ -8,12 +8,13 @@
         <main flex-column col="3">
           <div class="top" flex col="6">
             <Card class="secure__map" col="4" title="" :row="true">
-              <china-map @handleChangeqy="handleChangeqy" @handleFilterqy="handleFilterqy" :numPer="((Number(wgtjData.wnwgwcl)+Number(wgtjData.dnwgwcl))/(Number(wgtjData.wnwgmb)+Number(wgtjData.dnwgmb))*100).toFixed(2)" :mapData="mapData" :toolip-title="'工程完工率'"></china-map>
+              <china-map @handleChangeqy="handleChangeqy" @handleFilterqy="handleFilterqy" :numPer="((Number(wgtjData.wnwgwcl)+Number(wgtjData.dnwgwcl))/(Number(wgtjData.wnwgmb)+Number(wgtjData.dnwgmb))*100).toFixed(2)"
+               :mapData="mapData" :toolip-title="'工程完工率'" @handleCheckReport="handleCheckReport" :userTag="isCheck"></china-map>
             </Card>
           </div>
           <div class="secure__detail" col="4" flex>
             <Card col="3" title="区域完工统计">
-              <doublebar-chart :data="qywgData"  :max="max" :count="count" :qymc="qymc" @handleChooseBar="handleChooseBar"></doublebar-chart>
+              <doublebar-chart :data="qywgData" :max="max" :count="count" :qymc="qymc" @handleChooseBar="handleChooseBar"></doublebar-chart>
             </Card>
           </div>
         </main>
@@ -25,13 +26,27 @@
                 <div col="1" flex-column>
                   <h4 col="1" flex colcenter class="fontsize16" style="padding-left: 28px;">当年项目( 万元 )</h4>
                   <div col="6" flex>
-                    <div id="pieItems1" col="4"></div>
-                    <div col="2" flex-column rowcenter>
+                    <div id="pieItems1" col="5"></div>
+                    <div col="3" flex-column rowcenter>
                       <h4>当年目标</h4>
                       <div class="num" style="color:#3AC868;font-size: 25px;margin-bottom: 20px;">{{wgtjData.dnwgmb}}</div>
-                      <h4>已完成</h4>
-                      <div class="num" style="color:#F9B74C;font-size: 25px;">
-                        {{wgtjData.dnwgwcl}}<br>({{!wgtjData.dnwgwcl||!wgtjData.dnwgmb?'-':(Number(wgtjData.dnwgwcl)/Number(wgtjData.dnwgmb)*100).toFixed(2)}}%)
+                      <div>
+                        <div flex colcenter>
+                          <div>
+                            <h4>已完成</h4>
+                            <div class="num" style="color:#F9B74C;font-size: 25px;">
+                              {{wgtjData.dnwgwcl}}
+                            </div>
+                          </div>
+                          <span class="line"></span>
+                          <div>
+                            <h4>待完工</h4>
+                            <div class="num" style="color:#F9B74C;font-size: 25px;">
+                              {{wgtjData.dnwgdwcl}}
+                            </div>
+                          </div>
+                        </div>
+                        <p class="num" style="color:#F9B74C;font-size: 25px;">({{!wgtjData.dnwgwcl||!wgtjData.dnwgmb?'-':(Number(wgtjData.dnwgwcl)/Number(wgtjData.dnwgmb)*100).toFixed(2)}}%)</p>
                       </div>
                     </div>
                   </div>
@@ -39,20 +54,35 @@
                 <div col="1" flex-column>
                   <h4 col="1" flex colcenter class="fontsize16" style="padding-left: 28px;">当月完工( 万元 )</h4>
                   <div col="6" flex>
-                    <div id="pieItems2" col="4"></div>
-                    <div col="2" flex-column rowcenter>
+                    <div id="pieItems2" col="5"></div>
+                    <div col="3" flex-column rowcenter>
                       <h4>当月目标</h4>
                       <div class="num" style="color:#3AC868;font-size: 24px;margin-bottom: 25px;">{{wgtjData.bywgjh}}</div>
-                      <h4>已完成</h4>
-                      <div class="num" style="color:#F9B74C;font-size: 25px;">
-                        {{wgtjData.bywgwcl}}<br>({{!wgtjData.bywgwcl||!wgtjData.bywgjh?'-':(Number(wgtjData.bywgwcl)/Number(wgtjData.bywgjh)*100).toFixed(2)}}%)
+                      <div>
+                        <div flex colcenter>
+                          <div>
+                            <h4>已完成</h4>
+                            <div class="num" style="color:#F9B74C;font-size: 25px;">
+                              {{wgtjData.bywgwcl}}<br>
+                            </div>
+                          </div>
+                          <span class="line"></span>
+                          <div>
+                            <h4>待完工</h4>
+                            <div class="num" style="color:#F9B74C;font-size: 25px;">
+                              {{wgtjData.dnywgdwcl}}<br>
+                            </div>
+                          </div>
+                        </div>
+                        <p class="num" style="color:#F9B74C;font-size: 25px;">({{!wgtjData.bywgwcl||!wgtjData.bywgjh?'-':(Number(wgtjData.bywgwcl)/Number(wgtjData.bywgjh)*100).toFixed(2)}}%)</p>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div col="1" flex>
-                <arrow-bar :done="Number(wgtjData.dnwgwcl)" :total="Number(wgtjData.dnwgmb)"></arrow-bar>
+              <div col="1">
+                <arrow-bar :done="Number(!wgtjData.dnrjwcl?'0':wgtjData.dnrjwcl)" :total="Number(!wgtjData.dnrjwgmb?'0':wgtjData.dnrjwgmb)" :text="'软件'"></arrow-bar>
+                <arrow-bar :done="Number(!wgtjData.dnfwwcl?'0':wgtjData.dnfwwcl)" :total="Number(!wgtjData.dnfwwgmb?'0':wgtjData.dnfwwgmb)" :text="'服务'"></arrow-bar>
               </div>
             </div>
             <div col="2" flex-column>
@@ -60,13 +90,27 @@
                 <div col="1" flex-column>
                   <h4 col="1" flex colcenter class="fontsize16" style="padding-left: 28px;">往年项目( 万元 )</h4>
                   <div col="6" flex>
-                    <div id="pieItems3" col="4"></div>
-                    <div col="2" flex-column rowcenter>
+                    <div id="pieItems3" col="5"></div>
+                    <div col="3" flex-column rowcenter>
                       <h4>往年目标</h4>
                       <div class="num" style="color:#E85650;font-size: 25px;margin-bottom: 20px;">{{wgtjData.wnwgmb}}</div>
-                      <h4>已完成</h4>
-                      <div class="num" style="color:#37A2F7;font-size: 25px;">
-                        {{wgtjData.wnwgwcl}}<br>({{!wgtjData.wnwgwcl||!wgtjData.wnwgmb?'-':(Number(wgtjData.wnwgwcl)/Number(wgtjData.wnwgmb)*100).toFixed(2)}}%)
+                      <div>
+                        <div flex colcenter>
+                          <div>
+                            <h4>已完成</h4>
+                            <div class="num" style="color:#37A2F7;font-size: 25px;">
+                              {{wgtjData.wnwgwcl}}
+                            </div>
+                          </div>
+                          <span class="line"></span>
+                          <div>
+                            <h4>待完工</h4>
+                            <div class="num" style="color:#37A2F7;font-size: 25px;">
+                              {{wgtjData.wnwgdwcl}}
+                            </div>
+                          </div>
+                        </div>
+                        <p class="num" style="color:#37A2F7;font-size: 25px;">({{!wgtjData.wnwgwcl||!wgtjData.wnwgmb?'-':(Number(wgtjData.wnwgwcl)/Number(wgtjData.wnwgmb)*100).toFixed(2)}}%)</p>
                       </div>
                     </div>
                   </div>
@@ -74,20 +118,35 @@
                 <div col="1" flex-column>
                   <h4 col="1" flex colcenter class="fontsize16" style="padding-left: 28px;">当月完工( 万元 )</h4>
                   <div col="6" flex>
-                    <div id="pieItems4" col="4"></div>
-                    <div col="2" flex-column rowcenter>
+                    <div id="pieItems4" col="5"></div>
+                    <div col="3" flex-column rowcenter>
                       <h4>当月目标</h4>
                       <div class="num" style="color:#E85650;font-size: 25px;margin-bottom: 20px;">{{wgtjData.bywnwgjh}}</div>
-                      <h4>已完成</h4>
-                      <div class="num" style="color:#27A6F6;font-size: 25px;">
-                        {{wgtjData.bywnwgwcl}}<br>({{!wgtjData.bywnwgwcl||!wgtjData.bywnwgjh?'-':(Number(wgtjData.bywnwgwcl)/Number(wgtjData.bywnwgjh)*100).toFixed(2)}}%)
+                      <div>
+                        <div flex colcenter>
+                          <div>
+                            <h4>已完成</h4>
+                            <div class="num" style="color:#27A6F6;font-size: 25px;">
+                              {{wgtjData.bywnwgwcl}}
+                            </div>
+                          </div>
+                          <span class="line"></span>
+                          <div>
+                            <h4>待完工</h4>
+                            <div class="num" style="color:#27A6F6;font-size: 25px;">
+                              {{wgtjData.wnywgdwcl}}
+                            </div>
+                          </div>
+                        </div>
+                        <p class="num" style="color:#37A2F7;font-size: 25px;">({{!wgtjData.bywnwgwcl||!wgtjData.bywnwgjh?'-':(Number(wgtjData.bywnwgwcl)/Number(wgtjData.bywnwgjh)*100).toFixed(2)}}%)</p>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
               <div col="1">
-                <arrow-bar :done="Number(wgtjData.wnwgwcl)" :total="Number(wgtjData.wnwgmb)"></arrow-bar>
+                <arrow-bar :done="Number(!wgtjData.wnrjwcl?'0':wgtjData.wnrjwcl)" :total="Number(!wgtjData.wnrjwgmb?'0':wgtjData.wnrjwgmb)" :text="'软件'"></arrow-bar>
+                <arrow-bar :done="Number(!wgtjData.wnfwwcl?'0':wgtjData.wnfwwcl)" :total="Number(!wgtjData.wnfwwgmb?'0':wgtjData.wnfwwgmb)" :text="'服务'"></arrow-bar>
               </div>
             </div>
           </Card>
@@ -139,7 +198,9 @@ export default {
       qymc: "",
       qyArr: [],
       mapData: [],
-      max: 100
+      max: 100,
+
+      isCheck:false
     };
   },
   watch: {},
@@ -181,7 +242,7 @@ export default {
           if (ele.qymc == "渠道工程") {
             ele.qymc = ele.qymc.split("工程")[0];
           }
-        qymcArr.push(ele.qymc.split("区域工程")[0]);
+          qymcArr.push(ele.qymc.split("区域工程")[0]);
           mbArr.push(ele.mbwcl);
           ywcArr.push(ele.wcl);
           xlArr.push(ele.xl);
@@ -197,16 +258,16 @@ export default {
         this.qywgData[1] = mbArr;
         this.qywgData[2] = ywcArr;
         this.qywgData[3] = xlArr;
-         
-        mbArr.forEach((item,i,arr)=>{
-           let num = '';
-            if(Number(item) -Number(ywcArr[i]) < 0){
-              num = 0
-            }else{
-              num = Number(item) - Number(ywcArr[i])
-            }
-            oldmbArr.push(num)
-          })
+
+        mbArr.forEach((item, i, arr) => {
+          let num = "";
+          if (Number(item) - Number(ywcArr[i]) < 0) {
+            num = 0;
+          } else {
+            num = Number(item) - Number(ywcArr[i]);
+          }
+          oldmbArr.push(num);
+        });
         this.qywgData[4] = oldmbArr;
 
         let keyMap = {
@@ -227,9 +288,23 @@ export default {
     });
     this.queryProjectCompletionPanel();
     this.nowDate = getMyDate(new Date());
+    if (
+      JSON.parse(sessionStorage.getItem("userInfo")).includes("JYGL") ||
+      JSON.parse(sessionStorage.getItem("userInfo")).includes("QYZ")
+    ) {
+      this.isCheck = true;
+    }
   },
   mounted() {},
   methods: {
+    // 报表
+    handleCheckReport() {
+      let routeData = this.$router.resolve({
+        path: "/wgreport",
+        query: {}
+      });
+      window.open(routeData.href, "_blank");
+    },
     handleChooseBar(data) {
       this.queryProjectCompletionPanel(data);
       this.qymc = data;
@@ -358,6 +433,15 @@ export default {
         @include gradient(#b4ec51, #429321);
       }
     }
+  }
+  .line {
+    height: 32px;
+    border-right: 2px solid #fff;
+    transform: rotate(15deg);
+    margin: 0 6px;
+  }
+  h4 {
+    white-space: nowrap;
   }
   table {
     table-layout: fixed;

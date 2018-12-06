@@ -4,7 +4,7 @@
       <div class="circle__box">
         <h2 class="curqy">{{!qymc?'全国':qymc}}</h2>
         <div class="secure_circle" flex-column rowcenter colcenter>
-          <span class="num">{{((Number(pannelData.yjjs)/Number(pannelData.wtzs)*100).toFixed(2))+'%'}}</span>
+          <span class="num fontsize36">{{((Number(pannelData.yjjs)/Number(pannelData.wtzs)*100).toFixed(2))+'%'}}</span>
           <span>问题解决率</span>
         </div>
       </div>
@@ -274,7 +274,7 @@ export default {
     left: 0;
     bottom: 0;
     .num {
-      font-size: 40px;
+      // font-size: 40px;
     }
   }
 }

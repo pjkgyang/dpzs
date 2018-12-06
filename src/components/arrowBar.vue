@@ -11,8 +11,8 @@
                 <div class="triangel"></div>
             </div>
         </div> -->
-        <div  :class="{outer:true}"><span>目标:{{total}}</span></div>
-        <div class="inner" :style="{backgroundSize:scale+'100%'}">完成:{{done}} ({{scale}})</div>
+        <div  :class="{outer:true}"><span>{{text}}完工目标 : </span><span  class="textColor">{{total}}</span></div>
+        <div class="inner" :style="{backgroundSize:scale+'100%'}">{{text}}完工量 : <span class="textColor">{{done}} ({{scale}})</span></div>
     </div>
 </template>
 <script type="text/javascript">
@@ -36,11 +36,15 @@ export default {
         imgUrl:{
           type:String,
           default:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536838122609&di=90ee05f8393d2a4beb0d1e827fd53812&imgtype=0&src=http%3A%2F%2Fpic.baike.soso.com%2Fp%2F20140524%2Fbkp-20140524053455-906678672.jpg'   
+        },
+        text:{
+          type:String,
+          default:''  
         }
     },
     computed: {
         scale() {
-            if (this.total == 0) { return 0 }
+            if (this.total == 0) { return 100+'%' }
             return (this.done / this.total * 100).toFixed(2) +'%'
         }
     },
@@ -50,11 +54,17 @@ export default {
 }
 </script>
 <style lang="scss" scope>
-
+@import "../../static/css/sass/resources/tools.scss";
+@import "../../static/css/sass/resources/settings.scss";
 .arrowBar {
     width: 100%;
     padding-left:20px;
     position: relative;
+    .textColor{
+        font-weight: 700;
+        @include gradient(#f5eeeb, #dbe6fa);
+    }
+    
     .outer{
         position: relative;
         padding:25px 90px 25px 0;
@@ -63,6 +73,8 @@ export default {
         clip-path:polygon(0% 35%, 90% 35%, 90% 20%, 100% 50%, 90% 80%, 90% 65%, 0% 65%);
         z-index: 200;
         text-align: right;
+        font-weight: 700
+
     }
     .inner{
         position: absolute;
@@ -72,6 +84,8 @@ export default {
         background:url('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536838122609&di=90ee05f8393d2a4beb0d1e827fd53812&imgtype=0&src=http%3A%2F%2Fpic.baike.soso.com%2Fp%2F20140524%2Fbkp-20140524053455-906678672.jpg');
         background-repeat: no-repeat;
         clip-path:polygon(0% 35%, 90% 35%, 90% 20%, 100% 50%, 90% 80%, 90% 65%, 0% 65%);
+        font-weight: 700
+
     }
     .bar-contanier {
         flex: 1 0 0;

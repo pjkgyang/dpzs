@@ -1,9 +1,9 @@
 <template>
  <div  class="header" flex spacebetween colcenter>
     <section>
-      <img src="static/assets/logo.png" alt="">
+      <img class="headerImg" src="static/assets/logo.png" alt="">
     </section>
-    <h2>{{title}}</h2>
+    <h2 >{{title}}</h2>
     <section>
       <p>截止：{{time}}</p>
     </section>
@@ -36,19 +36,18 @@
 @import '../../static/css/sass/resources/settings.scss';
 .header{
   padding: 0 1em;
-  height: 70px;
+  height:40px;
   img{
-    height: 50px;
+    height: 35px;
   }
   h2{
-    font-size: 32px;
-    line-height: 32px;
+    font-size:26px;
     @include gradient(#FFFFFF,rgb(165, 164, 164));
   }
   p{
-    font-size: 20px;
     line-height: 20px;
     font-weight: 700;
+    font-size: 20px;
     text-shadow: 0 2px 4px rgba(0,0,0,0.30);
     @include gradient(#FFFFFF,rgb(165, 164, 164));
   }

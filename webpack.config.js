@@ -109,7 +109,7 @@ if (process.env.NODE_ENV === 'production') {
             'process.env': {
                 NODE_ENV: '"development"'
             },
-            "WEBPACK_CONFIG_HOST": '"http://172.16.180.168:8080/emap/sys/etender/api/"'
+            "WEBPACK_CONFIG_HOST": '"http://172.16.180.239:8080/emap/sys/etender/api/"'
         })
     ])
 }

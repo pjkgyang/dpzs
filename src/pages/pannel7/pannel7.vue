@@ -14,22 +14,22 @@
                   <h3 col="1" flex rowcenter colcenter style="background-image: linear-gradient(-180deg, rgba(0, 134, 227,0.6) 0%, rgba(0,113,221,0.5) 21%, rgba(0,89,214,0.4) 46%, rgba(0,70,209,0.00) 97%);">全年计划</h3>
                   <div col="1" flex spacearound colcenter>
                     <div class="text">全年目标</div>
-                    <div class="num">{{zhgkData.dnysmb}}</div>
+                    <div class="num fontsize30">{{zhgkData.dnysmb}}</div>
                   </div>
                   <div col="1" flex spacearound colcenter>
                     <div class="text">已完成</div>
-                    <div class="num">{{zhgkData.dnyswcl}}</div>
+                    <div class="num fontsize30">{{zhgkData.dnyswcl}}</div>
                   </div>
                 </div>
                 <div class="statics" flex-column col="1">
                   <h3 col="1" flex rowcenter colcenter style="background-image: linear-gradient(-180deg, rgb(227, 144, 0,0.5) 0%, rgba(221,206,0,0.3) 20%, rgba(214,213,0,0.1) 48%, rgba(209,202,0,0.00) 100%);">本月计划</h3>
                   <div col="1" flex spacearound colcenter>
                     <div class="text">本月计划</div>
-                    <div class="num">{{zhgkData.byysjh}}</div>
+                    <div class="num fontsize30">{{zhgkData.byysjh}}</div>
                   </div>
                   <div col="1" flex spacearound colcenter>
                     <div class="text">已完成</div>
-                    <div class="num">{{zhgkData.byyswcl}}</div>
+                    <div class="num fontsize30">{{zhgkData.byyswcl}}</div>
                   </div>
                 </div>
               </Card>
@@ -40,22 +40,22 @@
                   <h3 col="1" flex rowcenter colcenter style="background-image: linear-gradient(-180deg, rgba(227, 0, 0,0.5) 0%, rgba(255,42,42,0.4) 22%, rgba(240,33,33,0.2) 48%, rgba(209,0,0,0.00) 100%);">全年计划</h3>
                   <div col="1" flex spacearound colcenter>
                     <div class="text">全年目标</div>
-                    <div class="num">{{zhgkData.dnwgmb}}</div>
+                    <div class="num fontsize30">{{zhgkData.dnwgmb}}</div>
                   </div>
                   <div col="1" flex spacearound colcenter>
                     <div class="text">已完成</div>
-                    <div class="num">{{zhgkData.dnwgwcl}}</div>
+                    <div class="num fontsize30">{{zhgkData.dnwgwcl}}</div>
                   </div>
                 </div>
                 <div class="statics" flex-column col="1">
                   <h3 col="1" flex rowcenter colcenter style="background-image: linear-gradient(-180deg, rgb(227, 144, 0,0.5) 0%, rgba(221,206,0,0.3) 20%, rgba(214,213,0,0.1) 48%, rgba(209,202,0,0.00) 100%);">本月计划</h3>
                   <div col="1" flex spacearound colcenter>
                     <div class="text">本月计划</div>
-                    <div class="num">{{zhgkData.bywgjh}}</div>
+                    <div class="num fontsize30">{{zhgkData.bywgjh}}</div>
                   </div>
                   <div col="1" flex spacearound colcenter>
                     <div class="text">已完成</div>
-                    <div class="num">{{zhgkData.bywgwcl}}</div>
+                    <div class="num fontsize30">{{zhgkData.bywgwcl}}</div>
                   </div>
                 </div>
               </Card>
@@ -71,11 +71,11 @@
                     <h2 class="curqy">{{!qymc?'全国':qymc}}</h2>
                   </div>
                   <div class="circle circle1" flex-column center>
-                    <span class="num">{{zhgkData.khs}}</span>
+                    <span class="num fontsize36">{{zhgkData.khs}}</span>
                     <span>客户数</span>
                   </div>
                   <div class="circle circle2" flex-column center>
-                    <span class="num">{{zhgkData.xms}}</span>
+                    <span class="num fontsize36">{{zhgkData.xms}}</span>
                     <span>总项目数</span>
                   </div>
                 </div>
@@ -147,15 +147,15 @@
                 </div>
               </div>
               <div flex spacearound>
-                <div class="totalStatics-item" flex-column center>
+                <div class="totalStatics-item check-hover" flex-column center @click="hanldeCheckReport('gc')">
                   <div class="num num1 fontsize60">{{!zhgkData.fbrl?0:zhgkData.fbrl}}</div>
                   <h3>工程</h3>
                 </div>
-                <div class="totalStatics-item" flex-column center>
+                <div class="totalStatics-item check-hover" flex-column center @click="hanldeCheckReport('ek')">
                   <div class="num num2 fontsize60">{{!zhgkData.fbek?0:zhgkData.fbek}}</div>
                   <h3>二开</h3>
                 </div>
-                <div class="totalStatics-item" flex-column center>
+                <div class="totalStatics-item check-hover" flex-column center @click="hanldeCheckReport('kb')">
                   <div class="num num3 fontsize60">{{!zhgkData.fbkb?0:zhgkData.fbkb}}</div>
                   <h3>可变</h3>
                 </div>
@@ -188,7 +188,7 @@
             </Card>
             <Card class="projects" col="1" title=" 财年签单动态(万元)" flex style="position:relative;" :gradient='["rgba(221,206,0,0.5)","rgba(209,202,0,0.1)"]'>
               <div style="flex-wrap: wrap;" flex-column spacearound>
-                <div flex spacearound center class="projects-box-qddt" v-for="(ht,index) in htData" :key="index">
+                <div flex spacearound center nowrap class="projects-box-qddt" v-for="(ht,index) in htData" :key="index">
                   <div v-for="(item,i) in ht">{{item}}</div>
                 </div>
                 <!-- <div flex-column rowcenter colcenter  class="projects-box">
@@ -294,6 +294,13 @@ export default {
     }
   },
   methods: {
+    hanldeCheckReport(data) {
+        let routeData = this.$router.resolve({
+          path:data == "gc"?"/gcrl":data == "ek" ? "/ek" : "/kb",
+          query: { qy:this.qymc }
+        });
+        window.open(routeData.href, "_blank");
+    },
 
     handleChangeqy(param) {
       this.qymc = param;
@@ -580,7 +587,7 @@ export default {
       text-align: center;
     }
     .num {
-      font-size: 30px;
+      // font-size: 30px;
       width: 50%;
       text-align: center;
     }
@@ -596,7 +603,9 @@ export default {
     .projects-box-qddt {
       > div {
         width: 25%;
+        white-space: nowrap;
       }
+     
     }
     .text {
       display: inline-block;
@@ -614,7 +623,7 @@ export default {
     height: 100px;
     border-radius: 50%;
     .num {
-      font-size: 36px;
+      // font-size: 36px;
     }
   }
   .circle1 {
@@ -649,6 +658,9 @@ export default {
     .num.num3 {
       @include gradient(#ffd891, #f7791c);
     }
+  }
+  .check-hover{
+    cursor: pointer;
   }
 
   table {

@@ -6,8 +6,8 @@
             </div>
             <div class="circle__box"  col="1" v-if="circleShow">
                 <h2 class="curqy">{{!qymc?'全国':qymc}}</h2>
-                <div class="secure_circle" flex-column center>
-                    <span class="num">{{numPer}}%</span>
+                <div class="secure_circle" flex-column center  @click="handleCheckReport">
+                    <span class="num fontsize24">{{numPer}}%</span>
                     <span>{{title}}</span>
                 </div>
                 <div class="circle-text"></div>
@@ -72,6 +72,10 @@ export default {
       default:()=>{
         return ["#50ce31", "#f00"];
       }
+    },
+    userTag:{
+      type:Boolean,
+      default:true
     }
   },
   watch: {
@@ -108,6 +112,15 @@ export default {
     });
   },
   methods: {
+    handleCheckReport(){
+      if(this.title == '挣值效率' && !this.userTag){
+        return false;
+      }
+      if((this.title == '完工率'||this.title == '验收完成率') && !this.userTag){
+        return false;
+      }
+      this.$emit('handleCheckReport','')
+    },
     getDictEnum() {
       this.$get(this.API.getDictEnum, {
         name: "xzqh",
@@ -314,7 +327,10 @@ export default {
     left: 0;
     bottom: 0;
     .num {
-      font-size: 30px;
+      // font-size: 30px;
+    }
+    &:hover{
+      cursor: pointer;
     }
   }
 }

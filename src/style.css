@@ -11,6 +11,32 @@
     }
    
 }
+@media screen and (max-width:1450px) {
+    .fontsize60{
+        font-size: 45px;
+    }
+    .fontsize50{
+        font-size: 40px;  
+    }
+    .fontsize36{
+        font-size:30px;
+    }
+    .fontsize30{
+        font-size:20px;
+    }
+    .fontsize24{
+        font-size:16px;
+    }
+
+    .secure_circle,.circle{
+        width: 80px !important;
+        height: 80px !important;
+    }
+   
+}
+.mg-10{
+    margin: 10px 0;
+}
 .demo-spin-icon-load{
     animation: ani-demo-spin 1s linear infinite;
 }
@@ -30,4 +56,40 @@
 .el-scrollbar__wrap {
     overflow-x: hidden !important;
     overflow-y: auto;
-  }
+}
+.reportPersonal .el-table td.el-table_1_column_1,
+.reportPersonal .el-table td.el-table_1_column_2,
+.reportPersonal .el-table th.el-table_1_column_1,
+.reportPersonal .el-table th.el-table_1_column_2,
+.dpReport .el-table th.el-table_1_column_1,
+.dpReport .el-table td.el-table_1_column_1{
+    background: #0E194A !important;
+}
+.el-table,.el-table th{
+    text-align: center !important;
+}
+.el-table,.el-table tr,.el-table th{
+    background:none !important;
+    background-color: transparent;
+    color: #fff;
+}
+.el-table__body tr.hover-row>td{
+    background-color: #0E194A !important;
+}
+
+.reportPagination .el-pagination__total,
+.reportPagination .el-input__inner,
+.reportPagination .el-select-dropdown__item,
+.reportPagination .el-pagination__jump{
+    color:#fff !important;
+}
+.reportPagination input,
+.reportPagination .el-pagination .btn-prev,
+.reportPagination  .el-pagination .btn-next,
+.reportPagination .el-pager li,
+.reportPagination .el-pager li.btn-quicknext,
+.reportPagination .el-select-dropdown{
+    background:none !important;
+    color: #fff;
+}
+  

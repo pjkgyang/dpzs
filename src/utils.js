@@ -9,8 +9,10 @@ util.title = function (title) {
     window.document.title = title;
 };
 
+const UA = navigator.userAgent.toLowerCase();
 
-const UA = navigator.userAgent.toLowerCase()
+
+ 
 
 function serialize(data) {
   if (!data) return '';
@@ -100,4 +102,25 @@ export function getMyDate(str) {
   oSen = oSen < 10 ? ('0' + oSen) : oSen
   let oTime = oYear + '/' + oMonth + '/' + oDay;
   return oTime;
+}
+
+export function getMenu(type,Arrlist,isInterface){
+  this.$get(this.API.getDictEnum,{
+    name:type,
+    isInterface:isInterface||''
+}).then((res)=>{
+  if (!!res && res.state == "success") {     
+          let map = res.data;
+          let Arr = Object.keys(map);
+          let McArr = Object.values(map)
+          for(var i = 0;i< Arr.length;i++){
+              Arrlist.push({
+                label:Arr[i],
+                mc:McArr[i]
+              })
+            }
+        sessionStorage.setItem(type,JSON.stringify(Arrlist));
+        delCookie(type);
+      }
+ })
 }

@@ -63,8 +63,9 @@
                     <div class="" flex col="6">
                         <Card class="" col="4" title="" flex>
                             <!-- <div ref="chinamap" id="chinamap" col="5"></div> -->
-                            <chinaMap col="5" @handleChangeqy="handleChangeqy" @handleFilterqy="handleFilterqy" :title="'挣值效率'"
-                            :mapData="mapData"  :toolip-title="'挣值效率'" :num-per="(Number(pannelData.zzz)/Number(pannelData.zjx)*100).toFixed(2)"></chinaMap>
+                            <chinaMap col="5" @handleChangeqy="handleChangeqy" @handleFilterqy="handleFilterqy" :title="'挣值效率'" :userTag="isCheck"
+                            :mapData="mapData"  :toolip-title="'挣值效率'" :num-per="(Number(pannelData.zzz)/Number(pannelData.zjx)*100).toFixed(2)" 
+                            @handleCheckReport="handleCheckReport"></chinaMap>
                             <div col="1" flex spacearound>
                                 <div class="totalStatics-item" flex-column center>
                                     <div class="num num3 fontsize50">{{pannelData.per200up}}</div>
@@ -204,20 +205,37 @@ export default {
       timer: null,
       timer2: null,
       nowDate: "",
-      mapData: []
+      mapData: [],
+      qygc:'',
+
+      isCheck:false
     };
   },
   created() {
     this.queryPersonnelPanel();
     this.nowDate = getMyDate(new Date());
+    if(JSON.parse(sessionStorage.getItem('userInfo')).includes('JYGL')){
+      this.isCheck = true 
+    }
   },
   watch: {},
   mounted() {},
   methods: {
+    handleCheckReport(){
+      let routeData = this.$router.resolve({
+        name: "ryReport",
+        query: {
+          qy:this.qygc
+        }
+      });
+      window.open(routeData.href, "_blank");
+    },
     handleChangeqy(data) {
+      console.log(data)
       this.queryPersonnelPanel(data);
     },
     handleFilterqy(data) {
+      this.qygc = data
       this.queryPersonnelPanel(data);
     },
     handleClearTimer() {

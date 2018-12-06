@@ -25,7 +25,7 @@ export default {
     components: {},
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .noproblem {
   text-align: center;
 }

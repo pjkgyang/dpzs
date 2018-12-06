@@ -12,7 +12,7 @@
                                 <div textcenter flex-column>
                                     <div col="1" flex colcenter spacearound>
                                         <h3 class="fontsize16" style="letter-spacing:1em;">接入学校数</h3>
-                                        <div class="num customNums">{{pannelData.jrxxs}}</div>
+                                        <div class="num customNums fontsize60">{{pannelData.jrxxs}}</div>
                                     </div>
                                     <div col="2" flex spacearound wrap>
                                         <div class="totalStatics-item" flex flex-column>
@@ -338,7 +338,6 @@ export default {
   min-height: 670px;
   flex-direction: column;
   .num.customNums {
-    font-size: 70px;
     @include gradient(#ffffff, #b3b3b3);
   }
   .totalStatics {

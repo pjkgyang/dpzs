@@ -13,28 +13,44 @@
             return {
                 transitionName: 'slide-left',
                 routerArr:['/wtgz','/gczh','/gcys','/gcwg','/gcry','/gccb'],
+                time:0,
+                timer:null
                 // count:0
             }
         },
         mounted(){
-            console.log(functions.isFullscreen())
-            let _this = this;
-            // setInterval(function(){
-            //      window.location.href = window.location.origin+_this.routerArr[_this.count];
-            //      console.log(_this.routerArr[_this.count])
-            //     _this.count ++;
-            //     if(_this.count == _this.routerArr.length-1) _this.count = 0;
-            // },5000)
+            this.$get(this.API.getLoginUser).then(res=>{
+                if(res.data.state == 'success'){
+                    sessionStorage.setItem('userInfo',JSON.stringify(res.data.data.userGroupTag))
+                }
+            })
+
+            let THIS = this;
+            if(!!functions.isFullscreen()){
+                setInterval(THIS.countDown,480000);
+            }
         },
          '$route' (to, from) {
+            
             if(to.path == '/'){
                 this.transitionName = 'slide-right';
             }else{
                 this.transitionName = 'slide-left';
             }
         },
+        watch:{
+            'time':function(newVal,oldVal){
+                this.$router.push({path:this.routerArr[newVal]});
+            }
+        },
         methods:{
-          
+            countDown(){
+                let THIS = this;
+                THIS.time++;
+                if(THIS.time == THIS.routerArr.length){
+                   THIS.time = 0 
+                }
+            }
          }
     }
 </script>

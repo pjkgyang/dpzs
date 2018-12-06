@@ -1,75 +1,99 @@
 <template>
-    <div class="pannel2">
-        <div>
-            <head-bar :title="'工程验收分析'" :time="nowDate"></head-bar>
-        </div>
-        <div class="app__content">
-            <div class="secure height100" flex>
-                <main flex-column col="3">
-                    <div class="top" flex col="6">
-                        <Card class="secure__map" col="4"  :row="true">
-                            <china-map  @handleChangeqy="handleChangeqy" @handleFilterqy="handleFilterqy" :title="'验收完成率'" 
-                            :numPer="(Number(pannelData.dnyswcl)/Number(pannelData.dnysmb)*100).toFixed(2)" :mapData="mapData"></china-map>
-                        </Card>
-                    </div>
-                    <div class="secure__detail" col="4" flex>
-                        <Card col="3" title="区域验收统计(万元)">
-                            <doublebar-chart :data="qyysData" :max="max" :count="count" :qymc="qymc" @handleChooseBar="handleChooseBar"></doublebar-chart>
-                        </Card>
-                    </div>
-                </main>
-                <!-- 右侧表格 -->
-                <aside class="secure__rightaside" flex-column col="2">
-                    <Card col="6" title="验收动态">
-                        <el-scrollbar style="height:100%">
-                        <div style="padding:0 30px;" @mouseover="handleCloseTimer" @mouseout="handleStartTimer">
-                             <div style="overflow:hidden"  v-if="ysdtData.length > 0"> 
-                                <table class="table"  :class="{animys:animate==true}">
-                                    <tr v-for="(item,index) in ysdtData" :key="index" >
-                                        <td :title="item.xmmc">{{item.xmmc}}</td>
-                                        <td class="date">{{item.yssj}}</td>
-                                        <td class="date" :class="{'active-ys':item.xmzt=='验收','active-syx':item.xmzt=='试运行'}"  style="color:#F2A51B">{{item.xmzt}}</td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <no-data col="1" v-else />
-                        </div>
-                      </el-scrollbar>
-                    </Card>
-                    <Card col="4" flex :row=true>
-                        <div col="1" flex-column>
-                            <h4 col="1" flex colcenter class="fontsize16" style="padding-left: 28px;">全年目标(万元)</h4>
-                            <div col="6" flex>
-                                <div id="pieItems1" col="4"></div>
-                                <div col="2" flex-column rowcenter>
-                                    <h4>全年目标</h4>
-                                    <div class="num" style="color:#F9B74C;font-size: 25px;margin-bottom: 20px;">{{pannelData.dnysmb}}</div>
-                                    <h4>已完成</h4>
-                                    <div class="num" style="color:#3AC868;font-size: 25px;white-space:nowrap">
-                                        {{pannelData.dnyswcl}}<br>({{(Number(pannelData.dnyswcl)/Number(pannelData.dnysmb)*100).toFixed(2)}}%)
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div col="1" flex-column>
-                            <h4 col="1" flex colcenter class="fontsize16" style="padding-left: 28px;">本月目标(万元)</h4>
-                            <div col="6" flex>
-                                <div id="pieItems2" col="4"></div>
-                                <div col="2" flex-column rowcenter>
-                                    <h4>本月目标</h4>
-                                    <div class="num" style="color:#E85650;font-size: 25px;margin-bottom: 20px;">{{pannelData.byysjh}}</div>
-                                    <h4>已完成</h4>
-                                    <div class="num" style="color:#27A6F6;font-size: 25px;">
-                                        {{pannelData.byyswcl}}<br>({{!pannelData.byyswcl||!pannelData.byysjh?'-':(Number(pannelData.byyswcl)/Number(pannelData.byysjh)*100).toFixed(2)}}%)
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </Card>
-                </aside>
-            </div>
-        </div>
+  <div class="pannel2">
+    <div>
+      <head-bar :title="'工程验收分析'" :time="nowDate"></head-bar>
     </div>
+    <div class="app__content">
+      <div class="secure height100" flex>
+        <main flex-column col="3">
+          <div class="top" flex col="6">
+            <Card class="secure__map" col="4" :row="true">
+              <china-map @handleChangeqy="handleChangeqy" @handleFilterqy="handleFilterqy" :title="'验收完成率'" :numPer="(Number(pannelData.dnyswcl)/Number(pannelData.dnysmb)*100).toFixed(2)" :mapData="mapData"
+              @handleCheckReport="handleCheckReport" :userTag="isCheck"></china-map>
+            </Card>
+          </div>
+          <div class="secure__detail" col="4" flex>
+            <Card col="3" title="区域验收统计(万元)">
+              <doublebar-chart :data="qyysData" :max="max" :count="count" :qymc="qymc" @handleChooseBar="handleChooseBar"></doublebar-chart>
+            </Card>
+          </div>
+        </main>
+        <!-- 右侧表格 -->
+        <aside class="secure__rightaside" flex-column col="2">
+          <Card col="6" title="验收动态">
+            <el-scrollbar style="height:100%">
+              <div style="padding:0 30px;" @mouseover="handleCloseTimer" @mouseout="handleStartTimer">
+                <div style="overflow:hidden" v-if="ysdtData.length > 0">
+                  <table class="table" :class="{animys:animate==true}">
+                    <tr v-for="(item,index) in ysdtData" :key="index">
+                      <td :title="item.xmmc">{{item.xmmc}}</td>
+                      <td class="date">{{item.yssj}}</td>
+                      <td class="date" :class="{'active-ys':item.xmzt=='验收','active-syx':item.xmzt=='试运行'}" style="color:#F2A51B">{{item.xmzt}}</td>
+                    </tr>
+                  </table>
+                </div>
+                <no-data col="1" v-else />
+              </div>
+            </el-scrollbar>
+          </Card>
+          <Card col="4" flex :row=true>
+            <div col="1" flex-column>
+              <h4 col="1" flex colcenter class="fontsize16" style="padding-left: 28px;">全年目标(万元)</h4>
+              <div col="6" flex>
+                <div id="pieItems1" col="4"></div>
+                <div col="2" flex-column rowcenter>
+                  <h4>全年目标</h4>
+                  <div class="num" style="color:#F9B74C;font-size: 25px;margin-bottom: 20px;">{{pannelData.dnysmb}}</div>
+                  <h4>已完成</h4>
+                  <div class="num" style="color:#3AC868;font-size: 25px;white-space:nowrap">
+                    {{pannelData.dnyswcl}} ({{(Number(pannelData.dnyswcl)/Number(pannelData.dnysmb)*100).toFixed(2)}}%)
+                  </div>
+                  <div flex colcenter>
+                    <h4>当年</h4>&nbsp;
+                    <div class="num" style="color:#27A6F6;font-size: 25px;">
+                      {{pannelData.dnxmyswcl}}
+                    </div>
+                  </div>
+                  <div flex colcenter>
+                    <h4>往年</h4>&nbsp;
+                    <div class="num" style="color:#27A6F6;font-size: 25px;">
+                      {{pannelData.wnxmyswcl}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div col="1" flex-column>
+              <h4 col="1" flex colcenter class="fontsize16" style="padding-left: 28px;">本月目标(万元)</h4>
+              <div col="6" flex spacearound >
+                <div id="pieItems2" col="4" ></div>
+                <div col="2" flex-column rowcenter>
+                  <h4>本月目标</h4>
+                  <div class="num" style="color:#E85650;font-size: 25px;margin-bottom: 20px;">{{pannelData.byysjh}}</div>
+                  <h4>已完成</h4>
+                  <div class="num" style="color:#27A6F6;font-size: 25px;">
+                    {{pannelData.byyswcl}} ({{!pannelData.byyswcl||!pannelData.byysjh?'-':(Number(pannelData.byyswcl)/Number(pannelData.byysjh)*100).toFixed(2)}}%)
+                  </div>
+                  <div flex colcenter>
+                    <h4>当年</h4>&nbsp;
+                    <div class="num" style="color:#27A6F6;font-size: 25px;">
+                      {{pannelData.dnxmysywcl}}
+                    </div>
+                  </div>
+                  <div flex colcenter>
+                    <h4>往年</h4>&nbsp;
+                    <div class="num" style="color:#27A6F6;font-size: 25px;">
+                      {{pannelData.wnxmysywcl}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Card>
+        </aside>
+      </div>
+    </div>
+  </div>
 </template>
 <script type="text/javascript">
 import { getMyDate } from "../../utils.js";
@@ -107,7 +131,9 @@ export default {
       qymc: "",
       qyArr: [],
       mapData: [],
-      max:100
+      max: 100,
+
+      isCheck:false
     };
   },
   watch: {},
@@ -154,7 +180,7 @@ export default {
           qymcArr.push(ele.qymc.split("区域工程")[0]);
           mbArr.push(ele.mbwcl);
           ywcArr.push(ele.wcl);
-          xlArr.push(ele.xl)
+          xlArr.push(ele.xl);
         });
         this.max = Number(xlArr[0]);
         let len = xlArr.length;
@@ -167,17 +193,16 @@ export default {
         this.qyysData[1] = mbArr;
         this.qyysData[2] = ywcArr;
         this.qyysData[3] = xlArr;
-        mbArr.forEach((item,i,arr)=>{
-           let num = '';
-            if(Number(item) -Number(ywcArr[i]) < 0){
-              num = 0
-            }else{
-              num = Number(item) - Number(ywcArr[i])
-            }
-            oldmbArr.push(num)
-          })
+        mbArr.forEach((item, i, arr) => {
+          let num = "";
+          if (Number(item) - Number(ywcArr[i]) < 0) {
+            num = 0;
+          } else {
+            num = Number(item) - Number(ywcArr[i]);
+          }
+          oldmbArr.push(num);
+        });
         this.qyysData[4] = oldmbArr;
-
 
         let keyMap = {
           PROVINCE: "name",
@@ -201,9 +226,23 @@ export default {
       }
     });
     this.nowDate = getMyDate(new Date());
+     if (
+      JSON.parse(sessionStorage.getItem("userInfo")).includes("JYGL") ||
+      JSON.parse(sessionStorage.getItem("userInfo")).includes("QYZ")
+    ) {
+      this.isCheck = true;
+    }
   },
   mounted() {},
   methods: {
+    // 报表
+    handleCheckReport(){
+      let routeData = this.$router.resolve({
+        path:"/ysreport",
+        query: {}
+      });
+      window.open(routeData.href, "_blank");
+    },
     handleChooseBar(data) {
       //选择柱状图区域
       this.queryProjectAcceptancePanel(data);
@@ -227,11 +266,11 @@ export default {
     },
     scroll() {
       this.animate = true;
-      this.ysdtData = this.ysdtData.concat(this.ysdtData.slice(0,10));
+      this.ysdtData = this.ysdtData.concat(this.ysdtData.slice(0, 10));
       setTimeout(() => {
         // this.ysdtData.push(this.ysdtData[0]);
         // this.ysdtData.shift();
-        this.ysdtData.splice(0,7);
+        this.ysdtData.splice(0, 7);
         this.animate = false;
       }, 300);
     },
@@ -332,7 +371,7 @@ export default {
               position: "inside",
               textBorderWidth: 0,
               align: "right",
-              formatter: "{b}:{d}%",
+              formatter: "{b}:{d}%"
               // textStyle:{
               //     color:'rgb(232, 86, 80)'
               // }

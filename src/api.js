@@ -15,6 +15,19 @@ export default {
     queryYqWgData:WEBPACK_CONFIG_HOST + 'panel/queryYqWgData.do',//获取区域完工,验收数据
     queryRegionSubcontractEfficiency:WEBPACK_CONFIG_HOST + 'panel/queryRegionSubcontractEfficiency.do',//获取分包效率
     queryRegionCostStat:WEBPACK_CONFIG_HOST + 'panel/queryRegionCostStat.do',//获取区域成本统计
-    queryContractData:WEBPACK_CONFIG_HOST+'panel/queryContractData.do'//获取合同数据
+    queryContractData:WEBPACK_CONFIG_HOST+'panel/queryContractData.do',//获取合同数据
     
+
+    // 报表
+    panelPersonnel:WEBPACK_CONFIG_HOST+'panelReport/panelPersonnel.do',//人员
+    panelCompletion:WEBPACK_CONFIG_HOST+'panelReport/panelCompletion.do',//验收完工
+    queryProjectHumanCost:WEBPACK_CONFIG_HOST+'panelReport/queryProjectHumanCost.do',//工程人力
+    querySecondaryDevelopment:WEBPACK_CONFIG_HOST+'panelReport/querySecondaryDevelopment.do',//二次开发
+    queryExpenseAccount:WEBPACK_CONFIG_HOST+'panelReport/queryExpenseAccount.do',//报销（可变）
+    queryPanelCompletionData:WEBPACK_CONFIG_HOST+'panelReport/queryPanelCompletionData.do',//完工
+    queryPanelAcceptanceData:WEBPACK_CONFIG_HOST+'panelReport/queryPanelAcceptanceData.do',//验收
+
+    // 获取当前登录人
+    getLoginUser:WEBPACK_CONFIG_HOST+'sys/getLoginUser.do?',
+    getResponsibleTaskList:WEBPACK_CONFIG_HOST+'dict/getResponsibleTaskList.do',//枚举
 }
