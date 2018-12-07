@@ -2,7 +2,7 @@
   <div class="reportFilter">
     <div>
       <filterComponent :filterList="filterList" @handleChangeFilter="handleChangeFilter"
-       :placeholder="'请搜索项目名称/项目编号'"></filterComponent>
+       :placeholder="'请搜索项目名称/项目编号'" :dateTitle="'报销申请日期'"></filterComponent>
     </div>
     <div class="reportFilter_area dpReport">
       <tableComponent :tableData="tableData" :indexArr="[0]" :Width="'120'" :widthArr="[]" 

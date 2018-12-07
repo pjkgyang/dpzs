@@ -5,8 +5,8 @@
        :placeholder="'请搜索项目名称/项目编号'" :dateType="'month'" :dateFormat="'yyyy-MM'"></filterComponent>
     </div>
     <div class="reportFilter_area ">
-      <tableComponent :tableData="tableData"  :Width="'120'" :widthArr="[]" 
-      :rowWidth="'150'" :Height="150" @exportTable="exportTable" :pageShow="true" @handleChange="handleChange"></tableComponent>
+      <tableComponent :tableData="tableData" :indexArr="[0]" :Width="'120'" :widthArr="[]" 
+      :rowWidth="'150'" :Height="140" @exportTable="exportTable" :pageShow="true" @handleChange="handleChange"></tableComponent>
     </div>
   </div>
 </template>

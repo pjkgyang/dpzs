@@ -266,7 +266,8 @@ export default {
       timer: null,
       mapData: [],
       htData: [], //签单动态
-      max: ""
+      max: "",
+      isCheck:false
     };
   },
   created() {
@@ -295,6 +296,7 @@ export default {
   },
   methods: {
     hanldeCheckReport(data) {
+      if(!this.isCheck)  return; 
         let routeData = this.$router.resolve({
           path:data == "gc"?"/gcrl":data == "ek" ? "/ek" : "/kb",
           query: { qy:this.qymc }
@@ -339,6 +341,12 @@ export default {
           this.qyArr = res.data.data;
         }
       });
+      if (
+      JSON.parse(sessionStorage.getItem("userInfo")).includes("JYGL") ||
+      JSON.parse(sessionStorage.getItem("userInfo")).includes("QYZ")
+    ) {
+      this.isCheck = true;
+    }
     },
     handleClearTimer() {
       clearInterval(this.timer);

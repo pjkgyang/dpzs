@@ -222,7 +222,8 @@ export default {
       timer: null,
       qymc: "",
       mapData: [],
-      max: 100
+      max: 100,
+      isCheck:false
     };
   },
   created() {
@@ -295,11 +296,18 @@ export default {
         }
       }
     });
+    if (
+      JSON.parse(sessionStorage.getItem("userInfo")).includes("JYGL") ||
+      JSON.parse(sessionStorage.getItem("userInfo")).includes("QYZ")
+    ) {
+      this.isCheck = true;
+    }
   },
   watch: {},
   mounted() {},
   methods: {
     hanldeCheckReport(data) {
+      if(!this.isCheck)  return;
         let routeData = this.$router.resolve({
           path:data == "gc"?"/gcrl":data == "ek" ? "/ek" : "/kb",
           query: { qy:this.qymc }
