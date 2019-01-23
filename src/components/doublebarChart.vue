@@ -185,7 +185,7 @@ export default {
                             }
                         },
                         barWidth: 20,
-                        data:this.data[2]
+                        data:this.data[2],
                     },
                     {
                         name:this.count==1||this.count==3?'目标':'总金额',
@@ -227,7 +227,12 @@ export default {
                         type:'line',
                         yAxisIndex: 1,
                         color:['#d14a61'],
-                        data:this.data[3]
+                        data:this.data[3],
+                        markLine : {
+                            data : [
+                                 {name: '基准标线', value: 100, xAxis: 0, yAxis: 100,itemStyle:{normal:{color:'#0f0'}}}, 
+                            ]
+                        }
                         // function(){
                         //     return this.data[3]
                         // }
