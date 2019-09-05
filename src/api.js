@@ -30,4 +30,12 @@ export default {
     // 获取当前登录人
     getLoginUser:WEBPACK_CONFIG_HOST+'sys/getLoginUser.do?',
     getResponsibleTaskList:WEBPACK_CONFIG_HOST+'dict/getResponsibleTaskList.do',//枚举
+    getDwByUser:WEBPACK_CONFIG_HOST+'sys/getDwByUser.do',//获取单位
+
+    // 服务台
+    getPanelData:WEBPACK_CONFIG_HOST+'servicedesk/getPanelData.do', // 获取大屏数据
+    pageAppStat:WEBPACK_CONFIG_HOST+'servicedesk/pageAppStat.do', // 获取应用统计分页数据
+    pageRecentRequest:WEBPACK_CONFIG_HOST+'servicedesk/pageRecentRequest.do', // 最近请求分页列表
+    pageDeptServiceDesk:WEBPACK_CONFIG_HOST+'servicedesk/pageDeptServiceDesk.do', // 部门统计分页列表
+    increasedStat:WEBPACK_CONFIG_HOST+'servicedesk/increasedStat.do', // 折线统计
 }

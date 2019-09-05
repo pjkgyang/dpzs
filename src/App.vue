@@ -19,11 +19,11 @@
             }
         },
         mounted(){
-            this.$get(this.API.getLoginUser).then(res=>{
-                if(res.data.state == 'success'){
-                    sessionStorage.setItem('userInfo',JSON.stringify(res.data.data.userGroupTag))
-                }
-            })
+            // this.$get(this.API.getLoginUser).then(res=>{
+            //     if(res.data.state == 'success'){
+            //         sessionStorage.setItem('userInfo',JSON.stringify(res.data.data.userGroupTag))
+            //     }
+            // })
 
             let THIS = this;
             if(!!functions.isFullscreen()){

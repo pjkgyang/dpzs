@@ -22,7 +22,8 @@
     "sockjs-client": "^1.1.4",
     "stompjs": "^2.3.3",
     "vue": "^2.5.9",
-    "vue-router": "^2.1.1"
+    "vue-router": "^2.1.1",
+    "vue-seamless-scroll": "^1.1.17"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",

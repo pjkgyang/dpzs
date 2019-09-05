@@ -79,6 +79,10 @@ img {
 .gradienttext {
   @include gradient;
 }
+.bgshadow{
+  border: 1px solid #474491; 
+  @include bgshadow;
+}
 .rowcenter, [rowcenter] {
   justify-content: center;
 }
@@ -94,7 +98,7 @@ img {
   justify-content: space-between;
 }
 .wrap,[wrap]{
-    flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 .nowrap,[nowrap]{
   flex-wrap: nowrap;
@@ -121,6 +125,9 @@ img {
 }
 [align-start]{
   align-content:flex-start;
+}
+[row-end]{
+  justify-content: flex-end;
 }
 .app__content {
   flex: 1;

@@ -147,15 +147,18 @@
                 </div>
               </div>
               <div flex spacearound>
-                <div class="totalStatics-item check-hover" flex-column center @click="hanldeCheckReport('gc')">
+                <!-- @click="hanldeCheckReport('gc')" -->
+                <div class="totalStatics-item check-hover" flex-column center >
                   <div class="num num1 fontsize60">{{!zhgkData.fbrl?0:zhgkData.fbrl}}</div>
                   <h3>工程</h3>
                 </div>
-                <div class="totalStatics-item check-hover" flex-column center @click="hanldeCheckReport('ek')">
+                <!-- @click="hanldeCheckReport('ek')" -->
+                <div class="totalStatics-item check-hover" flex-column center >
                   <div class="num num2 fontsize60">{{!zhgkData.fbek?0:zhgkData.fbek}}</div>
                   <h3>二开</h3>
                 </div>
-                <div class="totalStatics-item check-hover" flex-column center @click="hanldeCheckReport('kb')">
+                <!-- @click="hanldeCheckReport('kb')" -->
+                <div class="totalStatics-item check-hover" flex-column center >
                   <div class="num num3 fontsize60">{{!zhgkData.fbkb?0:zhgkData.fbkb}}</div>
                   <h3>可变</h3>
                 </div>

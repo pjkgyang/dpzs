@@ -11,7 +11,8 @@ import 'bh-mint-ui2/lib/style.css'
 import 'echarts/map/js/china.js'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css';
-
+import scroll from 'vue-seamless-scroll'
+Vue.use(scroll)
 
 // 总线
 const EventBus = new Vue();

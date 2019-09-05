@@ -24,15 +24,18 @@
                     </div>
                   </div>
                   <div flex spacearound>
-                    <div class="totalStatics-item check-hover" flex-column center @click="hanldeCheckReport('gc')">
+                    <!-- @click="hanldeCheckReport('gc')" -->
+                    <div class="totalStatics-item check-hover" flex-column center >
                       <div class="num num1 fontsize60">{{!pannelData.zbrlfy?0:pannelData.zbrlfy}}</div>
                       <h3>工程</h3>
                     </div>
-                    <div class="totalStatics-item check-hover" flex-column center @click="hanldeCheckReport('ek')">
+                    <!-- @click="hanldeCheckReport('ek')" -->
+                    <div class="totalStatics-item check-hover" flex-column center >
                       <div class="num num2 fontsize60">{{!pannelData.zbekfy?0:pannelData.zbekfy}}</div>
                       <h3>二开</h3>
                     </div>
-                    <div class="totalStatics-item check-hover" flex-column center @click="hanldeCheckReport('kb')">
+                    <!-- @click="hanldeCheckReport('kb')" -->
+                    <div class="totalStatics-item check-hover" flex-column center >
                       <div class="num num3 fontsize60">{{!pannelData.zbkbfy?0:pannelData.zbkbfy}}</div>
                       <h3>可变</h3>
                     </div>

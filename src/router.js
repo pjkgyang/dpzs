@@ -10,6 +10,8 @@ import pannel4 from './pages/pannel4/pannel4.vue';
 import pannel5 from './pages/pannel5/pannel5.vue';
 import pannel6 from './pages/pannel6/pannel6.vue';
 import pannel7 from './pages/pannel7/pannel7.vue';
+import pannel8 from './pages/pannel8/pannel8.vue';
+
 import ryreport from './pages/report/ry-report.vue';
 import yswgreport from './pages/report/yswg-report.vue';
 import wgpannel from './pages/report/wgPannel.vue';
@@ -17,12 +19,13 @@ import yspannel from './pages/report/ysPannel.vue';
 import gcpannel from './pages/report/gcReport.vue';
 import ekpannel from './pages/report/ekReport.vue';
 import kbpannel from './pages/report/kbReport.vue';
+
 import NotFoundComponent from './pages/errorPage/errorPage.vue';
 
 
 export default new Router({
     mode: 'history',
-    // base:'dp',
+    base:'dp',
     routes: [
         {
             path: '/',
@@ -76,6 +79,14 @@ export default new Router({
             component: pannel7,
             meta: {
                 title: '工程综合概况'
+            }
+        },
+        {
+            path: '/fwt',
+            name: 'Fwt',
+            component: pannel8,
+            meta: {
+                title: '服务台'
             }
         },
         {

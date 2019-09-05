@@ -42,3 +42,8 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+@mixin bgshadow(){
+  border-radius: 16px;
+  background-image: linear-gradient(-135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.11) 56%, rgba(255,255,255,0.04) 100%);
+}

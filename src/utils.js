@@ -124,3 +124,29 @@ export function getMenu(type,Arrlist,isInterface){
       }
  })
 }
+
+export function GetDateStr(DayCount){
+  var dd = new Date();
+  dd.setDate( dd.getDate() + DayCount);//获取DayCount天后的日期
+  var y = dd.getFullYear();
+  var m = dd.getMonth()+1;
+  var d = dd.getDate();
+  var s = y+"-"+(m<10?('0'+m):m)+"-"+(d<10?('0'+d):d);
+  return  s;
+}
+
+export function getCookie(name) {
+  var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+  if (arr = document.cookie.match(reg))
+      return unescape(arr[2]);
+  else
+      return null;
+}
+
+export function setCookie(name,value)
+  {
+  var Days = 30;
+  var exp = new Date();
+  exp.setTime(exp.getTime() + Days*24*60*60*1000);
+  document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+ }
