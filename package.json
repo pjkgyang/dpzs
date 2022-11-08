@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "babel-core": "^6.0.0",
-    "babel-loader": "^6.0.0",
+    "babel-loader": "^9.1.0",
     "babel-plugin-component": "^0.9.0",
     "babel-plugin-transform-runtime": "^6.22.0",
     "babel-preset-es2015": "^6.0.0",
@@ -35,8 +35,8 @@
     "babel-preset-stage-2": "^6.24.1",
     "breakpoint-sass": "^2.7.1",
     "cross-env": "^3.0.0",
-    "css-loader": "^0.25.0",
-    "file-loader": "^0.9.0",
+    "css-loader": "^6.7.1",
+    "file-loader": "^6.2.0",
     "node-sass": "^4.8.3",
     "postcss-cssnext": "^2.9.0",
     "postcss-pxtorem": "^3.3.1",
@@ -44,9 +44,9 @@
     "shelljs": "^0.7.6",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
-    "vue-loader": "^10.0.0",
+    "vue-loader": "^17.0.1",
     "vue-template-compiler": "^2.1.0",
-    "webpack": "2.2.0",
+    "webpack": "5.74.0",
     "webpack-dev-server": "2.1.0-beta.9"
   }
 }
